@@ -26,39 +26,37 @@ bool alloc_array_2d(int*** array_2d, int size_x, int size_y) {
 		return false;
 	}
 
-	*array_2d = new int* [size_x];
+	*array_2d = new int*[size_x];
+	if (*array_2d == nullptr) {
+		return false;
+	}
 
 	for (int i = 0; i < size_x; i++) {
 		(*array_2d)[i] = new int[size_y];
 		if ((*array_2d)[i] == nullptr) {
 			for (int j = 0; j < i; j++) {
-				delete[](*array_2d)[j];
+				delete[](*array_2d)[i];
 			}
-			delete[] * array_2d;
+			delete[] *array_2d;
 			return false;
 		}
 	}
 	return true;
 }
 
-bool dealloc_array_2d(int** array_2d, int size_x, int size_y) {
-	if (array_2d == nullptr) {
+bool dealloc_array_2d(int*** array_2d, int size_x) {
+	if (size_x <= 0) {
+		std::cout << "Incorrect array size.\n";
 		return false;
 	}
-	for (int i = 0; i < size_x; i++) {
-		delete[] array_2d[i];
-	}
-	delete[] array_2d;
-	return true;
-}
 
-bool dealloc_array_2d_better(int** array_2d) {
-	if (array_2d == nullptr) {
+	if (*array_2d == nullptr) {
 		return false;
 	}
-	for (int i = 0; i < sizeof(array_2d); i++) {
-		delete[] array_2d[i];
+	
+	for (int i = 0; i < size_x; i++) {
+		delete[] (*array_2d)[i];
 	}
-	delete[] array_2d;
+	delete[] *array_2d;
 	return true;
 }

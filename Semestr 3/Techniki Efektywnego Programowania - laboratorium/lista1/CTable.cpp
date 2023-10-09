@@ -64,5 +64,5 @@ CTable* CTable::clone() {
 }
 
 void CTable::display() {
-	std::cout << "array: " << this->name << "length: " << this->length << "\n";
+	std::cout << "array: " << this->name << " length: " << this->length << "\n";
 }
