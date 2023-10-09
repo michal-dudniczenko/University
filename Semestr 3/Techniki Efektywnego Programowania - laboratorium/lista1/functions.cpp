@@ -27,13 +27,13 @@ bool alloc_array_2d(int*** array_2d, int size_x, int size_y) {
 	}
 
 	*array_2d = new int*[size_x];
-	if (*array_2d == nullptr) {
+	if (*array_2d == NULL) {
 		return false;
 	}
 
 	for (int i = 0; i < size_x; i++) {
 		(*array_2d)[i] = new int[size_y];
-		if ((*array_2d)[i] == nullptr) {
+		if ((*array_2d)[i] == NULL) {
 			for (int j = 0; j < i; j++) {
 				delete[](*array_2d)[i];
 			}
@@ -50,7 +50,7 @@ bool dealloc_array_2d(int*** array_2d, int size_x) {
 		return false;
 	}
 
-	if (*array_2d == nullptr) {
+	if (*array_2d == NULL) {
 		return false;
 	}
 	
