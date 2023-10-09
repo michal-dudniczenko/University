@@ -3,7 +3,7 @@
 
 void alloc_array_fill_34(int array_size) {
 	if (array_size <= 0) {
-		std::cout << "Error! Array size must be greater than 0.";
+		std::cout << err_wrong_size;
 		return;
 	}
 
@@ -12,17 +12,17 @@ void alloc_array_fill_34(int array_size) {
 	for (int i = 0; i < array_size; i++) {
 		array[i] = array_fill;
 	}
-	std::cout << "Array content: ";
+	std::cout << array_content;
 	for (int i = 0; i < array_size; i++) {
 		std::cout << array[i] << " ";
 	}
-	std::cout << "\n";
+	std::cout << newline;
 	delete[] array;
 }
 
 bool alloc_array_2d(int*** array_2d, int size_x, int size_y) {
 	if (size_x <= 0 || size_y <= 0) {
-		std::cout << "Incorrect array size.\n";
+		std::cout << err_wrong_size;
 		return false;
 	}
 
@@ -46,7 +46,7 @@ bool alloc_array_2d(int*** array_2d, int size_x, int size_y) {
 
 bool dealloc_array_2d(int*** array_2d, int size_x) {
 	if (size_x <= 0) {
-		std::cout << "Incorrect array size.\n";
+		std::cout << err_wrong_size;
 		return false;
 	}
 
