@@ -1,0 +1,78 @@
+s0-poczatek tablicy RAM
+s1-liczba wierszy
+s2-liczba kolumn
+s3-liczba wierszy * 4
+s4-liczba kolumn * 4
+
+
+//wypelnienie tablicy adresow wierszy
+t0 - index w tablicy wierszy
+t1 - licznik wierszy
+t2 - index poczatku wiersza
+
+t0 = s0
+t1 = 0
+t2 = s0 + s3
+
+dopóki t1<s1:
+	(t0) = t2
+	t2+=s4
+	t0+=4
+	t1+=1
+
+
+//wypelnienie macierzy wartosciami
+t0 - index poczatku  pierwszego wiersza
+t1 - licznik wierszy
+t2 - licznik kolumn
+t3 - wypelnienie
+
+t1=0
+t0=(s0)
+
+dopóki t1<s1:
+	t3 = t1*100 
+	t3+=1	
+	t2=0	
+	dopóki t2<s2:
+		(t0) = t3
+		t3 += 1
+		t0 += 4	
+		t2 += 1
+
+	t1+=1
+
+
+//odczyt/zapis
+t0 - wybor uzytkownika
+t1 - wybor wiersza
+t2 - wybor kolumny
+t3 - wybor wiersza * 4
+t4 - wybor kolumny * 4
+t5 - index poczatku adresu wiersza wybranego
+t6 - index poczatku wiersza wybranego, potem poczatek wybranej kolumny
+t7 - wartosc do wpisania
+
+
+podaj co chcesz zrobic 1-zapis, 2-odczyt, 3-koniec = t0
+
+jezeli t0=3: koniec
+
+podaj numer wiersza = t1
+podaj numer kolumny = t2
+
+t5 = s0 + t3
+t6 = (t5)
+t6 += t4 
+
+jezeli t0 = 1:
+podaj wartosc do wpisania = t7
+(t6) = t7
+
+jezeli t0 = 2:
+wypisz (t6)
+
+
+
+
+

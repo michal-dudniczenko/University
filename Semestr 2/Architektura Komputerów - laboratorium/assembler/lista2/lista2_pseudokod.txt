@@ -1,0 +1,56 @@
+zakres = 100
+nprimes = 0
+numall = pusta tablica[zakres-1]
+primes = pusta tablica[zakres-1]
+
+
+
+temp = 2
+
+dopóki (temp <= zakres):
+	numall[temp-2]=temp
+	temp = temp + 1
+
+
+
+temp = 0
+wielokrotnosc = 0
+dzielnik = 0
+
+dopóki (temp < zakres/2):
+	dzielnik=numall[temp]
+	
+	jeżeli (dzielnik != 0):
+		wielokrotnosc = dzielnik+dzielnik
+		
+		dopóki (wielokrotnosc<=zakres):
+			numall[wielokrotnosc-2] = 0
+			wielokrotnosc = wielokrotnosc + dzielnik
+	
+	temp = temp + 1
+
+
+
+temp = 0
+num = 0
+temp2 = 0
+
+dopóki (temp<zakres-1):
+	num = numall[temp]
+	jeżeli (num != 0):
+		primes[temp2]=num
+		temp2 = temp2 + 1
+		nprimes = nprimes + 1
+	temp = temp + 1
+
+
+
+temp = 0
+
+dopóki (primes[temp]!=0):
+	wypisz primes[temp]
+	temp = temp + 1
+
+
+
+

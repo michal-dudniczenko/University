@@ -1,0 +1,79 @@
+----------------------------------------------------------------
+Wyniki sortowania dla tablicy losowych liczb całkowitych:
+
+select8: porownania: 28 przepisania: 21
+select32: porownania: 496 przepisania: 93
+select128: porownania: 8128 przepisania: 381
+select512: porownania: 130816 przepisania: 1533
+select2048: porownania: 2096128 przepisania: 6141
+
+insert8: porownania: 19 przepisania: 26
+insert32: porownania: 282 przepisania: 313
+insert128: porownania: 4254 przepisania: 4381
+insert512: porownania: 65380 przepisania: 65891
+insert2048: porownania: 1042082 przepisania: 1044129
+
+merge8: porownania: 16 przepisania: 48
+merge32: porownania: 124 przepisania: 320
+merge128: porownania: 745 przepisania: 1792
+merge512: porownania: 3980 przepisania: 9216
+merge2048: porownania: 19877 przepisania: 45056
+
+quick8: porownania: 14 przepisania: 56
+quick32: porownania: 142 przepisania: 347
+quick128: porownania: 851 przepisania: 1514
+quick512: porownania: 5272 przepisania: 9875
+quick2048: porownania: 37370 przepisania: 40735
+----------------------------------------------------------------
+Wyniki sortowania dla tablicy posortowanych liczb całkowitych:
+
+select8: porownania: 28 przepisania: 21
+select32: porownania: 496 przepisania: 93
+select128: porownania: 8128 przepisania: 381
+select512: porownania: 130816 przepisania: 1533
+select2048: porownania: 2096128 przepisania: 6141
+
+insert8: porownania: 7 przepisania: 14
+insert32: porownania: 31 przepisania: 62
+insert128: porownania: 127 przepisania: 254
+insert512: porownania: 511 przepisania: 1022
+insert2048: porownania: 2047 przepisania: 4094
+
+merge8: porownania: 12 przepisania: 48
+merge32: porownania: 80 przepisania: 320
+merge128: porownania: 448 przepisania: 1792
+merge512: porownania: 2304 przepisania: 9216
+merge2048: porownania: 11264 przepisania: 45056
+
+quick8: porownania: 19 przepisania: 56
+quick32: porownania: 128 przepisania: 298
+quick128: porownania: 844 przepisania: 1699
+quick512: porownania: 5282 przepisania: 8830
+quick2048: porownania: 40135 przepisania: 39301
+--------------------------------------------------------------
+Wyniki sortowania dla tablicy posortowanych odwrotnie liczb całkowitych:
+
+select8: porownania: 28 przepisania: 21
+select32: porownania: 496 przepisania: 93
+select128: porownania: 8128 przepisania: 381
+select512: porownania: 130816 przepisania: 1533
+select2048: porownania: 2096128 przepisania: 6141
+
+insert8: porownania: 33 przepisania: 40
+insert32: porownania: 523 przepisania: 554
+insert128: porownania: 8184 przepisania: 8311
+insert512: porownania: 129985 przepisania: 130496
+insert2048: porownania: 2077014 przepisania: 2079061
+
+merge8: porownania: 12 przepisania: 48
+merge32: porownania: 81 przepisania: 320
+merge128: porownania: 478 przepisania: 1792
+merge512: porownania: 2605 przepisania: 9216
+merge2048: porownania: 12961 przepisania: 45056
+
+quick8: porownania: 28 przepisania: 124
+quick32: porownania: 148 przepisania: 353
+quick128: porownania: 773 przepisania: 1704
+quick512: porownania: 5953 przepisania: 10649
+quick2048: porownania: 36418 przepisania: 36859
+------------------------------------------------------------
