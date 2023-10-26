@@ -45,17 +45,13 @@ def sqrList(xs: List[Int]): List[Int] = {
 
 
 def palindrome[A](xs: List[A]): Boolean = {
-  def palindromeHelper(xs: List[A]): Boolean = {
-    if (xs.size <= 1) {
-      true
-    } else if (xs.head == xs.last) {
-      palindromeHelper(xs.tail.init)
-    } else {
-      false
-    }
+  if (xs.size <= 1) {
+    true
+  } else if (xs.head == xs.last) {
+    palindromeHelper(xs.tail.init)
+  } else {
+    false
   }
-
-  palindromeHelper(xs)
 }
 
 
