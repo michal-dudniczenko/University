@@ -1,6 +1,8 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+#include <string>
+
 const int array_fill = 34;
 const std::string err_wrong_size = "Incorrect array size.\n";
 const std::string array_content = "Array content: ";

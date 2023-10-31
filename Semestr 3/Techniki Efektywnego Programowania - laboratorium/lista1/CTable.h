@@ -1,6 +1,8 @@
 #ifndef CTABLE_H
 #define CTABLE_H
 
+#include <string>
+
 const std::string default_name = "default_name";
 const int default_length = 10;
 
