@@ -1,4 +1,7 @@
+import scala.annotation.tailrec
+
 def flatten1[A](listOfLists: List[List[A]]): List[A] = {
+  @tailrec
   def flatten1Helper(result: List[A], remaining: List[List[A]]): List[A] = {
     if (remaining.isEmpty) result
     else {
@@ -44,11 +47,12 @@ def sqrList(xs: List[Int]): List[Int] = {
 
 
 
+@tailrec
 def palindrome[A](xs: List[A]): Boolean = {
   if (xs.size <= 1) {
     true
   } else if (xs.head == xs.last) {
-    palindromeHelper(xs.tail.init)
+    palindrome(xs.tail.init)
   } else {
     false
   }

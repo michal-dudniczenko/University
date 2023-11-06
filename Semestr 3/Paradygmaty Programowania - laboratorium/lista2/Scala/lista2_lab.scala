@@ -1,3 +1,6 @@
+import scala.annotation.tailrec
+
+@tailrec
 def lastElement[A](list: List[A]): Option[A] = {
   list match {
     case Nil => None
@@ -6,6 +9,7 @@ def lastElement[A](list: List[A]): Option[A] = {
   }
 }
 
+@tailrec
 def twoLastElements[A](list: List[A]): Option[(A, A)] = {
   list match {
     case Nil => None
@@ -30,6 +34,7 @@ def reverseList[A](list: List[A]): List[A] = {
 }
 
 def isPalindrome(s : String): Boolean = {
+  @tailrec
   def isPalindromeHelper(s: String): Boolean = {
     if (s.length <= 1) {
       true
@@ -78,6 +83,7 @@ def onlyEvenIndexes[A](list: List[A]): List[A] = {
 }
 
 def isPrime(n: Int): Boolean = {
+  @tailrec
   def isPrimeHelper(n: Int, divisor: Int): Boolean = {
     if (divisor * divisor > n) {
       true

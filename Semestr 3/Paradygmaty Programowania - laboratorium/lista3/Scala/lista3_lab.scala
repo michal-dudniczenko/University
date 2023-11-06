@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 
 def log(prefix: String)(datetime: String)(text: String): Unit = {
   val red = "\u001b[31m"
@@ -39,6 +40,7 @@ def customFilter[A](pred: A => Boolean)(list: List[A]): List[A] = {
 
 
 
+@tailrec
 def customReduce[A, B](op: (A, B) => B)(acc: B)(list: List[A]): B = {
   list match {
     case Nil => acc
