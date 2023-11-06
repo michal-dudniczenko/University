@@ -92,7 +92,7 @@ def replaceNth[A](xs: List[A], n: Int, x: A): List[A] = {
   def replaceNthHelper(xs: List[A], n:Int): List[A] = {
     xs match {
       case head :: tail if n == 0 => x :: tail
-      case head :: tail => head :: replaceNth(tail, n - 1, x)
+      case head :: tail => head :: replaceNthHelper(tail, n - 1)
       case Nil => Nil
     }
   }

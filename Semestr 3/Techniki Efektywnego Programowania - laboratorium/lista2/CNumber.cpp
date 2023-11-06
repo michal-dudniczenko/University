@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "CNumber.h"
+#include <sstream>
 
 CNumber::CNumber() {
 	this->length = default_length;
@@ -395,13 +396,14 @@ bool CNumber::operator==(const CNumber& other) const {
 }
 
 std::string CNumber::to_string() const {
-	std::string result = "number: ";
-	if (this->is_negative) result += "-";
+	std::stringstream ss;
+	ss << "number: ";
+	if (this->is_negative) ss << "-";
 	for (int i = 0; i < this->length; i++) {
-		result += std::to_string(this->digits_array[i]);
+		ss << this->digits_array[i];
 	}
-	result += " length: " + std::to_string(this->length);
-	return result;
+	ss << " length: " << this->length;
+	return ss.str();
 }
 
 int* CNumber::sum(int*& array_1, int*& array_2, int length_1, int length_2, int& result_length) {
