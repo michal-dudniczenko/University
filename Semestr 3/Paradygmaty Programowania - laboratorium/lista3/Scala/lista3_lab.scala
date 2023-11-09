@@ -1,105 +1,162 @@
 import scala.annotation.tailrec
 
-def log(prefix: String)(datetime: String)(text: String): Unit = {
-  val red = "\u001b[31m"
-  val green = "\u001b[32m"
-  val yellow = "\u001b[33m"
-  val reset = "\u001b[0m"
-
-  prefix match {
-    case "WARN" => println(s"$yellow[$prefix] $datetime \t $text$reset")
-    case "INFO" => println(s"$green[$prefix] $datetime \t $text$reset")
-    case "CRITICAL" => println(s"$red[$prefix] $datetime \t $text$reset")
-    case _ => println(s"[$prefix] $datetime \t $text")
-  }
-}
-
-
-
-def customMap[A, B](f: A => B)(list: List[A]): List[B] = {
+@tailrec
+def lastElement[A](list: List[A]): Option[A] = {
   list match {
-    case Nil => Nil
-    case head :: tail => f(head) :: customMap(f)(tail)
+    case Nil => None
+    case x :: Nil => Some(x)
+    case _ :: tail => lastElement(tail)
   }
 }
-
-
-
-def customFilter[A](pred: A => Boolean)(list: List[A]): List[A] = {
-  list match {
-    case Nil => Nil
-    case head :: tail  =>
-      if (pred(head)) {
-        head :: customFilter(pred)(tail)
-      }
-      else {
-        customFilter(pred)(tail)
-      }
-  }
-}
-
-
 
 @tailrec
-def customReduce[A, B](op: (A, B) => B)(acc: B)(list: List[A]): B = {
+def twoLastElements[A](list: List[A]): Option[(A, A)] = {
   list match {
-    case Nil => acc
-    case head :: tail => customReduce(op)(op(head, acc))(tail)
+    case Nil => None
+    case _ :: Nil => None
+    case a :: b :: Nil => Some((a, b))
+    case _ :: tail => twoLastElements(tail)
   }
 }
 
-
-
-def average(list: List[Int]): Double = {
-  customReduce((x: Int, y: Int) => x + y)(0)(list) / list.length.toDouble
+def listLength[A](list: List[A]): Int = {
+  list match {
+    case Nil => 0
+    case _ :: tail => 1 + listLength(tail)
+  }
 }
 
-
-
-def acronym(text: String): String = {
-  val firstLetters = customMap((s: String) => s(0))(text.split("\\s+").toList)
-  customReduce((x: Char, y: String) => y + x.toUpper)("")(firstLetters)
+def reverseList[A](list: List[A]): List[A] = {
+  list match {
+    case Nil => Nil
+    case head :: tail => reverseList(tail) :+ head
+  }
 }
 
-
-
-def cubeLessThanSum(list: List[Int]): List[Int] = {
-  val sum = customReduce((x: Int, y: Int) => x + y)(0)(list)
-  val filtered = customFilter((x: Int) => x*x*x <= sum)(list)
-  customMap((x: Int) => x * x)(filtered)
+def isPalindrome(s : String): Boolean = {
+  @tailrec
+  def isPalindromeHelper(s: String): Boolean = {
+    if (s.length <= 1) {
+      true
+    } else if (s.head != s.last) {
+      false
+    } else {
+      isPalindromeHelper(s.substring(1, s.length - 1))
+    }
+  }
+  
+  val cleanString = s.replaceAll("\\s", "").toLowerCase()
+  isPalindromeHelper(cleanString)
 }
 
+def removeDuplicates[A](list: List[A]): List[A] = {
+  def removeAllOccurences(list: List[A], element: A): List[A] = {
+    list match {
+      case Nil => Nil
+      case head :: tail if head == element =>
+        removeAllOccurences(tail, element)
+      case head :: tail =>
+        head :: removeAllOccurences(tail, element)
+    }
+  }
+
+  list match {
+    case Nil => Nil
+    case head :: tail =>
+      val filteredTail = removeAllOccurences(tail, head)
+      head :: removeDuplicates(filteredTail)
+  }
+}
+
+def onlyEvenIndexes[A](list: List[A]): List[A] = {
+  def onlyEvenIndexesHelper(list: List[A], index: Int): List[A] = {
+    list match {
+      case Nil => Nil
+      case head :: tail if index % 2 == 0 =>
+        head :: onlyEvenIndexesHelper(tail, index + 1)
+      case head :: tail =>
+        onlyEvenIndexesHelper(tail, index + 1)
+    }
+  }
+
+  onlyEvenIndexesHelper(list, 0)
+}
+
+def isPrime(n: Int): Boolean = {
+  @tailrec
+  def isPrimeHelper(n: Int, divisor: Int): Boolean = {
+    if (divisor * divisor > n) {
+      true
+    } else if (n % divisor == 0) {
+      false
+    } else {
+      isPrimeHelper(n, divisor + 2)
+    }
+  }
+
+  if (n <= 1){
+    false
+  } else if (n <= 3){
+    true
+  } else if (n % 2 == 0){
+    false
+  } else{
+    isPrimeHelper(n, 3)
+  }
+}
 
 
 @main
 def main(): Unit = {
-  println("\nLog:")
-  val warnLog = log("WARN")
-  val nightlyWarnLog = warnLog("2022-10-26 01:45")
-  val nightlyInfoLog = log("INFO")("2022-10-26 01:45")
-  val nightlyCriticalLog = log("CRITICAL")("2022-10-26 01:45")
-  nightlyWarnLog("Hello")
-  nightlyInfoLog("Hello")
-  nightlyCriticalLog("Hello")
+  val list1 = List(4, 1, 4, 2, 3, 4, 5, 4, 3, 2, 2, 4)
+  val list2 = List()
+  val list3 = List(5)
+  val list4 = List(7, 7)
 
-  println("\ncustomMap:")
-  println(customMap((x:Int) => x * 2)(List(1, 2, 3, 4, 5)))
+  println("\nLast element:")
+  println(lastElement(list1))
+  println(lastElement(list2))
+  println(lastElement(list3))
+  println(lastElement(list4))
 
-  println("\ncustomFilter:")
-  println(customFilter((x: Int) => x % 2 == 0)(List(1, 2, 3, 4, 5)))
+  println("\nTwo last elements:")
+  println(twoLastElements(list1))
+  println(twoLastElements(list2))
+  println(twoLastElements(list3))
+  println(twoLastElements(list4))
 
-  println("\ncustomReduce:")
-  println(customReduce((x: Int, y: Int) => x + y)(0)(List(1, 2, 3, 4, 5)))
-  println(customReduce((x: String, y: Int) => y + x.length)(0)(List("apple", "orange", "banana")))
-  println(customReduce((x: String, y: String) => y + x)("")(List("first", "second", "third")))
+  println("\nList length:")
+  println(listLength(list1))
+  println(listLength(list2))
+  println(listLength(list3))
+  println(listLength(list4))
 
-  println("\naverage:")
-  println(average(List(7, 10, 13, 4, 5, 98)))
+  println("\nReverse list:")
+  println(reverseList(list1))
+  println(reverseList(list2))
+  println(reverseList(list3))
+  println(reverseList(list4))
 
-  println("\nacronym:")
-  println(acronym("Zakład ubezpieczeń społecznych"))
-  println(acronym("test acronym test acronym"))
+  println("\nIs palindrome:")
+  println(isPalindrome("ka mil slima   k"))
+  println(isPalindrome("test"))
 
-  println("\ncubeLessThanSum:")
-  println(cubeLessThanSum(List(1, 2, 3, 4, 5, 100)))
+  println("\nRemove duplicates:")
+  println(removeDuplicates(list1))
+  println(removeDuplicates(list2))
+  println(removeDuplicates(list3))
+  println(removeDuplicates(list4))
+
+  println("\nOnly even indexes:")
+  println(onlyEvenIndexes(list1))
+  println(onlyEvenIndexes(list2))
+  println(onlyEvenIndexes(list3))
+  println(onlyEvenIndexes(list4))
+
+  println("\nIs prime:")
+  println(isPrime(47))
+  println(isPrime(5))
+  println(isPrime(4))
+  println(isPrime(25))
+  println(isPrime(15))
 }

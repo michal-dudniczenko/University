@@ -4,8 +4,8 @@
 int main() {
 	CNumber c_num_0, c_num_1, result;
 
-	c_num_0 = 7361;
-	c_num_1 = 45;
+	c_num_0 = -99;
+	c_num_1 = 3;
 
 	result = (c_num_0 / c_num_1);
 
