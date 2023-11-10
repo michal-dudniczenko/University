@@ -1,3 +1,6 @@
+//w pliku functions znajdziemy 3 funkcje majace na celu prezentacje mechanizmow obecnych przy alokacji/dealokacji dynamicznych tablic
+//wraz z deklaracjami wykorzystywanych stalych
+
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 

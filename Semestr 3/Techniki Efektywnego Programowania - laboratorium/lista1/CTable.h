@@ -1,3 +1,5 @@
+//klasa ctable zawiera wskaznik na dynamicznie alokowana tablice oraz informacje o ustalonej nazwie oraz jej dlugosci wraz z uzywanymi stalymi
+
 #ifndef CTABLE_H
 #define CTABLE_H
 
