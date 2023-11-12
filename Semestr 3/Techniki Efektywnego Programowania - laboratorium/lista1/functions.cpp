@@ -28,7 +28,7 @@ void alloc_array_fill_34(int array_size) {
 }
 
 //funkcja alokuje dynamiczna dwuwymiarowa tablice(macierz), zwraca informacje czy alokacja sie udala
-//jezeli zwraca true to podany wskaznik w parametrze bedzie wskazywal na nowo zaalokowana tablice 
+//jezeli zwroci true to podany wskaznik w parametrze bedzie wskazywal na nowo zaalokowana tablice 
 bool alloc_array_2d(int*** array_2d, int size_x, int size_y) {
 	//jezeli ktorys z podanych wymiarow jest <=0 wypisz informacje o bledzie i zakoncz
 	if (size_x <= 0 || size_y <= 0) {

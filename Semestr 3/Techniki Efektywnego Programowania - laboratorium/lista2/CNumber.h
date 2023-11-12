@@ -1,7 +1,7 @@
 //klasa cnumber sluzy do przechowywania liczb calkowitych w postaci tablicy cyfr 
 //dzieki czemu umozliwia przechowanie liczb wiekszych niz zakres int 
 //opracowano: konstruktory, destruktor, funkcje to_string oraz operatory:
-//przypsania, dodawania, odejmowania, mnozenia, dzielenia calkowitego i 3 operatory porownania
+//przypisania, dodawania, odejmowania, mnozenia, dzielenia calkowitego i 3 operatory porownania
 //dodatkowo prywatne funkcje pomocnicze wykorzystywane w wyzej wspomnianych odpowiednich operatorach
 //oraz funkcja pomocnicza sluzaca do porownywania dwoch cnumber w wartosci bezwzglednej
 //reszta informacji w kodzie implementujacym cnumber.cpp

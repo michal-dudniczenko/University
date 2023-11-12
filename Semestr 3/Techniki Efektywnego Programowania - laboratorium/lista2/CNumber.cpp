@@ -21,6 +21,7 @@ CNumber::CNumber(int number) {
 		this->is_negative = false;
 		return;
 	}
+
 	//jezeli liczba jest ujemna to ustawiam flage ujemnosci na true i przechodze na dodatnia, jak nie to flaga na false
 	if (number < 0) {
 		this->is_negative = true;
@@ -38,8 +39,10 @@ CNumber::CNumber(int number) {
 		temp /= 10;
 	}
 	this->length = length_count;
+
 	//tworze tablice o obliczonej dlugosci
 	this->digits_array = new int[length_count];
+
 	//umieszczam w tablicy od tylu poszczegolne cyfry liczby otrzymujac je dzielac modulo przez 10
 	for (int i = length_count-1; i >= 0; i--) {
 		digits_array[i] = number % 10;
@@ -49,9 +52,10 @@ CNumber::CNumber(int number) {
 
 //konstruktor kopiujacy przyjmujacy inny cnumber
 CNumber::CNumber(const CNumber& other) {
-	//przypisuje wartosci pol drugiego obiektu length i is_negative bezposrednio kopiuje wartosci
+	//przypisuje wartosci pol length i is_negative drugiego obiektu, bezposrednio kopiuje wartosci
 	this->length = other.length;
 	this->is_negative = other.is_negative;
+
 	//tablice odwzorowuje tworzac nowa tablice i kopiujac poszczegolne wartosci z tablicy drugiego obiektu
 	this->digits_array = new int[this->length];
 	for (int i = 0; i < this->length; i++) {
@@ -59,7 +63,7 @@ CNumber::CNumber(const CNumber& other) {
 	}
 }
 
-//konstuktor przyjmujacy reprezentacje liczby w postaci tablicy oraz pozostale pola
+//konstuktor przyjmujacy reprezentacje liczby w postaci tablicy, dlugosc i informacje o znaku
 CNumber::CNumber(int*& array, int length, bool is_negative) {
 	//analogicznie jak wyzej w konstruktorze kopiujacym, length oraz is_negative przypisuje przez wartosc, tablice kopiuje poszczegolne elementy
 	this->digits_array = new int[length];
@@ -115,6 +119,7 @@ void CNumber::operator=(const int value) {
 	if (temp < 0) {
 		temp *= (-1);
 	}
+
 	//wypelniam tablice cyfr od tylu poszczegolnymi cyframi liczby uzyskanymi z wykorzystaniem dzielenia modulo przez 10
 	for (int i = length_count - 1; i >= 0; i--) {
 		digits_array[i] = temp % 10;
@@ -128,6 +133,7 @@ void CNumber::operator=(const CNumber& other) {
 	if (this == &other) {
 		return;
 	}
+
 	//usuwam dynamicznie zaalokowana tablice zeby uniknac wycieku pamieci
 	delete[] this->digits_array;
 
@@ -140,9 +146,8 @@ void CNumber::operator=(const CNumber& other) {
 	this->is_negative = other.is_negative;
 }
 
-//operator dodawania zwraca nowy cnumber rowny obecnemu obiektowi powieksoznemu o wartosc cnumber w parametrze
+//operator dodawania zwraca nowy cnumber rowny obecnemu obiektowi powiekszonemu o wartosc cnumber w parametrze
 CNumber CNumber::operator+(const CNumber& other) const {
-	
 	//inicjuje pola obiektu wynikowego
 	int result_length;
 	int* result_array;
@@ -162,7 +167,7 @@ CNumber CNumber::operator+(const CNumber& other) const {
 
 	if (this->is_negative) {
 		//ujemna + ujemna
-		//dodaje modduly liczb i okreslam wynik jako ujemny
+		//dodaje moduly liczb i okreslam wynik jako ujemny
 		if (other.is_negative) {
 			result_array = sum(array_1, array_2, this->length, other.length, result_length);
 			result_is_negative = true;
@@ -212,7 +217,6 @@ CNumber CNumber::operator+(const CNumber& other) const {
 	//tworze obiekt wynikowy, na podstawie wczesniej otrzymanych tablicy, dlugosci i znaku
 	CNumber result(result_array, result_length, result_is_negative);
 
-
 	//zwracam kompletny obiekt bedacy wynikiem
 	return result;
 }
@@ -223,8 +227,9 @@ CNumber CNumber::operator+(const int value) const{
 
 	//tworze tymczasowy obiekt reprezentujacy wartosc do dodania
 	CNumber temp = CNumber(value);
+
 	//wykorzystuje wczesniejsza implementacje dodawania dwoch obiektow cnumber
-	return *this + temp;
+	return (*this + temp);
 }
 
 //operator odejmowania zwraca nowy cnumber rowny obecnemu obiektowi pomniejszonemu o wartosc cnumber w parametrze
@@ -253,7 +258,7 @@ CNumber CNumber::operator-(const CNumber& other) const {
 		//ujemna1 - ujemna2   czyli other - this
 		//w tym przypadku od drugiej liczby odejmuje pierwsza
 		if (other.is_negative) {
-			//jezeli odejmowana liczba jest wieksza to zamiast tego odejmuje wieksza - mniejsza(zeby otrzymac dodatni wynik)
+			//jezeli odejmowana liczba jest wieksza to zamiast tego odejmuje wieksza - mniejsza (zeby otrzymac dodatni wynik)
 			//i ustawiam wynik jako ujemny
 			if (absolute_is_1_less_than_2(other, *this)) {
 				result_array = substract(array_1, array_2, this->length, other.length, result_length);
@@ -307,6 +312,11 @@ CNumber CNumber::operator-(const CNumber& other) const {
 
 //operator mnozenia zwraca nowy cnumber rowny obecnemu obiektowi pomnozonemu razy wartosc cnumber w parametrze
 CNumber CNumber::operator*(const CNumber& other) const {
+	//jezeli ktoras z mnozonych liczb jest rowna zero, zwroc zero i zakoncz
+	if (this->digits_array[0] == 0 || other.digits_array[0] == 0) {
+		return CNumber(0);
+	}
+	
 	//inicjuje pola obiektu wynikowego
 	int result_length;
 	int* result_array;
@@ -347,14 +357,14 @@ CNumber CNumber::operator*(const CNumber& other) const {
 	return result;
 }
 
-//operator dzielenia zwraca nowy cnumber rowny obecnemu obiektowi podzielonemu przez wartosc cnumber w parametrze
+//operator dzielenia zwraca nowy cnumber rowny obecnemu obiektowi podzielonemu przez wartosc cnumber w parametrze (czesc calkowita z dzielenia)
 CNumber CNumber::operator/(const CNumber& other) const {
-	
 	//w przypadku dzielenia przez zero wypisuje informacje o bledzie i zwracam 0
 	if (other.digits_array[0] == 0) {
 		std::cout<< "ERROR: Division by zero!\n";
 		return CNumber(0);
 	}
+
 	//jezeli dzielna to zero lub dzielnik>dzielnej to zwracam wynik zero
 	if (this->digits_array[0] == 0 || absolute_is_1_less_than_2(*this, other)) {
 		return CNumber(0);
@@ -494,6 +504,7 @@ bool CNumber::operator==(const CNumber& other) const {
 	for (int i = 0; i < this->length; i++) {
 		if (this->digits_array[i] != other.digits_array[i]) return false;
 	}
+
 	//jezeli nie znaleziono zadnej niezgodnej pary to liczby sa rowne
 	return true;
 }
@@ -503,14 +514,18 @@ std::string CNumber::to_string() const {
 	//tworze string wynikowy
 	std::stringstream ss;
 	ss << "number: ";
+
 	//jezeli liczba jest ujemna to dodaje minus
 	if (this->is_negative) ss << "-";
+
 	//iterujac po tablicy dodaje do napisu liczbe ktor¹ przechowuje obiekt
 	for (int i = 0; i < this->length; i++) {
 		ss << this->digits_array[i];
 	}
+
 	//dodaje informacje o dlugsci liczby
 	ss << " length: " << this->length;
+
 	//zwracam string wynikowy
 	return ss.str();
 }
@@ -532,10 +547,11 @@ int* CNumber::sum(int*& array_1, int*& array_2, int length_1, int length_2, int&
 
 	//tworze pusta tablice na wynik
 	int* result_array = new int[result_length];
+
 	//inicuje pierwszy element zeby w sytuacji braku przeniesienia z dodawania nie bylo tam "smieciowej" wartosci
 	result_array[0] = 0;
 
-	//przechodze od tylu po dodawanych liczbach dodajac je i sume zapisujac do tablicy wynikowej do czasu az nie dojde do konca(tutaj poczatku)
+	//przechodze od tylu po dodawanych liczbach dodajac je i sume zapisujac do tablicy wynikowej do czasu az nie dojde do konca (tutaj poczatku)
 	//ktorejs z nich
 	while ((array_1_index >= 0) && (array_2_index >= 0)) {
 		result_array[result_array_index] = array_1[array_1_index] + array_2[array_2_index];
@@ -579,21 +595,25 @@ int* CNumber::sum(int*& array_1, int*& array_2, int length_1, int length_2, int&
 	if (leading_zeros > 0) {
 		//aktualizuje dlugosc wyniku z uwzglednieniem wiodacych zer
 		result_length -= leading_zeros;
+
 		//kopiuje cyfry niebedace zerami do usuniecia do nowej tablicy o poprawnej dlugosci (pomijam je dzieki przesunieciu [i+leading_zeros])
 		int* temp = new int[result_length];
 		for (int i = result_length - 1; i >= 0; i--) {
 			temp[i] = result_array[i + leading_zeros];
 		}
+
 		//dealokuje star¹ tablice
 		delete[] result_array;
+
 		//nowa tablice przypisujê jako tablice wynikow¹
 		result_array = temp;
 	}
+
 	//zwracam wynik w postaci tablicy cyfr
 	return result_array;
 }
 
-//funkcja pomocnicza implementujaca odejmowanie pisemne dwoch liczb dodatnich
+//funkcja pomocnicza implementujaca odejmowanie pisemne dwoch liczb dodatnich, gdzie pierwsza jest wieksza od drugiej
 int* CNumber::substract(int*& array_1, int*& array_2, int length_1, int length_2, int& result_length) {
 	//funkcja pomocnicza realizujaca odejmowanie dwoch liczb nieujemnych
 	//jest to implementacja odwzorowujaca algorytm odejmowania pisemnego "w slupku"
@@ -610,7 +630,6 @@ int* CNumber::substract(int*& array_1, int*& array_2, int length_1, int length_2
 
 	//tworze pusta tablice na wynik
 	int* result_array = new int[result_length];
-
 
 	//przechodze od tylu po odejmowanych liczbach dodajac je i roznice zapisujac do tablicy wynikowej do czasu az nie dojde do konca(tutaj poczatku)
 	//ktorejs z nich
@@ -662,12 +681,14 @@ int* CNumber::substract(int*& array_1, int*& array_2, int length_1, int length_2
 		for (int i = result_length - 1; i >= 0; i--) {
 			temp[i] = result_array[i + leading_zeros];
 		}
+
 		//dealokuje star¹ tablice
 		delete[] result_array;
 
 		//nowa tablice przypisujê jako tablice wynikow¹
 		result_array = temp;
 	}
+
 	//zwracam wynik w postaci tablicy cyfr
 	return result_array;
 }
@@ -691,8 +712,8 @@ int* CNumber::multiply(int*& array_1, int*& array_2, int length_1, int length_2,
 
 	//analogicznie do mnozenia pisemnego biore cyfre z mnoznika i mnoze j¹ razy kazda cyfre mnoznej dodajac otrzymana liczbe do odpowiedniej
 	//pozycji w tablicy wynikowej, nastepnie to samo z kolejna od tylu cyfra mnoznika, az do konca
-	//zmienne multiplier i multiplicand wewnatrz petli sluza do uzyskania po¿¹danego przesuniecia odpowiadajace zapisywaniu liczb o jedna pozycje
-	//w lewo podczas mnozenia pisemnego
+	//zmienne multiplier i multiplicand wewnatrz petli sluza do uzyskania po¿¹danego przesuniecia odpowiadajacego zapisywaniu 
+	//kolejnych liczb o jedna pozycje w lewo podczas mnozenia pisemnego
 
 	//dla kazdej cyfry mnoznika
 	for (int multiplier = 0; multiplier < length_2; multiplier++) {
@@ -729,16 +750,20 @@ int* CNumber::multiply(int*& array_1, int*& array_2, int length_1, int length_2,
 	if (leading_zeros > 0) {
 		//aktualizuje dlugosc wyniku z uwzglednieniem wiodacych zer
 		result_length -= leading_zeros;
+
 		//kopiuje cyfry niebedace zerami do usuniecia do nowej tablicy o poprawnej dlugosci (pomijam je dzieki przesunieciu [i+leading_zeros])
 		int* temp = new int[result_length];
 		for (int i = result_length - 1; i >= 0; i--) {
 			temp[i] = result_array[i + leading_zeros];
 		}
+
 		//dealokuje star¹ tablice
 		delete[] result_array;
+		
 		//nowa tablice przypisujê jako tablice wynikow¹
 		result_array = temp;
 	}
+
 	//zwracam wynik w postaci tablicy cyfr
 	return result_array;
 }
@@ -752,6 +777,7 @@ int* CNumber::divide(int*& array_1, int*& array_2, int length_1, int length_2, i
 	
 	//inicjuje wynik jako obiekt cnumber=0 (wynik dzielenia moze byc wiekszy niz zakres int)
 	CNumber result(0);
+
 	//inicjuje tymczasowa dzielna oraz dzielnik jako modu³y tych liczb
 	CNumber dividend(array_1, length_1, false);
 	CNumber divisor(array_2, length_2, false);
@@ -764,7 +790,7 @@ int* CNumber::divide(int*& array_1, int*& array_2, int length_1, int length_2, i
 	}
 
 	//inicjuje tablice ktora bedzie wynikiem, bedzie ona kopi¹ tablicy znajdujacej sie w obiekcie result 
-	// (obiekt result wraz ze wspomniana tablica zostanie usuniety w momencie zakonczenia wywolania funkcji, stad potrzeba kopii)
+	//(obiekt result wraz ze wspomniana tablica zostanie usuniety w momencie zakonczenia wywolania funkcji, stad potrzeba kopii)
 	int* result_array = new int[result.length];
 	for (int i = 0; i < result.length; i++) {
 		result_array[i] = result.digits_array[i];
@@ -777,7 +803,7 @@ int* CNumber::divide(int*& array_1, int*& array_2, int length_1, int length_2, i
 	return result_array;
 }
 
-//funkcja pomocnicza wykorzystywana do okreslenia czy modul jednej liczby jest wiekszy od modulu drugiej liczby
+//funkcja pomocnicza wykorzystywana do okreslenia czy modul pierwszej liczby jest wiekszy od modulu drugiej liczby
 bool CNumber::absolute_is_1_less_than_2(const CNumber& cnum1, const CNumber& cnum2) {
 	//aby porownac obie liczby w modulach tworze dwa tymczasowe obiekty bedace ich kopia i ustawiam je jako nieujemne dzieki czemu moge uzyc
 	//zaimplementowany wczesniej operator porownania

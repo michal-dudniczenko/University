@@ -11,8 +11,8 @@ void CTable::modify_tab(CTable* ctable, int new_size) {
 }
 
 //bledna implementacja statycznej funkcji sluzacej do modyfikacji rozmiaru tablicy obiektu podanego w parametrze
-//problem polega na tym, ze obiekt podajemy przez wartosc a nie referencje/wskaznik na niego przez co obiekt na rzecz ktorego 
-//pozniej wywolujemy metode zmieniajaca rozmiar tablicy jest obiektem utworzonym wewnatrz funkcji w wyniku wywolania konstrktora kopiujacego
+//problem polega na tym, ze obiekt podajemy przez wartosc a nie referencje/wskaznik na niego, przez co obiekt na rzecz ktorego 
+//pozniej wywolujemy metode zmieniajaca rozmiar tablicy jest obiektem utworzonym wewnatrz funkcji w wyniku wywolania konstruktora kopiujacego
 //ponadto obiekt ten zostanie usuniety w momencie zakonczenia wywolania metody 
 void CTable::modify_tab(CTable ctable, int new_size) {
 	ctable.set_new_size(new_size);
@@ -36,7 +36,7 @@ CTable::CTable(std::string name, int length){
 	std::cout << "parametr: '" << this->name << "'\n";
 }
 
-//konstruktor kopiujacy, kopiuje nazwe oraz dlugosc podanego obiektu ctable, alokuje dynamiczna tablice o tym rozmiarze i kopiuje wszystkie
+//konstruktor kopiujacy, kopiuje nazwe oraz dlugosc podanego obiektu ctable, alokuje dynamiczna tablice o tym samym rozmiarze i kopiuje wszystkie
 //wartosci z tablicy w podanym obiekcie
 //sygnalizuje wywolanie wypisujac odpowiedni string
 CTable::CTable(CTable& other) {
@@ -49,7 +49,7 @@ CTable::CTable(CTable& other) {
 	std::cout << "kopiuj '" << name << '\n';
 }
 
-//destruktor, dealokuje dynamicznie zaalokowana tablice
+//destruktor, wypisuje informacje o wywolaniu i nastepnie dealokuje dynamicznie zaalokowana tablice
 CTable::~CTable() {
 	std::cout << "usuwam: '" << name << "'\n";
 	delete[] array;
