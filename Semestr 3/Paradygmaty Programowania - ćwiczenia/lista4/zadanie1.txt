@@ -1,0 +1,25 @@
+1. Podaj (i wyjaśnij!) typy poniższych funkcji (samodzielnie, bez pomocy kompilatora OCamla!) :
+
+
+a) let f1 x y z = x y z;;
+
+x: 'a -> 'b -> 'c
+
+y: 'a
+
+z: 'b
+
+f1: ('a -> 'b -> 'c) -> 'a -> 'b -> 'c
+
+
+
+
+b) let f2 x y = function z -> x::y;;
+
+x: 'a
+
+y: 'a list
+
+z: 'b
+
+f2: 'a -> 'a list -> ('b -> 'a list)

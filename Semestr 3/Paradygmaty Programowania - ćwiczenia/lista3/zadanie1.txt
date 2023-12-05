@@ -1,0 +1,17 @@
+1. Podaj (i uzasadnij!) najogólniejsze typy poniższych funkcji (samodzielnie, bez pomocy kompilatora OCamla!) :
+
+
+a) let f1 x = x 2 2;;
+
+x: int -> int -> 'a
+
+f1: (int -> int -> 'a) -> 'a
+
+
+
+
+b) let f2 x y z = x ( y ^ z );;
+
+x: string -> 'a
+
+f2: (string -> 'a) -> string -> string -> 'a
