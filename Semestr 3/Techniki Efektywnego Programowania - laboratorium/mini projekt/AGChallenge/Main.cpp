@@ -5,12 +5,13 @@
 #include <exception>
 #include <iostream>
 #include <random>
+#include <vector>
 
 using namespace TimeCounters;
 
 using namespace std;
 
-#define dMAX_TIME 600
+#define dMAX_TIME 10
 
 
 void vRunExperiment(CLFLnetEvaluator &cConfiguredEvaluator)
@@ -32,10 +33,16 @@ void vRunExperiment(CLFLnetEvaluator &cConfiguredEvaluator)
 		while (d_time_passed <= dMAX_TIME)
 		{
 			c_optimizer.vRunIteration();
-			//c_optimizer.pvGetCurrentBest();
 
 			c_time_counter.bGetTimePassed(&d_time_passed);
 		}//while (d_time_passed <= MAX_TIME)
+
+		std::vector<int>* finalResult = c_optimizer.pvGetCurrentBest();
+
+		for (int i = 0; i < finalResult->size(); i++) {
+			std::cout << finalResult->at(i) << " ";
+		}
+		std::cout << "\n";
 	}//try
 	catch (exception &c_exception)
 	{
