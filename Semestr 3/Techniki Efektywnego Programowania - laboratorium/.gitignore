@@ -1,3 +1,5 @@
+.gitignore
+
 x64/
 .vs/
 *.sln
