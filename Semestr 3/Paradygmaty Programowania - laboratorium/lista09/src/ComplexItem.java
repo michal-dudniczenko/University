@@ -1,9 +1,10 @@
-import java.util.List;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class ComplexItem extends Item{
-    private List<Item> children;
+    private final ArrayList<Item> children;
 
-    public ComplexItem(List<Item> children) {
+    public ComplexItem(ArrayList<Item> children) {
         int maxLeft, maxUp;
         if (!children.isEmpty()){
             maxLeft = children.getFirst().getPosition().getX();
@@ -16,7 +17,7 @@ public class ComplexItem extends Item{
             if (children.get(i).getPosition().getX() < maxLeft){
                 maxLeft = children.get(i).getPosition().getX();
             }
-            if (children.get(i).getPosition().getY() > maxUp){
+            if (children.get(i).getPosition().getY() < maxUp){
                 maxUp = children.get(i).getPosition().getY();
             }
         }
@@ -24,13 +25,8 @@ public class ComplexItem extends Item{
         this.children = children;
     }
 
-    public List<Item> getChildren(){
+    public ArrayList<Item> getChildren(){
         return this.children;
-    }
-
-    @Override
-    public Point getPosition() {
-        return this.position;
     }
 
     @Override
@@ -47,18 +43,18 @@ public class ComplexItem extends Item{
         maxLeft = this.position.getX();
         maxUp = this.position.getY();
         if (!children.isEmpty()){
-            maxRight = children.getFirst().getPosition().getX();
-            maxDown = children.getFirst().getPosition().getY();
+            maxRight = children.getFirst().getBoundingBox()[1].getX();
+            maxDown = children.getFirst().getBoundingBox()[3].getY();
         }else{
             maxRight = 0;
             maxDown = 0;
         }
         for (int i=1; i<children.size(); i++){
-            if (children.get(i).getPosition().getX() > maxRight){
-                maxRight = children.get(i).getPosition().getX();
+            if (children.get(i).getBoundingBox()[1].getX() > maxRight){
+                maxRight = children.get(i).getBoundingBox()[1].getX();
             }
-            if (children.get(i).getPosition().getY() < maxDown){
-                maxDown = children.get(i).getPosition().getY();
+            if (children.get(i).getBoundingBox()[2].getY() > maxDown){
+                maxDown = children.get(i).getBoundingBox()[2].getY();
             }
         }
         return new Point[] {
@@ -70,7 +66,13 @@ public class ComplexItem extends Item{
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
+        for (Item item : children){
+            item.draw(g);
+        }
 
+        if (isBoundVisible){
+            drawBoundingBox(g);
+        }
     }
 }

@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class Triangle extends Shape{
     private Point p1;
     private Point p2;
@@ -7,9 +9,8 @@ public class Triangle extends Shape{
         int maxLeft, maxUp;
         maxLeft = Math.min(p1.getX(), Math.min(p2.getX(), p3.getX()));
         maxUp = Math.max(p1.getY(), Math.max(p2.getY(), p3.getY()));
-        this.position = new Point(maxLeft, maxUp);
 
-        this.position = position;
+        this.position = new Point(maxLeft, maxUp);
         this.isFilled = isFilled;
         this.p1 = p1;
         this.p2 = p2;
@@ -26,16 +27,6 @@ public class Triangle extends Shape{
 
     public Point getP3() {
         return p3;
-    }
-
-    @Override
-    public boolean getFilled() {
-        return this.isFilled;
-    }
-
-    @Override
-    public Point getPosition() {
-        return this.position;
     }
 
     @Override
@@ -62,7 +53,19 @@ public class Triangle extends Shape{
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
+        int[] xPoints = {p1.getX(), p2.getX(), p3.getX()};
+        int[] yPoints = {p1.getY(), p2.getY(), p3.getY()};
 
+        g.setColor(Color.BLACK);
+        if (getFilled()) {
+            g.fillPolygon(xPoints, yPoints, 3);
+        } else {
+            g.drawPolygon(xPoints, yPoints, 3);
+        }
+
+        if (isBoundVisible){
+            drawBoundingBox(g);
+        }
     }
 }

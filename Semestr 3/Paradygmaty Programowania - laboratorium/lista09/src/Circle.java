@@ -1,5 +1,7 @@
+import java.awt.*;
+
 public class Circle extends Shape{
-    private int radius;
+    private final int radius;
 
     public Circle(Point position, boolean isFilled, int radius) {
         this.position = position;
@@ -9,16 +11,6 @@ public class Circle extends Shape{
 
     public int getRadius(){
         return this.radius;
-    }
-
-    @Override
-    public boolean getFilled() {
-        return this.isFilled;
-    }
-
-    @Override
-    public Point getPosition() {
-        return this.position;
     }
 
     @Override
@@ -32,7 +24,7 @@ public class Circle extends Shape{
         maxRight = position.getX()+(radius*2);
         maxLeft = position.getX();
         maxUp = position.getY();
-        maxDown = position.getY()-(radius*2);
+        maxDown = position.getY()+(radius*2);
         return new Point[] {
                 new Point(maxLeft, maxUp),
                 new Point(maxRight, maxUp),
@@ -42,7 +34,16 @@ public class Circle extends Shape{
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
+        g.setColor(Color.BLACK);
+        if (getFilled()) {
+            g.fillOval(position.getX(), position.getY(), radius * 2, radius * 2);
+        } else {
+            g.drawOval(position.getX(), position.getY(), radius * 2, radius * 2);
+        }
 
+        if (isBoundVisible){
+            drawBoundingBox(g);
+        }
     }
 }

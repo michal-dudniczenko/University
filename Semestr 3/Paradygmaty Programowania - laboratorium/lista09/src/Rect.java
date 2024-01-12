@@ -1,6 +1,8 @@
+import java.awt.*;
+
 public class Rect extends Shape{
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     public Rect(Point position, boolean isFilled, int width, int height) {
         this.position = position;
@@ -18,16 +20,6 @@ public class Rect extends Shape{
     }
 
     @Override
-    public boolean getFilled() {
-        return this.isFilled;
-    }
-
-    @Override
-    public Point getPosition() {
-        return this.position;
-    }
-
-    @Override
     public void translate(Point p) {
         this.position = new Point(this.position.getX()+p.getX(), this.position.getY()+p.getY());
     }
@@ -38,7 +30,7 @@ public class Rect extends Shape{
         maxRight = position.getX()+(width);
         maxLeft = position.getX();
         maxUp = position.getY();
-        maxDown = position.getY()-(height);
+        maxDown = position.getY()+(height);
         return new Point[] {
                 new Point(maxLeft, maxUp),
                 new Point(maxRight, maxUp),
@@ -48,7 +40,16 @@ public class Rect extends Shape{
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
+        g.setColor(Color.BLACK);
+        if (getFilled()) {
+            g.fillRect(position.getX(), position.getY(), width, height);
+        } else {
+            g.drawRect(position.getX(), position.getY(), width, height);
+        }
 
+        if (isBoundVisible){
+            drawBoundingBox(g);
+        }
     }
 }

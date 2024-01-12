@@ -1,14 +1,16 @@
+import java.awt.*;
+
 public class Segment extends Primitive{
-    private int length;
+    private final int length;
     private Point start;
     private Point end;
 
-    public Segment(int length, Point start, Point end) {
+    public Segment(Point start, Point end) {
         int maxLeft, maxUp;
         maxLeft = Math.min(start.getX(), end.getX());
         maxUp = Math.max(start.getY(), end.getY());
         this.position = new Point(maxLeft, maxUp);
-        this.length = length;
+        this.length = (int) Math.sqrt(Math.pow((end.getX()-start.getX()), 2) + Math.pow((end.getY()-start.getY()), 2));
         this.start = start;
         this.end = end;
     }
@@ -23,11 +25,6 @@ public class Segment extends Primitive{
 
     public Point getEnd() {
         return end;
-    }
-
-    @Override
-    public Point getPosition() {
-        return this.position;
     }
 
     @Override
@@ -53,7 +50,12 @@ public class Segment extends Primitive{
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
+        g.setColor(Color.GREEN);
+        g.drawLine(start.getX(), start.getY(), end.getX(), end.getY());
 
+        if (isBoundVisible){
+            drawBoundingBox(g);
+        }
     }
 }
