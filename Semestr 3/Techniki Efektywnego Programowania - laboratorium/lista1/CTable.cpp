@@ -1,5 +1,3 @@
-//implementacja klasy ctable
-
 #include <iostream>
 #include <string>
 #include "CTable.h"
@@ -55,7 +53,7 @@ CTable::~CTable() {
 	delete[] array;
 }
 
-//zmienia/ustawia nazwe tablicy na podany w parametrze
+//zmienia/ustawia nazwe tablicy na podana w parametrze
 void CTable::set_name(std::string name) {
 	this->name = name;
 }

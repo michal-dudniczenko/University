@@ -8,7 +8,7 @@ int main() {
 	int** array_2d;
 
 	alloc_array_2d(&array_2d, 3, 4);
-	dealloc_array_2d(&array_2d, 3);
+	dealloc_array_2d(array_2d, 3);
 
 	CTable ctab1;
 	CTable* ctab2 = new CTable("dynamic", 10);

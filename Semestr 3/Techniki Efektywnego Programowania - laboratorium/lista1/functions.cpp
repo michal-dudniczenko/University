@@ -64,7 +64,7 @@ bool alloc_array_2d(int*** array_2d, int size_x, int size_y) {
 
 
 //funkcja dealokuje dynamicznie zaalokowana tablice dwuwymiarowa na ktora wskaznik podajemy w parametrze, zwraca informacje czy operacja sie udala
-bool dealloc_array_2d(int*** array_2d, int size_x) {
+bool dealloc_array_2d(int** array_2d, int size_x) {
 	//blednie podany rozmiar, wypisz informacje o bledzie i zwroc falsz
 	if (size_x <= 0) {
 		std::cout << err_wrong_size;
@@ -72,16 +72,19 @@ bool dealloc_array_2d(int*** array_2d, int size_x) {
 	}
 
 	//jezeli nie ma czego dealokowac zwroc falsz
-	if (*array_2d == NULL) {
+	if (array_2d == NULL) {
 		return false;
 	}
 	
 	//dla kazdej dynamicznej tablicy wewnetrznej (dla kazdego wiersza) nastepuje jej dealokacja
 	for (int i = 0; i < size_x; i++) {
-		delete[] (*array_2d)[i];
+		//dodatkowo sprawdzamy czy wiersz nie zostal przypadkiem nieprawidlowo zaalokowany
+		if (array_2d[i] != NULL) {
+			delete[] array_2d[i];
+		}
 	}
 	//dealokacja tablicy pierwszego wymiaru, tablicy wskaznikow
-	delete[] *array_2d;
+	delete[] array_2d;
 	//wszystko zdealokowano, zwroc prawda
 	return true;
 }

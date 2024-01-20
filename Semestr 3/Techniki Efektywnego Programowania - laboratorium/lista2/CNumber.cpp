@@ -44,7 +44,7 @@ CNumber::CNumber(int number) {
 	this->digits_array = new int[length_count];
 
 	//umieszczam w tablicy od tylu poszczegolne cyfry liczby otrzymujac je dzielac modulo przez 10
-	for (int i = length_count-1; i >= 0; i--) {
+	for (int i = length_count - 1; i >= 0; i--) {
 		digits_array[i] = number % 10;
 		number /= 10;
 	}
@@ -86,7 +86,7 @@ void CNumber::operator=(const int value) {
 	delete[] this->digits_array;
 
 	//analogicznie jak w konstruktorze przyjmujacym wartosc int
-	
+
 	//zero to specyficzny przypadek, rozpatruje go oddzielnie
 	if (value == 0) {
 		this->length = 1;
@@ -162,7 +162,7 @@ CNumber CNumber::operator+(const CNumber& other) const {
 	for (int i = 0; i < other.length; i++) {
 		array_2[i] = other.digits_array[i];
 	}
-	
+
 	//rozpatruje wszystkie mozliwe przypadki zwiazane z roznymi znakami liczb w operacji dodawania, operuje tylko na modulach liczb
 
 	if (this->is_negative) {
@@ -209,7 +209,7 @@ CNumber CNumber::operator+(const CNumber& other) const {
 			result_is_negative = false;
 		}
 	}
-	
+
 	//usuwam dynamicznie zaalokowane tymczasowe tablice zwalniajac pamiec
 	delete[] array_1;
 	delete[] array_2;
@@ -222,7 +222,7 @@ CNumber CNumber::operator+(const CNumber& other) const {
 }
 
 //operator dodawania zwraca nowy cnumber rowny obecnemu obiektowi powiekszonemu o wartosc w parametrze
-CNumber CNumber::operator+(const int value) const{
+CNumber CNumber::operator+(const int value) const {
 	//operator pomocniczy wykorzystywany w implementacji dzielenia
 
 	//tworze tymczasowy obiekt reprezentujacy wartosc do dodania
@@ -235,7 +235,7 @@ CNumber CNumber::operator+(const int value) const{
 //operator odejmowania zwraca nowy cnumber rowny obecnemu obiektowi pomniejszonemu o wartosc cnumber w parametrze
 CNumber CNumber::operator-(const CNumber& other) const {
 	//logika analogiczna do operatora dodawania
-	
+
 	//inicjuje pola obiektu wynikowego
 	int result_length;
 	int* result_array;
@@ -316,7 +316,7 @@ CNumber CNumber::operator*(const CNumber& other) const {
 	if (this->digits_array[0] == 0 || other.digits_array[0] == 0) {
 		return CNumber(0);
 	}
-	
+
 	//inicjuje pola obiektu wynikowego
 	int result_length;
 	int* result_array;
@@ -361,7 +361,7 @@ CNumber CNumber::operator*(const CNumber& other) const {
 CNumber CNumber::operator/(const CNumber& other) const {
 	//w przypadku dzielenia przez zero wypisuje informacje o bledzie i zwracam 0
 	if (other.digits_array[0] == 0) {
-		std::cout<< "ERROR: Division by zero!\n";
+		std::cout << "ERROR: Division by zero!\n";
 		return CNumber(0);
 	}
 
@@ -414,13 +414,13 @@ CNumber CNumber::operator/(const CNumber& other) const {
 bool CNumber::operator>(const CNumber& other) const {
 	//jezeli to to samo
 	if (this == &other) return false;
-	
+
 	//jezeli sa roznych znakow
 	if (this->is_negative != other.is_negative) {
 		if (this->is_negative) return false;
 		else return true;
 	}
-	
+
 	//porownywanie ujemnych
 	if (this->is_negative) {
 		//rozne dlugosci
@@ -536,7 +536,7 @@ int* CNumber::sum(int*& array_1, int*& array_2, int length_1, int length_2, int&
 	//jest to implementacja odwzorowujaca algorytm dodawania pisemnego "w slupku"
 	//do funkcji przekazuje referencje na zmienna przechowujaca dlugosc wyniku w obiekcie wynikowym z operatora
 	//dzieki czemu moge modyfikowac ja wewnatrz tej funkcji pomocniczej
-	
+
 	//dlugosc wyniku moze byc maksymalnie o jeden wieksza niz dlugosc dluzszej liczby
 	result_length = std::max(length_1, length_2) + 1;
 
@@ -587,7 +587,7 @@ int* CNumber::sum(int*& array_1, int*& array_2, int length_1, int length_2, int&
 
 	//zliczam ile wystepuje wiodacych zer w wyniku, niebedacych jedyn¹ cyfr¹ w liczbie (dlatego result_length-1) 
 	int leading_zeros = 0;
-	while ((leading_zeros < result_length-1) && (result_array[leading_zeros] == 0)) {
+	while ((leading_zeros < result_length - 1) && (result_array[leading_zeros] == 0)) {
 		leading_zeros++;
 	}
 
@@ -619,7 +619,7 @@ int* CNumber::substract(int*& array_1, int*& array_2, int length_1, int length_2
 	//jest to implementacja odwzorowujaca algorytm odejmowania pisemnego "w slupku"
 	//do funkcji przekazuje referencje na zmienna przechowujaca dlugosc wyniku w obiekcie wynikowym z operatora
 	//dzieki czemu moge modyfikowac ja wewnatrz tej funkcji pomocniczej
-	
+
 	//dlugosc wyniku moze byc maksymalnie rowna dlugosci dluzszej z liczb
 	result_length = std::max(length_1, length_2);
 
@@ -667,7 +667,7 @@ int* CNumber::substract(int*& array_1, int*& array_2, int length_1, int length_2
 
 	//zliczam ile wystepuje wiodacych zer w wyniku, niebedacych jedyn¹ cyfr¹ w liczbie (dlatego result_length-1) 
 	int leading_zeros = 0;
-	while ((leading_zeros < result_length-1) && (result_array[leading_zeros] == 0)) {
+	while ((leading_zeros < result_length - 1) && (result_array[leading_zeros] == 0)) {
 		leading_zeros++;
 	}
 
@@ -699,7 +699,7 @@ int* CNumber::multiply(int*& array_1, int*& array_2, int length_1, int length_2,
 	//jest to implementacja odwzorowujaca algorytm mnozenia pisemnego "w slupku"
 	//do funkcji przekazuje referencje na zmienna przechowujaca dlugosc wyniku w obiekcie wynikowym z operatora
 	//dzieki czemu moge modyfikowac ja wewnatrz tej funkcji pomocniczej
-	
+
 	//dlugosc wyniku moze byc maksymalnie rowna sumie dlugosci mnozonych liczb
 	result_length = length_1 + length_2;
 
@@ -759,7 +759,7 @@ int* CNumber::multiply(int*& array_1, int*& array_2, int length_1, int length_2,
 
 		//dealokuje star¹ tablice
 		delete[] result_array;
-		
+
 		//nowa tablice przypisujê jako tablice wynikow¹
 		result_array = temp;
 	}
@@ -774,14 +774,14 @@ int* CNumber::divide(int*& array_1, int*& array_2, int length_1, int length_2, i
 	//tak dlugo az dzielna bedzie mniejsza od dzielnika, w ten sposob sprawdzamy ile razy dzielnik zmiesci sie caly w dzielnej
 	//otrzymujac tym samym pozadany wynik dzielenia calkowitego
 	//tu rowniez wewnatrz funkcji aktualizuje zmienna result_length ktora bedzie dlugoscia obiektu wynikowego w operatorze
-	
+
 	//inicjuje wynik jako obiekt cnumber=0 (wynik dzielenia moze byc wiekszy niz zakres int)
 	CNumber result(0);
 
 	//inicjuje tymczasowa dzielna oraz dzielnik jako modu³y tych liczb
 	CNumber dividend(array_1, length_1, false);
 	CNumber divisor(array_2, length_2, false);
-	
+
 	//dopoki dzielna nie jest mniejsza od dzielnika
 	while (!(dividend < divisor)) {
 		//zwiekszam wynik o jeden i odejmuje dzielnik
@@ -795,7 +795,7 @@ int* CNumber::divide(int*& array_1, int*& array_2, int length_1, int length_2, i
 	for (int i = 0; i < result.length; i++) {
 		result_array[i] = result.digits_array[i];
 	}
-	
+
 	//aktualizuje dlugosc obiektu wynikowego
 	result_length = result.length;
 
