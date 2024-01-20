@@ -1,3 +1,9 @@
+//klasa reprezentujaca pojedyncze rozwiazanie, osobnika populacji przechowywanej w algorytmie genetycznym
+//osobnik posiada genotyp kodujacy rozwiazanie, przechowuje swoja ocene (przystosowanie) - fitness
+//posiada metode calcFitness() sluzaca do oceny przechowywanego rozwiazania
+//3 konstruktory, destruktor, gettery, metode mutuj¹c¹ przyjmujaca prawdopodobienstwo na mutacje
+//oraz metode cross ktora krzyzuje obecnego osobnika z innym, podanym jako argument i zwraca dwojke dzieci w vectorze
+
 #pragma once
 
 #include "Evaluator.h"

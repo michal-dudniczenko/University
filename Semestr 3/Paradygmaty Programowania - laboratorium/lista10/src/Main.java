@@ -48,7 +48,7 @@ public class Main {
             scene.addItem(new Star(new Point(50 + 50 * (i+1), rand.nextInt(30, 60)), true, 20));
         }
 
-        //scene.addItem(new Triangle(false, new Point(100, 450), new Point(140, 450), new Point(120, 470)));
+        scene.addItem(new Triangle(false, new Point(100, 450), new Point(140, 450), new Point(120, 470)));
 
         scene.draw();
     }

@@ -1,3 +1,6 @@
+//dodalem wskaznik na instancje algorytmu genetycznego, destruktor, zmodyfikowalem metodê vInitialize oraz vRunIteration
+//aby korzystac z mojej implementacji algorytu genetycznego zamiast losowo generowac rozwiazania
+
 #pragma once
 
 #include "Evaluator.h"

@@ -7,7 +7,7 @@
 using namespace std;
 
 COptimizer::COptimizer(CLFLnetEvaluator &cEvaluator)
-	: c_evaluator(cEvaluator), genAlg(nullptr)
+	: c_evaluator(cEvaluator)
 {
 	random_device c_seed_generator;
 	c_rand_engine.seed(c_seed_generator());
@@ -15,6 +15,7 @@ COptimizer::COptimizer(CLFLnetEvaluator &cEvaluator)
 	d_current_best_fitness = 0;
 }//COptimizer::COptimizer(CEvaluator &cEvaluator)
 
+//inicjalizacja przechowywanego obiektu algorytmu genetycznego
 void COptimizer::vInitialize()
 {
 	d_current_best_fitness = -DBL_MAX;
@@ -24,11 +25,14 @@ void COptimizer::vInitialize()
 }//void COptimizer::vInitialize()
 
 void COptimizer::vRunIteration()
-{
+{	
+	//generacja kolejnej populacji rozwiazan
 	genAlg->runIteration();
 	
+	//najlepsze rozwiazanie w nowo wygenerowanej populacji, kandydat na najlepsze rozwiazanie globalne
 	double d_candidate_fitness = genAlg->getBest()->getFitness();
 
+	//jezeli kandydat jest lepszy to staje sie nowym najlepszym rozwiazaniem globalnym i jest wypisywany komunikat
 	if (d_candidate_fitness > d_current_best_fitness)
 	{
 		v_current_best = *(genAlg->getBest()->getGenotype());
@@ -39,7 +43,7 @@ void COptimizer::vRunIteration()
 }//void COptimizer::vRunIteration()
 
 
-
+//dodany destruktor, wywoluje destruktor w intancji algorytmu genetycznego i usuwa sam obiekt algorytmu
 COptimizer::~COptimizer() {
 	delete this->genAlg;
 }

@@ -67,11 +67,6 @@ public class Scene extends JFrame {
 
         @Override
         public void mouseExited(MouseEvent e) {
-            highlightedItem = null;
-            for (Item item : items) {
-                item.setBoundVisible(false);
-            }
-            repaint();
         }
 
         private boolean isPointInsideBoundingBox(java.awt.Point clickPoint, Point[] boundingBox) {

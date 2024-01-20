@@ -38,11 +38,12 @@ void vRunExperiment(CLFLnetEvaluator &cConfiguredEvaluator)
 		}//while (d_time_passed <= MAX_TIME)
 
 		std::vector<int>* finalResult = c_optimizer.pvGetCurrentBest();
-
+		/*
 		for (int i = 0; i < finalResult->size(); i++) {
 			std::cout << finalResult->at(i) << " ";
 		}
 		std::cout << "\n";
+		*/
 	}//try
 	catch (exception &c_exception)
 	{

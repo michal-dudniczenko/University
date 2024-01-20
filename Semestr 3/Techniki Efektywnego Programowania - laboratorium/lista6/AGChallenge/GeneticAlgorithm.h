@@ -1,3 +1,12 @@
+//klasa sluzy do obslugi algorytmu genetycznego, przechowuje populacje osobnikow (rozwiazan) population,
+//parametry wykonania algorytmu: rozmiar populacji, prawdopodobienstwo krzyzowania, prawdopodobienstwo mutacji
+//pierwsza populacja jest generowana losowo przez metode initializePopulation(), ktora korzysta
+//z udostepnionego frameworku (za to odpowiada evaluator)
+//statyczna metoda compareIndividuals, ktora sluzy do okreslenia ktorego osobnika przystosowanie jest wieksze
+//2 konstruktory, jeden z samym evaluatorem (wtedy algorytm uruchomi sie z domyslnymi parametrami)
+//drugi z konkretnymi parametrami wykonania, destruktor, dwie metody do uruchamiania kolejnych iteracji algorytmu,
+//czyli generowania kolejnych populacji osobnikow, do tego metoda getBest() ktora wyszukuje osobnika o najlepszym przystosowaniu 
+
 #pragma once
 
 #include "Evaluator.h"
