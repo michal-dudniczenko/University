@@ -19,6 +19,7 @@ const int defaultPopSize = 100;
 const double defaultCrossProb = 0.8;
 const double defaultMutProb = 0.001;
 
+
 class GeneticAlgorithm {
 private:
 	std::vector<Individual*>* population;

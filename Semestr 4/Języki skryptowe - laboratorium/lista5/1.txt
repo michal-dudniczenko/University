@@ -1,0 +1,85 @@
+
+-------------------------------------------------------
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 152
+log: Dec 10 06:55:46 LabSZ sshd[24200]: reverse mapping checking getaddrinfo for ns.marryaldkfaczcz.com [173.234.31.186] failed - POSSIBLE BREAK-IN ATTEMPT!
+ipv4s: ['173.234.31.186']
+user: ns.marryaldkfaczcz.com
+message type: próba w³amania
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 78
+log: Dec 10 06:55:46 LabSZ sshd[24200]: Invalid user webmaster from 173.234.31.186
+ipv4s: ['173.234.31.186']
+user: webmaster
+message type: b³êdna nazwa u¿ytkownika
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 92
+log: Dec 10 06:55:46 LabSZ sshd[24200]: input_userauth_request: invalid user webmaster [preauth]
+ipv4s: []
+user: webmaster
+message type: b³êdna nazwa u¿ytkownika
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 81
+log: Dec 10 06:55:46 LabSZ sshd[24200]: pam_unix(sshd:auth): check pass; user unknown
+ipv4s: []
+user: unknown
+message type: b³êdne has³o
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 139
+log: Dec 10 06:55:46 LabSZ sshd[24200]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=173.234.31.186
+ipv4s: ['173.234.31.186']
+user: None
+message type: inne
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 114
+stdout: 2024-05-28 10:34:31,935 - WARNING - Failed password for invalid user webmaster from 173.234.31.186 port 38926 ssh2
+log: Dec 10 06:55:48 LabSZ sshd[24200]: Failed password for invalid user webmaster from 173.234.31.186 port 38926 ssh2
+ipv4s: ['173.234.31.186']
+user: webmaster
+message type: nieudane logowanie
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 81
+stdout: 2024-05-28 10:34:31,935 - INFO - Connection closed by 173.234.31.186 [preauth]
+log: Dec 10 06:55:48 LabSZ sshd[24200]: Connection closed by 173.234.31.186 [preauth]
+ipv4s: ['173.234.31.186']
+user: None
+message type: zamkniêcie po³¹czenia
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 81
+stdout: 2024-05-28 10:34:31,935 - INFO - Connection closed by 212.47.254.145 [preauth]
+log: Dec 10 07:02:47 LabSZ sshd[24203]: Connection closed by 212.47.254.145 [preauth]
+ipv4s: ['212.47.254.145']
+user: None
+message type: zamkniêcie po³¹czenia
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 72
+log: Dec 10 07:07:38 LabSZ sshd[24206]: Invalid user test9 from 52.80.34.196
+ipv4s: ['52.80.34.196']
+user: test9
+message type: b³êdna nazwa u¿ytkownika
+
+stdout: 2024-05-28 10:34:31,935 - DEBUG - bytes read: 88
+log: Dec 10 07:07:38 LabSZ sshd[24206]: input_userauth_request: invalid user test9 [preauth]
+ipv4s: []
+user: test9
+message type: b³êdna nazwa u¿ytkownika
+
+
+
+n losowo wybranych wpisów z logami dotycz¹cych losowo wybranego u¿ytkownika, n = 3
+Dec 20 22:26:11 LabSZ sshd[16800]: Invalid user charles from 202.92.128.175
+Dec 20 22:26:11 LabSZ sshd[16800]: input_userauth_request: invalid user charles [preauth]
+Dec 20 22:26:14 LabSZ sshd[16800]: Failed password for invalid user charles from 202.92.128.175 port 56532 ssh2
+
+
+n losowo wybranych wpisów z logami dotycz¹cych losowo wybranego u¿ytkownika, n = 100
+Dec 18 14:15:59 LabSZ sshd[7853]: input_userauth_request: invalid user ts3music [preauth]
+Dec 18 14:16:01 LabSZ sshd[7853]: Failed password for invalid user ts3music from 87.120.255.161 port 37254 ssh2
+Dec 18 14:15:59 LabSZ sshd[7853]: Invalid user ts3music from 87.120.255.161
+
+
+n losowo wybranych wpisów z logami dotycz¹cych losowo wybranego u¿ytkownika, n = -1
+[]
+
+U¿ytkownik, który logowa³ siê najrzadziej: tzhao, logowa³ siê: 1 razy
+U¿ytkownik, który logowa³ siê najczêsciej: curi, logowa³ siê: 63 razy
