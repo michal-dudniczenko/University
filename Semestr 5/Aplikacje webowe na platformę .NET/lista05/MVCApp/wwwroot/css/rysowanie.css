@@ -1,0 +1,56 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: center;
+}
+
+.drawingX {
+    background-color: black;
+}
+
+div {
+    width: 80%;
+    background-color: lightblue;
+    margin: 50px;
+}
+
+#canvas1 {
+    height: 300px;
+    width: 80%;
+    margin: 50px;
+}
+
+#canvas2 {
+    height: 300px;
+    width: 300px;
+    float: right;
+    margin: 20px;
+}
+
+#canvas3 {
+    position: relative;
+    height: 150vh;
+    width: 30%;
+    margin: 10%;
+    left: 200px;
+}
+
+#canvas4 {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+#canvas5 {
+    position: absolute;
+    top: 150vh;
+    left: 20vw;
+}

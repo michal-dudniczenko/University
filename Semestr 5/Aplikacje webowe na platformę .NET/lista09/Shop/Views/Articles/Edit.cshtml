@@ -1,0 +1,58 @@
+@model Shop.Models.Article
+
+@{
+    Category[] categories = ViewData["categories"] as Category[] ?? [];
+    Article? article = ViewData["article"] as Article;
+}
+
+@section SomeSection {
+    <div style="background-color: aqua; color: red;" >
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus, quaerat!
+        Iste distinctio aliquam quae laboriosam ipsam nihil atque animi labore.
+        Veniam nobis, officiis a aperiam sunt explicabo expedita dolorum ad.
+        Accusantium pariatur, est quibusdam temporibus veniam neque error culpa nobis!
+        Beatae aspernatur officia eius voluptatem asperiores eligendi, rem voluptatum. Aliquam?
+    </div>
+}
+
+<h1>Edit article</h1>
+
+<hr class="mb-4" />
+
+<form asp-asp-controller="Articles" asp-action="EditArticle" method="post">
+
+    <input type="hidden" name="id" value="@article?.Id" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="control-label">Name</label>
+        <input asp-for="Name" class="form-control" value="@article?.Name" autocomplete="off" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Price" class="control-label">Price</label>
+        <input asp-for="Price" class="form-control" type="number" step="0.01" value="@article?.Price" autocomplete="off" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="ExpiryDate" class="control-label">Expiry date</label>
+        <input asp-for="ExpiryDate" class="form-control" type="date" value="@article?.ExpiryDate.ToString("yyyy-MM-dd")" autocomplete="off" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="ArticleCategory" class="control-label">Category</label>
+        <select asp-for="ArticleCategory" class="form-control">
+            @foreach (var category in categories) {
+                if (category == article?.ArticleCategory) {
+                    <option value="@category" selected>@category</option>
+                } else {
+                    <option value="@category">@category</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="form-group mt-5" style="display: flex; justify-content: space-between; align-items: center;">
+        <button type="submit" class="btn btn-success btn-large" style="width: 30%;" >Edit Article</button>
+        <a asp-controller="Articles" asp-action="Index" class="btn btn-danger btn-large" style="width: 30%;">Cancel</a> 
+    </div>
+</form>

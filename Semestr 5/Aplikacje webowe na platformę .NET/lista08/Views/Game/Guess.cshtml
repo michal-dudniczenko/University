@@ -1,0 +1,9 @@
+@{
+    ViewData["Title"] = "Guess";
+}
+
+<h1 class="@ViewData["CssClass"] mt-xxl-5 mb-xxl-5">@ViewData["Message"]</h1>
+<p class="mb-xxl-5">Próby: @ViewData["GuessCount"]</p>
+<p class="mb-xxl-5">Zakres: [0, @ViewData["Range"]]</p>
+<p class="mb-xxl-5">Poprzednie próby: @ViewData["GuessesHistory"]</p>
+<p class="small">Szukana liczba: @ViewData["RandValue"]</p>

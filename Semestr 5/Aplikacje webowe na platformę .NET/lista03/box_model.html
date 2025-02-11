@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lab 3</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="box_model.css">
+</head>
+<body>
+    <header>
+        <div class="top-gap"></div>
+        <nav> 
+            <div class="menu-header">Menu</div>
+            <ul class="dropdown-menu">
+                <li><a href="index.html">Main page</a></li>
+                <li><a href="tekst.html">tekst</a></li>
+                <li><span>obrazki tła</span>
+                    <ul class="side-menu">
+                        <li><a href="tlo_default.html">tło default</a></li>
+                        <li><a href="tlo_stretch.html">tło stretch</a></li>
+                        <li><a href="tlo_position.html">tło position</a></li>
+                        <li><a href="tlo_do_polowy.html">tło do połowy</a></li>
+                    </ul>
+                </li>
+                <li><a href="box_model.html">box model</a></li>
+                <li><a href="pseudo.html">pseudo</a></li>
+                <li><a href="tabele.html">tabele</a></li>
+                <li><span>na lepszy humor</span>
+                    <ul class="side-menu">
+                        <li><a href="https://www.google.com/search?q=funny+cat&udm=2" target="_blank">koty</a></li>
+                        <li><a href="https://www.google.com/search?q=cute+platypus&udm=2" target="_blank">dziobaki</a></li>
+                        <li><a href="https://www.google.com/search?q=funny+tiger&udm=2" target="_blank">tygrysy</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div id="div1">div without margin/padding</div>
+    <div id="div2">div with margin left/top and padding</div>
+    <div id="div3">div with margin top and set height/width</div>
+    <div class="div-static">position: static</div>
+    <div class="div-relative">position: relative top: 30px, left 100px;</div>
+    <div id="div-fixed">position: fixed, bottom, right 0</div>
+    <div class="div-static">position: static nr 2</div>
+    <div id="text-container">
+        <div id="div-float">float right</div>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est accusamus facilis tempore praesentium repellat facere!
+            Pariatur quis temporibus molestias laboriosam accusantium nobis tempore dolores ex atque, tempora architecto, doloremque nam!
+            Aspernatur, dolores, rem amet, est molestiae voluptatum quidem dicta eius voluptatibus officia voluptas. Hic, perferendis.
+            At, odio adipisci autem alias consectetur reiciendis soluta, deleniti voluptas placeat fuga, facere sequi. Quia.
+            Aliquid reprehenderit quas necessitatibus nisi error esse, totam fuga amet, sunt accusantium dolorum veritatis nesciunt!
+            Perspiciatis ratione sed, dolorum asperiores sunt laboriosam officia recusandae necessitatibus consequatur autem veritatis, sint atque.
+            Repellat officia, eius ad ipsa sint corporis soluta rem ullam, dolorem ut explicabo autem? Debitis?
+            Atque libero iste cupiditate saepe aspernatur molestias blanditiis repudiandae provident, earum accusamus numquam ipsam repellendus!
+            Beatae perspiciatis impedit id autem illum dolorum temporibus ab veritatis dolor cumque. Vero, eos illo.
+            Eveniet tenetur ratione saepe quidem nobis? Perferendis, sunt molestiae commodi aperiam vitae temporibus minima id!
+            Vero, laudantium molestias soluta saepe iste ratione nostrum aut debitis ad cum minus fugiat hic.
+            Consectetur, ullam voluptatibus repudiandae neque accusamus unde, dolorem iure rerum, culpa in vel id! Eum.
+            Blanditiis, eligendi. Qui, a vitae. Incidunt ea laboriosam, nesciunt tempora eum fuga enim. Corporis, ab.
+            Adipisci error suscipit eos hic similique molestiae perferendis? Voluptatibus commodi recusandae, praesentium voluptates enim eum!
+            Ea ab aspernatur atque ex corrupti quia ipsum dolores itaque, recusandae cum eum nulla id?</p>
+    </div>
+    
+    
+    <div id="div-outter">outter div, position: relative, margin top
+        <div id="div-inner1">inner div 1, position:fixed</div>
+        <div id="div-inner2">inner div 2, position:absolute, right and bottom</div>
+    </div>
+
+    <div id="div4">
+        <p>paragraph 1 is red because of &gt; selector</p>
+        <div>
+            <p>paragraph 2 inside another div isnt affected</p>
+        </div>
+    </div>
+</body>
+</html>

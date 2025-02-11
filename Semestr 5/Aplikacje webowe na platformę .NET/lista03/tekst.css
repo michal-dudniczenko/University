@@ -1,0 +1,10 @@
+#example2 {
+    letter-spacing: 5px;
+    word-spacing: 15px;
+    line-height: 1.5;
+    background-color: rgb(3, 126, 126);
+    text-decoration:underline;
+    text-decoration-color: rgb(255, 0, 0);
+    text-decoration-thickness: 5px;
+    font-weight: 1000;
+}

@@ -1,0 +1,102 @@
+table {
+    margin-top: 100px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* ===================================================*/
+
+#table-one {
+    margin: 100px auto 100px auto; 
+    width: 80%;
+    border-collapse: collapse;
+}
+
+#table-one th, #table-one td {
+    border: 1px solid white;
+    padding: 10px;
+    text-align: left;
+}
+
+#table-one tr {
+    background-color: #2b2b2b;
+}
+
+#table-one tr:nth-child(even) {
+    background-color: #7e7e7e;
+}
+
+#table-one th {
+    background-color: #2acad8;
+    color: white;
+}
+
+/* ===================================================*/
+
+#table-two {
+    margin: 100px auto 100px auto; 
+    width: 80%;
+    border: none;
+}
+
+#table-two th {
+    background-color: #333;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+#table-two td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid white;
+}
+
+#table-two tr:hover {
+    background-color: #6e6e6e;
+}
+
+#table-two td:hover {
+    font-weight: 600;
+    background-color: #d74d4d;
+    color: black;
+}
+
+/* ===================================================*/
+
+#table-three {
+    margin: 100px auto 100px auto; 
+    width: 80%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: rgb(37, 37, 37);
+}
+
+#table-three th, #table-three td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#table-three th {
+    background-color: #ff9800;
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#table-three td {
+    background-color: #fff;
+    transition: transform 0.3s ease;
+}
+
+#table-three td:hover{
+    background-color: #bbbbbb;
+    cursor: pointer;
+    transform: scale(1.05)
+}
+
+#table-three tr:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

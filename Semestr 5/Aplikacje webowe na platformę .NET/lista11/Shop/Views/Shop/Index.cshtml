@@ -1,0 +1,66 @@
+@using System.Globalization
+@model IEnumerable<Shop.Models.Article>
+
+@{
+    ViewData["Title"] = "Index";
+    var categories = ViewData["Categories"] as List<Shop.Models.Category> ?? new List<Shop.Models.Category>();
+    int? selectedCategoryId = ViewData["SelectedCategoryId"] as int?;
+}
+
+<h1>Articles</h1>
+
+<form method="get" asp-action="Index">
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter" name="categoryId" onchange="this.form.submit()">
+        <option value="">All Categories</option>
+        @foreach (var category in categories)
+        {   
+            if (category.Id == selectedCategoryId) {
+                <option value="@category.Id" selected>@category.Name</option>
+            } else {
+                <option value="@category.Id">@category.Name</option>
+            }
+        }
+    </select>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Photo
+            </th>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Price.ToString("C2", new CultureInfo("pl-PL"))
+            </td>
+            <td>
+                @(item?.Category?.Name)
+            </td>
+            <td>
+                <img src="/images/@(item?.ImageFileName ?? "default.png")" alt="Article photo" style="height: 10vh; width: 10vh;" />
+            </td>
+            <td>
+				<a asp-action="AddToCart" asp-route-articleId="@item?.Id">Add to cart</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

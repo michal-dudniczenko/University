@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Solve";
+
+    string equation = "";
+    double a = (double)(ViewData["a"] ?? 0);
+    double b = (double)(ViewData["b"] ?? 0);
+    double c = (double)(ViewData["c"] ?? 0);
+    if (a != 0) {
+        equation += $"{a}x<sup>2</sup>";
+    }
+    if (b != 0) {
+        if (b > 0 && a != 0) {
+            equation += "+";
+        }
+        equation += $"{b}x";
+    }
+    if (c != 0) {
+        if (c > 0 && (a != 0 || b != 0)) {
+            equation += "+";
+        }
+        equation += c;
+    } else if (a == 0 && b == 0) {
+        equation += c;
+    }
+    equation += " = 0";
+}
+
+<h2>Rozwiązanie równania kwadratowego:</h2>
+<h1><strong>@Html.Raw(equation)</strong></h1>
+<h1 class="@ViewData["CssClass"] mt-xxl-5">@Html.Raw(ViewData["Result"])</h1>

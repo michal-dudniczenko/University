@@ -1,0 +1,56 @@
+p::selection {
+    color:aqua;
+    background-color: blueviolet;
+}
+
+p::first-line {
+    letter-spacing: 5px;
+}
+
+p::first-letter {
+    font-family: Comic Sans MS, Comic Sans, cursive;
+    font-size: 5rem;
+    color: rgb(18, 240, 111);
+}
+
+p::after {
+    content: " (Tekst wstawiony pseudoelementem ::after)";
+    font-weight: bold;
+}
+
+#inputs-div {
+    margin-top: 100px;
+}
+
+input {
+    display: block;
+    margin: 10px;
+    height: 5vh;
+    width: 20vw;
+}
+
+#inputs-div input:first-child {
+    background-color: rgb(219, 97, 97);
+    text-align: center;
+}
+
+input:disabled {
+    background-color: gray;
+}
+
+input:focus {
+    border: 10px dashed green;
+}
+
+button:active {
+    background-color: green;
+}
+
+button {
+    margin: 10px;
+    height: 5vh;
+    width: 10vw;
+    border-radius: 10px;
+    font-size: 2rem;
+    font-weight: bold;
+}

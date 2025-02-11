@@ -1,0 +1,37 @@
+html {
+    font-size: 10px;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+}
+
+#top-half {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 50vh;
+    width: 100vw;
+    background-image: url("cosmos.jpg");
+    background-repeat: repeat;
+    z-index: -1;
+}
+
+p {
+    color:white;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-shadow: -2px 2px 0 #000,
+                 2px 2px 0 #000,
+                 2px -2px 0 #000,
+                 -2px -2px 0 #000;
+}
+
+#text {
+    width: 70%;
+    margin-top: 5%;
+}

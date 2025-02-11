@@ -1,0 +1,42 @@
+@model Shop.Models.Article
+
+@{
+    Category[] categories = ViewData["categories"] as Category[] ?? [];
+}
+
+<h1>Add new article</h1>
+
+<hr class="mb-4" />
+
+<form asp-asp-controller="Articles" asp-action="AddArticle" method="post">
+
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="control-label">Name</label>
+        <input asp-for="Name" class="form-control" autocomplete="off" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Price" class="control-label">Price</label>
+        <input asp-for="Price" class="form-control" type="number" step="0.01" autocomplete="off" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="ExpiryDate" class="control-label">Expiry date</label>
+        <input asp-for="ExpiryDate" class="form-control" type="date" autocomplete="off" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="ArticleCategory" class="control-label">Category</label>
+        <select asp-for="ArticleCategory" class="form-control">
+            <option value="" selected></option>
+            @foreach (var category in categories) {
+                <option value="@category">@category</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mt-5" style="display: flex; justify-content: space-between; align-items: center;">
+        <button type="submit" class="btn btn-success btn-large" style="width: 30%;" >Add Article</button>
+        <a asp-controller="Articles" asp-action="Index" class="btn btn-danger btn-large" style="width: 30%;">Cancel</a> 
+    </div>
+</form>

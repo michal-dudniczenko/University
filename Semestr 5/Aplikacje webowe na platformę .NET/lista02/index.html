@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="lista2 lab dotnet">
+    <meta name="keywords" content="tabela, formularz, listy">
+    <meta name="author" content="Michał Dudniczenko">
+    <meta name="copyright" content="Michał Dudniczenko">
+
+    <title>Lab 2</title>
+
+    <style>
+
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 8px;
+      }
+
+      .koloroweKomorki {
+        background-color: rgb(117, 206, 110);
+        text-align: center;
+      }
+
+      a {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #2f9bc3;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+
+      #buttons {
+        margin-top: 50%;
+      }
+
+      h2 {
+        margin-top: 5%;
+      }
+
+      caption {
+        caption-side: bottom;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+
+  </style>
+</head>
+<body>
+    <header id="header">
+        <h1>Zadania z listy 2 </h1>
+    </header>
+    <main>
+        <h2>Wybrane znaki specjalne:</h2>
+        <ul>
+            <li>&lt;html&gt;</li>
+            <li>&copy;</li>
+            <li>Kod znaku specjalnego &amp;: &quot;&amp;amp;</li>
+            <li>&#x1F4BB;</li>
+            <li>&#x1F601;</li>
+        </ul>
+
+        <h2>Najpopularniejsze języki programowania:</h2>
+        <ol>
+            <li>JavaScript</li>
+            <li>Python</li>
+            <li>Java</li>
+        </ol>
+
+        <h2>Różne sposoby formatowania tekstu:</h2>
+        <ol>
+            <li><strong>Ten tekst jest ważny i pogrubiony</strong></li>
+            <li><em>Ten tekst jest pochylony</em></li>
+            <li><small>Ten tekst jest mały</small></li>
+            <li><u>Ten tekst jest podkreślony</u></li>
+            <li><mark>Ten tekst jest zaznaczony</mark></li>
+            <li>111<sub>2</sub> = 7<sub>10</sub></li>
+            <li>E = mc<sup>2</sup></li>
+            <li><del>Ten tekst jest przekreślony</del></li>
+            <li><code>let x = 5;</code></li>
+            <li id="wiersz"><pre>
+                A w maju
+                Zwykłem jeździć, szanowni panowie,
+                Na przedniej platformie tramwaju!
+                ...
+            </pre></li>
+            <li><abbr title="Hypertext Markup Language">HTML</abbr></li>
+        </ol>
+
+        <h2 id="lista1">Przykładowa lista definicji:</h2>
+        <dl>
+            <dt>Jabłko</dt>
+            <dd>Jabłko to słodki owoc o chrupiącej konsystencji, popularny w wielu odmianach.</dd>
+          
+            <dt>Banan</dt>
+            <dd>Banan to podłużny owoc o miękkim, słodkim miąższu, często spożywany na surowo.</dd>
+          
+            <dt>Truskawka</dt>
+            <dd>Truskawka to mały, czerwony owoc o soczystym, słodkim smaku i charakterystycznych pestkach na powierzchni.</dd>
+          
+            <dt>Pomarańcza</dt>
+            <dd>Pomarańcza to cytrusowy owoc o soczystym, słodko-kwaśnym smaku, bogaty w witaminę C.</dd>
+          
+            <dt>Ananas</dt>
+            <dd>Ananas to tropikalny owoc o twardej, kolczastej skórce i słodko-kwaśnym, soczystym miąższu.</dd>
+          </dl>
+
+          <h2 id="lista2">Lista zagnieżdżona:</h2>
+          <ul>
+            <li>Element 1 poziomu nr 1</li>
+            <li>Element 1 poziomu nr 2
+                <ol>
+                    <li>Element 2 poziomu nr 1</li>
+                    <li>Element 2 poziomu nr 2</li>
+                    <li>Element 2 poziomu nr 3
+                        <ol type="I">
+                            <li>Element 3 poziomu nr 1
+                                <ol type="A">
+                                    <li>Element 4 poziomu nr 1</li>
+                                    <li>Element 4 poziomu nr 2</li>
+                                    <li>Element 4 poziomu nr 3</li>
+                                </ol>
+                            </li>
+                            <li>Element 3 poziomu nr 2</li>
+                        </ol>
+                    </li>
+                </ol>
+            </li>
+            <li>Element 1 poziomu nr 3</li>
+          </ul>
+          
+          <h2 id="tabela">Tabela 5x5:</h2>
+          <table>
+            <caption>Opis tabeli</caption>
+            <thead>
+                <tr>
+                    <th colspan="5">Nagłówek tabeli</th>
+                </tr>
+                <tr>
+                    <th>Kolumna 1</th>
+                    <th>Kolumna 2</th>
+                    <th>Kolumna 3</th>
+                    <th>Kolumna 4</th>
+                    <th>Kolumna 5</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2" class="koloroweKomorki">1</td>
+                    <td>2</td>
+                    <td colspan="2" class="koloroweKomorki">3</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td rowspan="3" class="koloroweKomorki">9</td>
+                    <td>10</td>
+                    <td class="koloroweKomorki">11</td>
+                    <td>12</td>
+                    <td rowspan="3" class="koloroweKomorki">13</td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="koloroweKomorki">17</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">Suma</td>
+                    <td>100</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <h2 id="formularz">Formularz z różnymi typami pól</h2>
+        <form method="POST" action="http://127.0.0.1:5500/index.html">
+            <label for="text">Pole tekstowe:</label>
+            <input type="text" id="text" name="text" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="password">Hasło:</label>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <label for="number">Liczba:</label>
+            <input type="number" id="number" name="number" min="0" max="100" step="10" value="30"><br><br>
+
+            <label for="date">Data:</label>
+            <input type="date" id="date" name="date"><br><br>
+
+            <label for="color">Wybór koloru:</label>
+            <input type="color" id="color" name="color"><br><br>
+
+            <label for="range">Zakres:</label>
+            <input type="range" id="range" name="range" min="0" max="100"><br><br>
+
+            <label for="checkbox1">Checkbox 1:</label>
+            <input type="checkbox" id="checkbox1" name="checkbox">
+            <label for="checkbox2">Checkbox 2:</label>
+            <input type="checkbox" id="checkbox2" name="checkbox"><br><br>
+
+            <label for="radio1">Option 1:</label>
+            <input type="radio" id="radio1" name="radio" value="1">
+            <label for="radio2">Option 2:</label>
+            <input type="radio" id="radio2" name="radio" value="2">
+            <label for="radio1">Option 3:</label>
+            <input type="radio" id="radio3" name="radio" value="3">
+            <label for="radio2">Option 4:</label>
+            <input type="radio" id="radio4" name="radio" value="4"><br><br>
+
+            <label for="file">Plik:</label>
+            <input type="file" id="file" name="file"><br><br>
+
+            <label for="tel">Numer telefonu:</label>
+            <input type="tel" id="tel" name="tel"><br><br>
+
+            <input type="submit" value="Wyślij">
+            <input type="reset" value="Resetuj">
+        </form>
+    </main>
+
+    <footer id="buttons">
+      <nav>
+        <a href="#header">Na górę</a>
+        <a href="#tabela">Tabela</a>
+        <a href="#lista1">Lista definicji</a>
+        <a href="#lista2">Lista zagnieżdżona</a>
+        <a href="#formularz">Formularz</a>
+        <a href="zadanie_dodatkowe.html">Do zadania+</a>
+      </nav>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+﻿@using System.Globalization
+@model Dictionary<Shop.Models.Article, int>
+
+@{
+    ViewData["Title"] = "Cart";
+    decimal total = 0;
+}
+
+<h1 class="mb-5">Your shopping cart</h1>
+
+@if (Model.Count == 0)
+{
+    <p>There's nothing in your cart yet!</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Photo</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dictEntry in Model)
+            {
+                var quantity = dictEntry.Value;
+				if (quantity <= 0)
+				{
+					continue;
+				}
+
+                var item = dictEntry.Key;
+                
+                total += item.Price * quantity;
+
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@(item.Category?.Name ?? "N/A")</td>
+                    <td>
+                        <img src="/images/@(item.ImageFileName ?? "default.png")" alt="Article photo" style="height: 10vh; width: 10vh;" />
+                    </td>
+                    <td>@item.Price.ToString("C2", new CultureInfo("pl-PL"))</td>
+                    <td>@quantity</td>
+                    <td>@((item.Price * quantity).ToString("C2", new CultureInfo("pl-PL")))</td>
+                    <td>
+						<a asp-action="AddToCart" asp-route-articleId="@item?.Id" asp-route-isFromCart="@true">Add one more</a> <br />
+                        <a asp-action="RemoveFromCart" asp-route-articleId="@item?.Id">Remove one</a> <br />
+                        <a asp-action="RemoveAllFromCart" asp-route-articleId="@item?.Id">Remove all</a>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>Sum</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>@total.ToString("C2", new CultureInfo("pl-PL"))</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+}

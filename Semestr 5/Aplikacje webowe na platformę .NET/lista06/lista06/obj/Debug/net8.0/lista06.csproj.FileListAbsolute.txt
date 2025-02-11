@@ -1,0 +1,14 @@
+/home/michal/Desktop/Studia/dot net/lista06/lista06/obj/Debug/net8.0/lista06.GeneratedMSBuildEditorConfig.editorconfig
+/home/michal/Desktop/Studia/dot net/lista06/lista06/obj/Debug/net8.0/lista06.AssemblyInfoInputs.cache
+/home/michal/Desktop/Studia/dot net/lista06/lista06/obj/Debug/net8.0/lista06.AssemblyInfo.cs
+/home/michal/Desktop/Studia/dot net/lista06/lista06/obj/Debug/net8.0/lista06.csproj.CoreCompileInputs.cache
+/home/michal/Desktop/Studia/dot net/lista06/lista06/bin/Debug/net8.0/lista06
+/home/michal/Desktop/Studia/dot net/lista06/lista06/bin/Debug/net8.0/lista06.deps.json
+/home/michal/Desktop/Studia/dot net/lista06/lista06/bin/Debug/net8.0/lista06.runtimeconfig.json
+/home/michal/Desktop/Studia/dot net/lista06/lista06/bin/Debug/net8.0/lista06.dll
+/home/michal/Desktop/Studia/dot net/lista06/lista06/bin/Debug/net8.0/lista06.pdb
+/home/michal/Desktop/Studia/dot net/lista06/lista06/obj/Debug/net8.0/lista06.dll
+/home/michal/Desktop/Studia/dot net/lista06/lista06/obj/Debug/net8.0/refint/lista06.dll
+/home/michal/Desktop/Studia/dot net/lista06/lista06/obj/Debug/net8.0/lista06.pdb
+/home/michal/Desktop/Studia/dot net/lista06/lista06/obj/Debug/net8.0/lista06.genruntimeconfig.cache
+/home/michal/Desktop/Studia/dot net/lista06/lista06/obj/Debug/net8.0/ref/lista06.dll

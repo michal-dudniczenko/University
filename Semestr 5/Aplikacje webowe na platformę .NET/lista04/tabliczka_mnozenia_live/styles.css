@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Arial", sans-serif;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    font-size: 20px;
+    margin-top: 3%;
+}
+
+#error {
+    color: red;
+    font-size: larger;
+    font-weight: bold;
+    display: none;
+    margin-top: 1%;
+}
+
+table, tr, td {
+    border: 2px solid black;
+    font-weight: bold;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 80vw;
+    height: 70vh;
+    margin-top: 3%;
+}
+
+.reszta0 {
+    background-color: lightblue;
+}
+
+.reszta1 {
+    background-color: lightpink;
+}
+
+.reszta2 {
+    background-color: lightgreen;
+}
+
+.even, .odd {
+    text-align: right;
+    vertical-align: bottom;
+}

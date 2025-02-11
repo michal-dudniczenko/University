@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lab 3</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="tekst.css">
+
+    <style>
+        #example {
+            font-size: 1.5rem;
+            color: lightgreen;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-gap"></div>
+        <nav> 
+            <div class="menu-header">Menu</div>
+            <ul class="dropdown-menu">
+                <li><a href="index.html">Main page</a></li>
+                <li><a href="tekst.html">tekst</a></li>
+                <li><span>obrazki tła</span>
+                    <ul class="side-menu">
+                        <li><a href="tlo_default.html">tło default</a></li>
+                        <li><a href="tlo_stretch.html">tło stretch</a></li>
+                        <li><a href="tlo_position.html">tło position</a></li>
+                        <li><a href="tlo_do_polowy.html">tło do połowy</a></li>
+                    </ul>
+                </li>
+                <li><a href="box_model.html">box model</a></li>
+                <li><a href="pseudo.html">pseudo</a></li>
+                <li><a href="tabele.html">tabele</a></li>
+                <li><span>na lepszy humor</span>
+                    <ul class="side-menu">
+                        <li><a href="https://www.google.com/search?q=funny+cat&udm=2" target="_blank">koty</a></li>
+                        <li><a href="https://www.google.com/search?q=cute+platypus&udm=2" target="_blank">dziobaki</a></li>
+                        <li><a href="https://www.google.com/search?q=funny+tiger&udm=2" target="_blank">tygrysy</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <h2>base style from external stylesheet:</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, quaerat beatae! Nisi autem fuga molestias.
+        Ullam officia quae eveniet, in qui et soluta odit voluptatem consequatur sint ipsam laborum sunt!
+        Est pariatur expedita voluptate magnam ipsum, quia excepturi possimus, quisquam veniam quis, ipsa nisi ea!
+        Hic odio sint ducimus provident quos nostrum sapiente labore, rem maiores. Nobis molestias cumque nihil.
+        Iusto, minus? Vitae, voluptate enim. Repellendus provident minima, placeat consequatur quia natus non. Ullam, et.</p>
+        
+        <h2>style from &lt;style&gt; element in head:</h2>
+        <p id="example">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, quaerat beatae! Nisi autem fuga molestias.
+        Ullam officia quae eveniet, in qui et soluta odit voluptatem consequatur sint ipsam laborum sunt!
+        Est pariatur expedita voluptate magnam ipsum, quia excepturi possimus, quisquam veniam quis, ipsa nisi ea!
+        Hic odio sint ducimus provident quos nostrum sapiente labore, rem maiores. Nobis molestias cumque nihil.
+        Iusto, minus? Vitae, voluptate enim. Repellendus provident minima, placeat consequatur quia natus non. Ullam, et.</p>
+        
+        <h2>inline:</h2>
+        <p style="font-size: 3rem; color:yellow; font-style: italic;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, quaerat beatae! Nisi autem fuga molestias.
+        Ullam officia quae eveniet, in qui et soluta odit voluptatem consequatur sint ipsam laborum sunt!
+        Est pariatur expedita voluptate magnam ipsum, quia excepturi possimus, quisquam veniam quis, ipsa nisi ea!
+        Hic odio sint ducimus provident quos nostrum sapiente labore, rem maiores. Nobis molestias cumque nihil.
+        Iusto, minus? Vitae, voluptate enim. Repellendus provident minima, placeat consequatur quia natus non. Ullam, et.</p>
+        
+    </main>
+    <h2>różne sposoby zmiany wielkości tekstu</h2>
+    <div id="parent">
+        Przykładowy tekst w elemencie "rodzica", rozmiar 20px
+        <div id="child">Tekst w elemencie "dziecka", rozmiar 1.5em</div>
+        <p id="punktDrukarski">Tekst o rozmiarze 20pt</p>
+        <div id="child2">Tekst w elemencie drugiego "dziecka", rozmiar 200%</div>
+    </div>
+
+    <h2>font-weight:1000; letter-spacing, word spacing, underline, line-height</h2>
+    <p id="example2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero velit, labore error mollitia quisquam nam!
+    Aut eum reiciendis in molestias. Repellat quos sunt harum vero, eius rerum. Fuga, harum quibusdam!
+    Optio natus quisquam, corrupti, tempora unde porro maxime nesciunt voluptates deserunt tempore nostrum neque laudantium!
+    Vel modi illo fugiat nam nisi, odit voluptas doloremque, vero, ipsum rerum incidunt. Cupiditate, voluptas.
+    Dolorum numquam officia nostrum consectetur, earum ullam accusamus rerum, nam sapiente veniam enim, unde qui.
+    Temporibus fugit rem, hic, tempora deserunt totam explicabo nulla ipsum illum error at modi nisi.
+    Sequi veniam fugiat non eaque, dignissimos consequuntur quidem! Magni eos vitae itaque placeat, eum laboriosam?
+    Quis doloremque esse facilis impedit! Enim sint laudantium ab deleniti nostrum maxime repellat dignissimos qui.
+    Quasi fugiat quos perspiciatis velit, possimus saepe corrupti corporis rerum inventore cupiditate maxime enim esse.
+    In ipsam et aut laboriosam aperiam possimus sint quod, consequatur cupiditate ex, distinctio, ad ab!</p>
+
+</body>
+</html>

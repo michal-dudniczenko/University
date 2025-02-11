@@ -1,0 +1,89 @@
+div {
+    font-size: 3rem;
+}
+
+#div1 {
+    background-color: aquamarine;
+}
+
+#div2 {
+    background-color: rgb(16, 83, 199);
+    margin-top: 50px;
+    margin-left: 100px;
+    padding: 30px;
+}
+
+#div3 {
+    background-color: rgb(114, 0, 59);
+    margin-top: 50px;
+    width: 50vw;
+    height: 30vh;
+}
+
+.div-static {
+    margin: 10px;
+    position: static;
+    background-color: rgb(138, 221, 15);
+    width: 30vw;
+}
+
+.div-relative {
+    margin: 10px;
+    position: relative;
+    background-color: rgb(56, 56, 56);
+    top: 30px;
+    left: 100px;    
+    width: 30vw;
+}
+
+#div-fixed {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(93, 13, 106);
+}
+
+#div-outter {
+    position: relative;
+    margin-top: 50vh;
+    width: 70vw;
+    height: 40vh;
+    background-color: blue;
+}
+
+#div-inner1 {
+    position: static;
+    width: 15vw;
+    height: 15vh;
+    background-color: rgb(6, 65, 15);
+}
+
+#div-inner2 {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    width: 15vw;
+    height: 15vh;
+    background-color: rgb(223, 89, 0);
+}
+
+#text-container {
+    margin-top: 100px;
+}
+
+#div-float {
+    float: right;
+    width: 30vw;
+    height: 10vh;
+    background-color: rgb(16, 172, 233);
+}
+
+#div4 {
+    margin-top: 100px;
+    background-color: rgb(17, 53, 85);
+    width: 50%;
+}
+
+#div4 > p {
+    color:red;
+}

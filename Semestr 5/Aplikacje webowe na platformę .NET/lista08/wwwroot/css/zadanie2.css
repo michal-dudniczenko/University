@@ -1,0 +1,14 @@
+.too-low {
+    color: blue;
+    font-weight: bold;
+}
+
+.too-high {
+    color: red;
+    font-weight: bold;
+}
+
+.correct {
+    color: green;
+    font-weight: bold;
+}

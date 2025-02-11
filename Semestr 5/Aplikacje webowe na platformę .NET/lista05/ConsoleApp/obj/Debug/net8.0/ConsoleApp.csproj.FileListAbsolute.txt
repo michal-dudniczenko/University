@@ -1,0 +1,14 @@
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/bin/Debug/net8.0/ConsoleApp
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/bin/Debug/net8.0/ConsoleApp.deps.json
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/bin/Debug/net8.0/ConsoleApp.runtimeconfig.json
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/bin/Debug/net8.0/ConsoleApp.dll
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/bin/Debug/net8.0/ConsoleApp.pdb
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/obj/Debug/net8.0/ConsoleApp.GeneratedMSBuildEditorConfig.editorconfig
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/obj/Debug/net8.0/ConsoleApp.AssemblyInfoInputs.cache
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/obj/Debug/net8.0/ConsoleApp.AssemblyInfo.cs
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/obj/Debug/net8.0/ConsoleApp.csproj.CoreCompileInputs.cache
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/obj/Debug/net8.0/ConsoleApp.dll
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/obj/Debug/net8.0/refint/ConsoleApp.dll
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/obj/Debug/net8.0/ConsoleApp.pdb
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/obj/Debug/net8.0/ConsoleApp.genruntimeconfig.cache
+/home/michal/Desktop/Studia/dot net/lista05/ConsoleApp/obj/Debug/net8.0/ref/ConsoleApp.dll
