@@ -1,0 +1,13 @@
+@use "utils/functions";
+@use "utils/helpers";
+@use "utils/mixins";
+@use "utils/variables";
+
+@use "base/reset";
+
+@use "layout/header";
+@use "layout/main";
+@use "layout/footer";
+
+@use "components/navigation";
+@use "components/search-bar";

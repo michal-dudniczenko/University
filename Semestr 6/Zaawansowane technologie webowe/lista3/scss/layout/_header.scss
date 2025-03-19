@@ -1,0 +1,27 @@
+@use "../utils/variables" as *;
+@use "../utils/helpers" as *;
+
+.header {
+    height: $header-height;
+    width: 100%;
+    background-color: $darker-primary;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    user-select: none;
+    font-family: $header-font;
+
+    .header-left-side {
+        @extend %flex-center;
+    
+        .icon {
+            margin-left: 20px;
+            height: $header-height * 0.9;
+            width: auto;
+        }
+    }
+
+    .header-right-side {
+        @extend %flex-center;
+    }
+}

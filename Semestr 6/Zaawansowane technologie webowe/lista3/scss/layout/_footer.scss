@@ -1,0 +1,12 @@
+@use "../utils/variables" as *;
+@use "../utils/helpers" as *;
+
+.footer {
+    background-color: $darker-primary;
+    color: $bright-on-dark;
+    font-family: $footer-font;
+    @extend %flex-center;
+    justify-content: center;
+    padding: 20px;
+    user-select: none;
+}

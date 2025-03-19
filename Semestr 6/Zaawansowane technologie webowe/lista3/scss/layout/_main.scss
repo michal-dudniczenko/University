@@ -1,0 +1,14 @@
+@use "../utils/variables" as *;
+
+.main {
+    background-color: $primary;
+    padding: $main-padding;
+    padding-top: $header-height + $main-padding / 2;
+    min-height: 120vh;
+    color: $bright-on-dark;
+    font-family: $main-font;
+
+    p {
+        margin-bottom: 50px;
+    }
+}

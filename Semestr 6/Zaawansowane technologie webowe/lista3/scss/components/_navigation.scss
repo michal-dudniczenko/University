@@ -1,0 +1,65 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+@use "../utils/helpers" as *;
+
+.navigation-left {
+    margin-left: 40px;
+    user-select: none;
+
+    ul {
+        @extend %flex-center;
+        list-style: none;
+
+        li {
+            margin-right: 15px;
+            a {
+                display: block;
+                color: $bright-on-dark;
+                text-align: center;
+                padding: 10px;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: larger;
+            }
+
+            a:hover {
+                background-color: $bright-on-dark;
+                color: $darker-primary;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.navigation-right {
+    user-select: none;
+
+    ul {
+        @extend %flex-center;
+        list-style: none;
+
+        li {
+            margin-right: 30px;
+
+            img {
+                height: $header-height * 0.4;
+                width: auto;
+            }
+
+            img:hover {
+                @include transform(scale(1.1));
+            }
+
+            a:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+#profile-icon {
+    margin-left: 30px;
+    height: $header-height * 0.5;
+    width: auto;
+}

@@ -1,0 +1,132 @@
+.navigation-left ul, .navigation-right ul, .footer, .header .header-left-side, .header .header-right-side {
+  display: flex;
+  align-items: center;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  height: 75px;
+  width: 100%;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  user-select: none;
+  font-family: Lucida Console, monospace;
+}
+.header .header-left-side .icon {
+  margin-left: 20px;
+  height: 67.5px;
+  width: auto;
+}
+.main {
+  background-color: #3b3b3b;
+  padding: 50px;
+  padding-top: 100px;
+  min-height: 120vh;
+  color: #bebebe;
+  font-family: Comic Sans MS, cursive;
+}
+.main p {
+  margin-bottom: 50px;
+}
+
+.footer {
+  background-color: #1a1a1a;
+  color: #bebebe;
+  font-family: Lucida Console, monospace;
+  justify-content: center;
+  padding: 20px;
+  user-select: none;
+}
+
+.navigation-left {
+  margin-left: 40px;
+  user-select: none;
+}
+.navigation-left ul {
+  list-style: none;
+}
+.navigation-left ul li {
+  margin-right: 15px;
+}
+.navigation-left ul li a {
+  display: block;
+  color: #bebebe;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: larger;
+}
+.navigation-left ul li a:hover {
+  background-color: #bebebe;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.navigation-right {
+  user-select: none;
+}
+.navigation-right ul {
+  list-style: none;
+}
+.navigation-right ul li {
+  margin-right: 30px;
+}
+.navigation-right ul li img {
+  height: 30px;
+  width: auto;
+}
+.navigation-right ul li img:hover {
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+}
+.navigation-right ul li a:hover {
+  cursor: pointer;
+}
+
+#profile-icon {
+  margin-left: 30px;
+  height: 37.5px;
+  width: auto;
+}
+
+.search-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 30px;
+}
+.search-container .search-bar {
+  height: 37.5px;
+  width: 130px;
+  padding: 10px 40px 10px 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  transition: width 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+.search-container .search-bar:focus {
+  width: 250px;
+  outline: none;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+}
+.search-container .search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=styles.css.map */

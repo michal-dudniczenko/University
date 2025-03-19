@@ -1,0 +1,33 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+.search-container {
+    position: relative;
+    display: inline-block;
+    margin-left: 30px;
+
+    .search-bar {
+        height: $header-height * 0.5;
+        width: 130px;
+        padding: 10px 40px 10px 10px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        transition: width 0.4s ease-in-out, transform 0.4s ease-in-out;
+    }
+
+    .search-bar:focus {
+        width: 250px;
+        outline: none;
+        @include transform(scale(1.1));
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+}
