@@ -1,0 +1,72 @@
+.ad-form {
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-right: 20px;
+    margin-bottom: 40px;
+    color: white;
+    font-weight: bold;
+    font-size:larger;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.new-ad-form {
+    background-color: #48b6cc;
+}
+
+.enabled-ad-form {
+    background-color: #48cc7f;
+}
+
+.disabled-ad-form {
+    background-color: #b14f4f;
+}
+
+.new-ad-form-textarea {
+    width: 100%;
+    resize: none;
+    font-weight: normal;
+}
+
+.vertical-display {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 5px;
+}
+
+.buttons-group {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    width: 18%;
+    gap: 5px;
+}
+
+.new-ad-button {
+    width: 18%;
+}
+
+.ad-form-button {
+    padding: 5px;
+    border-radius: 10px;
+    background-color: rgb(41, 41, 41);
+    color: white;
+    
+}
+
+.ad-form-button:hover {
+    cursor:pointer;
+}
+
+.custom-adx {
+    padding: 20px;
+    background-color: rgb(211, 65, 191);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
