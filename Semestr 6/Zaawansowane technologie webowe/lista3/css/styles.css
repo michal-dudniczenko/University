@@ -12,12 +12,12 @@
 .header {
   height: 75px;
   width: 100%;
-  background-color: #1a1a1a;
+  background-color: rgb(29.5, 29.5, 29.5);
   display: flex;
   justify-content: space-between;
   position: fixed;
   user-select: none;
-  font-family: Lucida Console, monospace;
+  font-family: "Lucida Console", monospace;
 }
 .header .header-left-side .icon {
   margin-left: 20px;
@@ -28,18 +28,19 @@
   background-color: #3b3b3b;
   padding: 50px;
   padding-top: 100px;
-  min-height: 120vh;
   color: #bebebe;
-  font-family: Comic Sans MS, cursive;
-}
-.main p {
-  margin-bottom: 50px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .footer {
-  background-color: #1a1a1a;
+  background-color: rgb(29.5, 29.5, 29.5);
   color: #bebebe;
-  font-family: Lucida Console, monospace;
+  font-family: "Lucida Console", monospace;
   justify-content: center;
   padding: 20px;
   user-select: none;
@@ -67,7 +68,7 @@
 }
 .navigation-left ul li a:hover {
   background-color: #bebebe;
-  color: #1a1a1a;
+  color: rgb(29.5, 29.5, 29.5);
   cursor: pointer;
 }
 
@@ -126,6 +127,56 @@
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
+  cursor: pointer;
+}
+
+.product-card {
+  width: calc(20% - 15px);
+  background: #cecece;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.product-card .product-picture {
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+.product-card .product-picture:hover {
+  cursor: pointer;
+}
+.product-card .product-description {
+  color: rgb(29.5, 29.5, 29.5);
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.product-card .product-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  height: 50px;
+  user-select: none;
+}
+
+.product-button {
+  background-color: rgb(29.5, 29.5, 29.5);
+  width: 30%;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: box-shadow 0.3s ease;
+}
+.product-button img {
+  height: 60%;
+}
+
+.product-button:hover {
+  -webkit-transform: scale(1.03);
+  -ms-transform: scale(1.03);
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(36, 36, 36, 0.5);
   cursor: pointer;
 }
 

@@ -3,12 +3,12 @@
 .main {
     background-color: $primary;
     padding: $main-padding;
-    padding-top: $header-height + $main-padding / 2;
-    min-height: 120vh;
+    padding-top: $header-height + calc($main-padding / 2);
     color: $bright-on-dark;
     font-family: $main-font;
-
-    p {
-        margin-bottom: 50px;
-    }
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: center;
+    align-items: flex-start;
 }

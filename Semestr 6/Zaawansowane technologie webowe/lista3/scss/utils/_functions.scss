@@ -1,0 +1,9 @@
+@use "sass:color";
+
+@function darken($color, $percent) {
+    @return color.mix(black, $color, $percent);
+}
+
+@function lighten($color, $percent) {
+    @return color.mix(white, $color, $percent);
+}

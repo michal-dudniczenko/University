@@ -1,0 +1,22 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+.product-button {
+    background-color: $darker-primary;
+    width: 30%;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: box-shadow 0.3s ease;
+
+    img {
+        height: 60%;
+    }
+}
+
+.product-button:hover {
+    @include transform(scale(1.03));
+    box-shadow: 0 0 15px rgba(36, 36, 36, 0.5);
+    cursor: pointer;
+}

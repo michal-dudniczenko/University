@@ -1,0 +1,34 @@
+@use "../utils/variables" as *;
+
+.product-card {
+    width: calc(20% - 15px);
+    background: $ligher-primary;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    .product-picture {
+        width: 100%;
+        height: auto;
+        user-select: none;
+    }
+
+    .product-picture:hover {
+        cursor: pointer;
+    }
+
+    .product-description {
+        color: $darker-primary;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .product-buttons-container {
+        display: flex;
+        justify-content: center;
+        gap: 80px;
+        height: 50px;
+        user-select: none;
+    }
+}
