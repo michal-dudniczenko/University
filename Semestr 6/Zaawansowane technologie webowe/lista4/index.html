@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>lab4</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="img/favicon.png" type="image/x-icon" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Google Fonts Roboto -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+    />
+    <!-- MDB -->
+    <link rel="stylesheet" href="css/mdb.min.css" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!--Main Navigation-->
+    <header>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark-subtle fixed-top" data-mdb-theme="dark" id="navbar">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+          <!-- Toggle button -->
+          <button
+            data-mdb-collapse-init
+            class="navbar-toggler"
+            type="button"
+            data-mdb-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- Collapsible wrapper -->
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="nav-links">
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#">Home</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#content">Recent travels</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#contact">Contact form</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#google-maps">Google Maps</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#text-img">Text + image 1:3</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#quote">Quote</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#carousel">Carousel</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#faq">FAQ</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#chart">Most popular travel destinations</a>
+              </li>
+            </ul>
+            <!-- Left links -->
+
+            <!-- Right elements -->
+            <form class="d-flex input-group w-auto">
+              <input
+                type="search"
+                class="form-control rounded"
+                placeholder="Search"
+                aria-label="Search"
+                aria-describedby="search-addon"
+              />
+              <span class="input-group-text border-0" id="search-addon">
+                <i class="fas fa-search"></i>
+              </span>
+            </form>
+            <!-- Right elements -->
+          </div>
+          <!-- Collapsible wrapper -->
+        </div>
+        <!-- Container wrapper -->
+      </nav>
+      <!-- Navbar -->
+
+      <!--Mask-->
+      <div id="intro" class="view">
+        <div class="mask" style="background-color: hsla(0, 0%, 0%, 0.7)">
+          <div class="container-fluid d-flex align-items-center justify-content-center h-100">
+            <div class="row d-flex justify-content-center text-center">
+              <div class="col-md-10">
+                <!-- Heading -->
+                <h2 class="display-4 fw-bold text-white pt-5 mb-2">Podróżowanie</h2>
+                <!-- Divider -->
+                <hr class="hr">
+                <!-- Description -->
+                <h4 class="text-white my-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti consequuntur.</h4>
+                <button type="button" class="btn btn-outline-light" onclick="location.href='#content'">Dowiedz się więcej<i class="fas fa-book ms-3"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/.Mask-->    
+    </header>
+    <!--Main Navigation-->
+      
+    <!--Main layout-->
+    <main class="pb-5" id="content">
+      <div class="container">
+        <!-- Section: LastTravels -->
+        <section id="lastTravels" class="text-center py-5 min-vh-100">
+
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+              <div 
+                class=" bg-image hover-overlay shadow-3-strong rounded" 
+                data-mdb-ripple-init 
+                data-mdb-ripple-color="light"
+              >
+                <img src="img/trip1.jpg" class="img-fluid" alt="">
+                <a href="#!">
+                  <div class="mask" style="background-color: hsla(0, 0%, 100%, 0.1)"></div>
+                </a>
+                <h4 class="my-4 fw-bold">Podróż 1</h4>
+                <p class="grey-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores n
+                am, aperiam minima assumenda deleniti hic.
+                </p>
+              </div>
+            </div>
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+              <div 
+                class=" bg-image hover-overlay shadow-3-strong rounded" 
+                data-mdb-ripple-init 
+                data-mdb-ripple-color="light"
+              >
+                <img src="img/trip2.jpg" class="img-fluid" alt="">
+                <a href="#!">
+                  <div class="mask" style="background-color: hsla(0, 0%, 100%, 0.1)"></div>
+                </a>
+                <h4 class="my-4 fw-bold">Podróż 2</h4>
+                <p class="grey-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores n
+                am, aperiam minima assumenda deleniti hic.
+                </p>
+              </div>
+            </div>
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+              <div 
+                class=" bg-image hover-overlay shadow-3-strong rounded" 
+                data-mdb-ripple-init 
+                data-mdb-ripple-color="light"
+              >
+                <img src="img/trip3.jpg" class="img-fluid" alt="">
+                <a href="#!">
+                  <div class="mask" style="background-color: hsla(0, 0%, 100%, 0.1)"></div>
+                </a>
+                <h4 class="my-4 fw-bold">Podróż 3</h4>
+                <p class="grey-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores n
+                am, aperiam minima assumenda deleniti hic.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+              <div 
+                class=" bg-image hover-overlay shadow-3-strong rounded" 
+                data-mdb-ripple-init 
+                data-mdb-ripple-color="light"
+              >
+                <img src="img/trip4.jpg" class="img-fluid" alt="">
+                <a href="#!">
+                  <div class="mask" style="background-color: hsla(0, 0%, 100%, 0.1)"></div>
+                </a>
+                <h4 class="my-4 fw-bold">Podróż 4</h4>
+                <p class="grey-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores n
+                am, aperiam minima assumenda deleniti hic.
+                </p>
+              </div>
+            </div>
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+              <div 
+                class=" bg-image hover-overlay shadow-3-strong rounded" 
+                data-mdb-ripple-init 
+                data-mdb-ripple-color="light"
+              >
+                <img src="img/trip5.jpg" class="img-fluid" alt="">
+                <a href="#!">
+                  <div class="mask" style="background-color: hsla(0, 0%, 100%, 0.1)"></div>
+                </a>
+                <h4 class="my-4 fw-bold">Podróż 5</h4>
+                <p class="grey-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores n
+                am, aperiam minima assumenda deleniti hic.
+                </p>
+              </div>
+            </div>
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+              <div 
+                class=" bg-image hover-overlay shadow-3-strong rounded" 
+                data-mdb-ripple-init 
+                data-mdb-ripple-color="light"
+              >
+                <img src="img/trip6.jpg" class="img-fluid" alt="">
+                <a href="#!">
+                  <div class="mask" style="background-color: hsla(0, 0%, 100%, 0.1)"></div>
+                </a>
+                <h4 class="my-4 fw-bold">Podróż 6</h4>
+                <p class="grey-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores n
+                am, aperiam minima assumenda deleniti hic.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+              <div 
+                class=" bg-image hover-overlay shadow-3-strong rounded" 
+                data-mdb-ripple-init 
+                data-mdb-ripple-color="light"
+              >
+                <img src="img/trip7.jpg" class="img-fluid" alt="">
+                <a href="#!">
+                  <div class="mask" style="background-color: hsla(0, 0%, 100%, 0.1)"></div>
+                </a>
+                <h4 class="my-4 fw-bold">Podróż 7</h4>
+                <p class="grey-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores n
+                am, aperiam minima assumenda deleniti hic.
+                </p>
+              </div>
+            </div>
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+              <div 
+                class=" bg-image hover-overlay shadow-3-strong rounded" 
+                data-mdb-ripple-init 
+                data-mdb-ripple-color="light"
+              >
+                <img src="img/trip8.jpg" class="img-fluid" alt="">
+                <a href="#!">
+                  <div class="mask" style="background-color: hsla(0, 0%, 100%, 0.1)"></div>
+                </a>
+                <h4 class="my-4 fw-bold">Podróż 8</h4>
+                <p class="grey-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores n
+                am, aperiam minima assumenda deleniti hic.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <hr>
+
+        <!-- Section: Contact -->
+        <section id="contact" class="text-center py-5 min-vh-100">
+          <h1 class="my-4 fw-bold">Contact us</h1>
+          <form style="width: 26rem;" class="mx-auto">
+            <!-- Name input -->
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="text" id="form4Example1" class="form-control" />
+              <label class="form-label" for="form4Example1">Name</label>
+            </div>
+          
+            <!-- Email input -->
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="email" id="form4Example2" class="form-control" />
+              <label class="form-label" for="form4Example2">Email address</label>
+            </div>
+          
+            <!-- Message input -->
+            <div data-mdb-input-init class="form-outline mb-4">
+              <textarea class="form-control" id="form4Example3" rows="4"></textarea>
+              <label class="form-label" for="form4Example3">Message</label>
+            </div>
+          
+            <!-- Checkbox -->
+            <div class="form-check d-flex justify-content-center mb-4">
+              <input
+                class="form-check-input me-2"
+                type="checkbox"
+                value=""
+                id="form4Example4"
+                checked
+              />
+              <label class="form-check-label" for="form4Example4">
+                Send me a copy of this message
+              </label>
+            </div>
+          
+            <!-- Submit button -->
+            <button type="button" class="btn btn-primary btn-block mb-4 btn-test">Send</button>
+          </form>
+        </section>
+
+        <hr>
+
+        <!-- Section: Google maps -->
+        <section id="google-maps" class="py-5 min-vh-100">
+          <div class="ratio ratio-16x9">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10019.685507545712!2d17.061994727648422!3d51.10991076939621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470fe82a7836289b%3A0xb8f93f04c5c8d70f!2sPolitechnika%20Wroc%C5%82awska!5e0!3m2!1spl!2spl!4v1743007809587!5m2!1spl!2spl" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="w-100"></iframe>
+          </div>
+        </section>
+
+        <hr>
+
+        <!-- Section: Text + img 1:3 -->
+        <section id="text-img" class="py-5 min-vh-100">
+          <div class="row p-4 shadow-3-strong rounded">
+            <div class="col-lg-3 col-md-12">
+              <h3 class="mb-3 fw-bold">Text header</h3>
+              <p class="text-justify">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam, qui.
+              Quidem tenetur quo eum distinctio voluptatum, ducimus et tempore suscipit!
+              Minima saepe illo laudantium adipisci alias nam deserunt reiciendis mollitia.
+              Eos facilis velit at laborum dolorem veritatis libero autem reiciendis.
+              Molestiae necessitatibus nihil temporibus sunt quam ex harum dicta id.
+              Animi sapiente dolores placeat hic molestiae eos rem praesentium reprehenderit!
+              Ad nobis fuga nostrum sit velit fugit soluta necessitatibus amet!
+              Harum cum nulla provident perferendis quam nihil at atque saepe?
+              Expedita necessitatibus et aliquid ullam voluptate unde voluptas beatae itaque.
+              </p>
+            </div>
+            <div class="col-lg-9 col-md-12">
+              <img src="img/cat.jpg" class="img-fluid" alt="">
+            </div>
+          </div>
+        </section>
+
+        <hr>
+
+        <!-- Section: Quote -->
+        <section id="quote" class="py-5 min-vh-100">
+          <div class="container">
+            <div class="row d-flex justify-content-center align-items-center">
+              <div class="col col-lg-9 col-xl-7">
+                <div class="card shadow-5-strong rounded-9 my-quote">
+                  <div class="card-body p-5">
+        
+                    <div class="text-center mb-4 pb-2">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-quotes/bulb.webp"
+                        alt="Bulb" width="100">
+                    </div>
+        
+                    <figure class="text-center mb-0">
+                      <blockquote class="blockquote">
+                        <p class="pb-3">
+                          <i class="fas fa-quote-left fa-xs text-primary"></i>
+                          <span class="lead font-italic">Many of life's failures are people who did not realize how
+                            close they were to success when they gave up.</span>
+                          <i class="fas fa-quote-right fa-xs text-primary"></i>
+                        </p>
+                      </blockquote>
+                      <figcaption class="blockquote-footer mb-0">
+                        Thomas Edison
+                      </figcaption>
+                    </figure>
+        
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <hr>
+
+        <!-- Section: Carousel -->
+        <section id="carousel" class="py-5 min-vh-100">
+          <h1 class="fw-bold mb-4">Meet our team</h1>
+          <!-- Carousel wrapper -->
+          <div id="carouselMaterialStyle" class="carousel slide carousel-fade carousel-dark ps-4" data-mdb-ride="carousel" data-mdb-carousel-init>
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+              <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="0" class="active" aria-current="true"
+                aria-label="Slide 1"></button>
+              <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="2" aria-label="Slide 3"></button>
+              <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+
+            <!-- Inner -->
+            <div class="carousel-inner rounded-5 shadow-5-strong">
+              
+              <!-- Employee card -->
+              <div class="carousel-item active" data-mdb-interval="2000">
+                <div class="card">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                      <img src="img/employee1.jpg" class="img-fluid h-100 w-100" alt=""/>
+                    </div>
+                    <div class="col-lg-6 col-md-12 p-5">
+                      <h1 class="text-center fw-bold">Jan Kowalski</h1>
+                      <h4 class="text-start fw-bold mt-3">About me:</h4>
+                      <p class="text-justify px-4">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae, nesciunt!
+                      Excepturi porro enim minima culpa vitae. Molestiae magnam ab deleniti.
+                      Quisquam doloribus eius dolore, cumque vitae perferendis excepturi sit consectetur.
+                      Ad consequuntur tenetur aliquid harum repellat voluptatem corporis maxime quidem!
+                      Cupiditate quod quisquam quam quae nesciunt accusamus, commodi est minus.
+                      </p>
+                      <h4 class="text-start fw-bold mt-4">My responsibilites:</h4>
+                      <ul class="text-start px-5">
+                        <li>Responsibility 1</li>
+                        <li>Responsibility 2</li>
+                        <li>Responsibility 3</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Employee card -->
+              <div class="carousel-item" data-mdb-interval="2000">
+                <div class="card">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                      <img src="img/employee2.jpg" class="img-fluid h-100 w-100" alt=""/>
+                    </div>
+                    <div class="col-lg-6 col-md-12 p-5">
+                      <h1 class="text-center fw-bold">Krystyna Krystyna</h1>
+                      <h4 class="text-start fw-bold mt-3">About me:</h4>
+                      <p class="text-justify px-4">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae, nesciunt!
+                      Excepturi porro enim minima culpa vitae. Molestiae magnam ab deleniti.
+                      Quisquam doloribus eius dolore, cumque vitae perferendis excepturi sit consectetur.
+                      Ad consequuntur tenetur aliquid harum repellat voluptatem corporis maxime quidem!
+                      Cupiditate quod quisquam quam quae nesciunt accusamus, commodi est minus.
+                      </p>
+                      <h4 class="text-start fw-bold mt-4">My responsibilites:</h4>
+                      <ul class="text-start px-5">
+                        <li>Responsibility 1</li>
+                        <li>Responsibility 2</li>
+                        <li>Responsibility 3</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Employee card -->
+              <div class="carousel-item" data-mdb-interval="2000">
+                <div class="card">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                      <img src="img/employee3.jpg" class="img-fluid h-100 w-100" alt=""/>
+                    </div>
+                    <div class="col-lg-6 col-md-12 p-5">
+                      <h1 class="text-center fw-bold">Jurek Nowak</h1>
+                      <h4 class="text-start fw-bold mt-3">About me:</h4>
+                      <p class="text-justify px-4">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae, nesciunt!
+                      Excepturi porro enim minima culpa vitae. Molestiae magnam ab deleniti.
+                      Quisquam doloribus eius dolore, cumque vitae perferendis excepturi sit consectetur.
+                      Ad consequuntur tenetur aliquid harum repellat voluptatem corporis maxime quidem!
+                      Cupiditate quod quisquam quam quae nesciunt accusamus, commodi est minus.
+                      </p>
+                      <h4 class="text-start fw-bold mt-4">My responsibilites:</h4>
+                      <ul class="text-start px-5">
+                        <li>Responsibility 1</li>
+                        <li>Responsibility 2</li>
+                        <li>Responsibility 3</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Employee card -->
+              <div class="carousel-item" data-mdb-interval="2000">
+                <div class="card">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                      <img src="img/employee4.jpg" class="img-fluid h-100 w-100" alt=""/>
+                    </div>
+                    <div class="col-lg-6 col-md-12 p-5">
+                      <h1 class="text-center fw-bold">Zbigniew JSON</h1>
+                      <h4 class="text-start fw-bold mt-3">About me:</h4>
+                      <p class="text-justify px-4">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae, nesciunt!
+                      Excepturi porro enim minima culpa vitae. Molestiae magnam ab deleniti.
+                      Quisquam doloribus eius dolore, cumque vitae perferendis excepturi sit consectetur.
+                      Ad consequuntur tenetur aliquid harum repellat voluptatem corporis maxime quidem!
+                      Cupiditate quod quisquam quam quae nesciunt accusamus, commodi est minus.
+                      </p>
+                      <h4 class="text-start fw-bold mt-4">My responsibilites:</h4>
+                      <ul class="text-start px-5">
+                        <li>Responsibility 1</li>
+                        <li>Responsibility 2</li>
+                        <li>Responsibility 3</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <!-- Inner -->
+          </div>
+          <!-- Carousel wrapper -->
+        </section>
+
+        <hr>
+
+        <!-- Section: FAQ -->
+        <section id="faq" class="py-5 min-vh-100">
+          <h1 class="mb-4 ms-2 fw-bold">FAQ</h1>
+          <div class="accordion" id="accordionExampleY">
+            <!-- Item 1 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOneY">
+                <button data-mdb-collapse-init class="accordion-button" type="button"
+                  data-mdb-target="#collapseOneY" aria-expanded="true" aria-controls="collapseOneY">
+                  <i class="fas fa-question-circle fa-sm me-2 opacity-70"></i>Czy we wszechświecie istnieje coś szybszego od światła?
+                </button>
+              </h2>
+              <div id="collapseOneY" class="accordion-collapse collapse" aria-labelledby="headingOneY"
+                data-mdb-parent="#accordionExampleY">
+                <div class="accordion-body text-justify">
+                  Według Einsteina nic nie może przekroczyć prędkości światła w próżni (ok. 300 000 km/s). Istnieją jednak teoretyczne koncepcje, takie jak tunelowanie kwantowe czy napęd warp, które mogłyby ominąć to ograniczenie, zakrzywiając czasoprzestrzeń. Na razie są to jednak jedynie spekulacje fizyczne, które wymagają potwierdzenia eksperymentalnego.
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwoY">
+                <button data-mdb-collapse-init class="accordion-button collapsed" type="button"
+                  data-mdb-target="#collapseTwoY" aria-expanded="false" aria-controls="collapseTwoY">
+                  <i class="fas fa-question-circle fa-sm me-2 opacity-70"></i>Czy czarna dziura może "wyparować"?
+                </button>
+              </h2>
+              <div id="collapseTwoY" class="accordion-collapse collapse" aria-labelledby="headingTwoY"
+                data-mdb-parent="#accordionExampleY">
+                <div class="accordion-body text-justify">
+                  Tak! Stephen Hawking odkrył, że czarne dziury mogą powoli tracić masę poprzez promieniowanie Hawkinga. Mechanizm ten polega na powstawaniu par cząstka-antycząstka na krawędzi horyzontu zdarzeń. Jeśli antycząstka wpadnie do czarnej dziury, a cząstka ucieknie, to czarna dziura traci masę. Dla dużych czarnych dziur ten proces jest niezwykle powolny, ale małe mogą całkowicie zaniknąć w eksplozji.
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThreeY">
+                <button data-mdb-collapse-init class="accordion-button collapsed" type="button"
+                  data-mdb-target="#collapseThreeY" aria-expanded="false" aria-controls="collapseThreeY">
+                  <i class="fas fa-question-circle fa-sm me-2 opacity-70"></i>Czy wszechświat ma kształt?
+                </button>
+              </h2>
+              <div id="collapseThreeY" class="accordion-collapse collapse" aria-labelledby="headingThreeY"
+                data-mdb-parent="#accordionExampleY">
+                <div class="accordion-body text-justify">
+                  Tak, ale jego kształt nie jest łatwy do określenia. Obecne dane sugerują, że wszechświat jest płaski (z niewielkimi odchyleniami), co oznacza, że jego geometria nie jest zakrzywiona w sposób zamknięty (jak sfera) ani otwarty (jak siodło). Jednak mogą istnieć wielkoskalowe zakrzywienia lub wszechświat może mieć kształt wielowymiarowego torusa, co oznaczałoby, że podróżując w jednym kierunku, moglibyśmy wrócić do punktu wyjścia!
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingFourY">
+                <button data-mdb-collapse-init class="accordion-button" type="button"
+                  data-mdb-target="#collapseFourY" aria-expanded="true" aria-controls="collapseFourY">
+                  <i class="fas fa-question-circle fa-sm me-2 opacity-70"></i>Czy można by przeżyć upadek do czarnej dziury?
+                </button>
+              </h2>
+              <div id="collapseFourY" class="accordion-collapse collapse" aria-labelledby="headingFourY"
+                data-mdb-parent="#accordionExampleY">
+                <div class="accordion-body text-justify">
+                  Jeśli wpadniesz do czarnej dziury, zależy to od jej rozmiaru. W przypadku małej czarnej dziury siły pływowe rozerwałyby cię na atomy (tzw. "spaghettifikacja") zanim dotarłbyś do horyzontu zdarzeń. Jednak w przypadku supermasywnej czarnej dziury, np. w centrum galaktyki, horyzont zdarzeń jest tak rozległy, że można by go przekroczyć bez początkowego uszkodzenia. Niestety, po przekroczeniu horyzontu zdarzeń nic już nie jest w stanie się wydostać – nie ma możliwości powrotu ani komunikacji ze światem zewnętrznym.                </div>
+              </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingFiveY">
+                <button data-mdb-collapse-init class="accordion-button" type="button"
+                  data-mdb-target="#collapseFiveY" aria-expanded="true" aria-controls="collapseFiveY">
+                  <i class="fas fa-question-circle fa-sm me-2 opacity-70"></i>Czy istnieją inne wszechświaty poza naszym?
+                </button>
+              </h2>
+              <div id="collapseFiveY" class="accordion-collapse collapse" aria-labelledby="headingFiveY"
+                data-mdb-parent="#accordionExampleY">
+                <div class="accordion-body text-justify">
+                  Teoria wieloświata sugeruje, że nasz wszechświat może być tylko jednym z nieskończonej liczby innych. Niektóre modele kwantowe i kosmologiczne wskazują, że mogą istnieć wszechświaty równoległe, które działają na innych zasadach fizycznych. Inne hipotezy, np. teoria inflacji wiecznej, sugerują, że nowe wszechświaty mogą powstawać niczym "bąble" w ogromnej, ciągle rozszerzającej się przestrzeni. Problem w tym, że na razie nie mamy sposobu, aby je bezpośrednio wykryć – to wciąż domena teorii i matematyki.                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <hr>
+
+        <!-- Section: Charts -->
+        <section id="chart" class="py-5 min-vh-100">
+          <h1 class="fw-bold mb-5">Najpopularniejsze kierunki podróży w 2024 roku</h1>
+          <div>
+            <canvas id="myChart"></canvas>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!--Main layout-->
+
+    <!--Footer-->
+    <footer class="bg-body-tertiary text-center text-lg-start">
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2025 Copyright:
+        <a class="text-body" href="#!">Michał Dudniczenko</a>
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!--Footer-->
+
+    <!-- MDB -->
+    <script type="text/javascript" src="js/mdb.umd.min.js"></script>
+    <!-- Charts.js -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom scripts -->
+    <script type="text/javascript" src="js/scripts.js"></script>
+    
+  </body>
+</html>

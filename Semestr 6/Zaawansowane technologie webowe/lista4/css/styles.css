@@ -1,0 +1,21 @@
+html,
+body,
+header,
+#intro {
+    height: 100%;
+}
+#intro {
+    background: url("../img/bg.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.my-quote {
+    background-color: #f1ebeb;
+}
