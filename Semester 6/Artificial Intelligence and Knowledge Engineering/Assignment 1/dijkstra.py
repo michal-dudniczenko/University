@@ -60,37 +60,40 @@ def dijkstra(graph, start_vertex_name, end_vertex_name, start_time):
 def main():
     graph = get_graph(get_edges())
 
-    """
-    start_stop = "Śliczna"
-    end_stop = "PL. GRUNWALDZKI"
-    start_time = "12:52:00"
-
-    """
-
-    start_stop = None
-    while not start_stop:
-        user_input = input("Podaj przystanek początkowy: ")
-        for vertex in graph.keys():
-            if user_input.strip().lower() == vertex.name.lower():
-                start_stop = vertex.name
-                break
+    if len(sys.argv) != 4:
+        print("Usage: python dijkstra.py <nazwa przystanku początkowego> <nazwa przystanku docelowego> " +
+        "<czas pojawienia się na przystanku początkowym hh:mm>")
+        sys.exit(1)
     
-    end_stop = None
-    while not end_stop:
-        user_input = input("Podaj przystanek końcowy: ")
-        for vertex in graph.keys():
-            if user_input.strip().lower() == vertex.name.lower():
-                end_stop = vertex.name
-                break
+    start_stop = sys.argv[1].strip()
+    end_stop = sys.argv[2].strip()
+    start_time = sys.argv[3].strip()
+
+    isStartGood = False
+    isEndGood = False
+
+    for vertex in graph.keys():
+        if start_stop.lower() == vertex.name.lower():
+            start_stop = vertex.name
+            isStartGood = True
+        if end_stop.lower() == vertex.name.lower():
+            end_stop = vertex.name
+            isEndGood = True
     
-    start_time = None
-    while not start_time:
-        user_input = input("Podaj czas odjazdu (HH:MM): ")
-        try:
-            datetime.strptime(user_input, "%H:%M")
-            start_time = user_input + ":00"
-        except ValueError:
-            pass
+    if not (isStartGood and isEndGood):
+        print("Nieprawidłowa nazwa przystanku")
+        print("Usage: python dijkstra.py <nazwa przystanku początkowego> <nazwa przystanku docelowego>" +
+        " <czas pojawienia się na przystanku początkowym hh:mm>")
+        sys.exit(1)
+    
+    try:
+        datetime.strptime(start_time, "%H:%M")
+        start_time = start_time + ":00"
+    except ValueError:
+        print("Nieprawidłowy czas początkowy")
+        print("Usage: python dijkstra.py <nazwa przystanku początkowego> <nazwa przystanku docelowego>" +
+        " <czas pojawienia się na przystanku początkowym hh:mm>")
+        sys.exit(1)
 
     algorithm_start_time = time.perf_counter_ns()
 
