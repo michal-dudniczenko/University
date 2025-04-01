@@ -19,3 +19,15 @@ header,
 .my-quote {
     background-color: #f1ebeb;
 }
+
+.card-text {
+    font-size: 2vh;
+}
+
+.card-header1 {
+    font-size: 2.8vh;
+}
+
+.card-header2 {
+    font-size: 2.4vh;
+}
