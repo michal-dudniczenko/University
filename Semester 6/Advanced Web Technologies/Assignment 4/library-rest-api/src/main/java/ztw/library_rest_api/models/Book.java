@@ -1,4 +1,4 @@
-package pl.edu.pwr.ztw.books.models;
+package ztw.library_rest_api.models;
 
 public class Book {
     private int id = 0;
@@ -24,24 +24,31 @@ public class Book {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
+
     public int getAuthorId() {
         return authorId;
     }
+
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
     }
+
     public int getPages() {
         return pages;
     }
+
     public void setPages(int pages) {
         this.pages = pages;
     }

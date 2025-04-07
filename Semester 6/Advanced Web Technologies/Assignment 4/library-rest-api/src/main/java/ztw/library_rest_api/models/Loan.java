@@ -1,10 +1,10 @@
-package pl.edu.pwr.ztw.books.models;
+package ztw.library_rest_api.models;
 
 public class Loan {
     private int id = 0;
     private int readerId;
     private int bookId;
-    private boolean wasReturned = false;
+    private boolean isReturned = false;
 
     public Loan() {}
 
@@ -43,11 +43,11 @@ public class Loan {
         this.bookId = bookId;
     }
 
-    public boolean isWasReturned() {
-        return wasReturned;
+    public boolean isReturned() {
+        return isReturned;
     }
 
-    public void setWasReturned(boolean wasReturned) {
-        this.wasReturned = wasReturned;
+    public void setReturned(boolean isReturned) {
+        this.isReturned = isReturned;
     }
 }

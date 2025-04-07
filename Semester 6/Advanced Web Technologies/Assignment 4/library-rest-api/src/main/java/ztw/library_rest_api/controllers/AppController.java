@@ -1,4 +1,4 @@
-package pl.edu.pwr.ztw.books.controllers;
+package ztw.library_rest_api.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

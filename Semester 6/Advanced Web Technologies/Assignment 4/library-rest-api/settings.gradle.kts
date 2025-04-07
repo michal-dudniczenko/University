@@ -1,1 +1,1 @@
-rootProject.name = "books"
+rootProject.name = "library-rest-api"

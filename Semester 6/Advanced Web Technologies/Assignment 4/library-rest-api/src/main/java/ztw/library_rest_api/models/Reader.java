@@ -1,10 +1,9 @@
-package pl.edu.pwr.ztw.books.models;
+package ztw.library_rest_api.models;
 
 public class Reader {
     private int id = 0;
     private String firstName;
     private String lastName;
-    private boolean isActive = true;
 
     public Reader() {}
 
@@ -41,13 +40,5 @@ public class Reader {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 }
