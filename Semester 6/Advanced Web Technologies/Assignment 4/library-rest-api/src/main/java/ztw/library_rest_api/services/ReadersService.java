@@ -14,12 +14,26 @@ public class ReadersService implements IReadersService {
     private static int currentId = 1;
 
     static {
-        readersRepo.add(new Reader(1, "Michał", "Dudniczenko"));
-        currentId++;
-        readersRepo.add(new Reader(2, "Jan", "Kowalski"));
-        currentId++;
-        readersRepo.add(new Reader(3,"Ania", "Banan"));
-        currentId++;
+        readersRepo.add(new Reader(currentId++, "Jan", "Kowalski"));
+        readersRepo.add(new Reader(currentId++, "Piotr", "Nowak"));
+        readersRepo.add(new Reader(currentId++, "Anna", "Wiśniewska"));
+        readersRepo.add(new Reader(currentId++, "Michał", "Dąbrowski"));
+        readersRepo.add(new Reader(currentId++, "Katarzyna", "Lewandowska"));
+        readersRepo.add(new Reader(currentId++, "Tomasz", "Wójcik"));
+        readersRepo.add(new Reader(currentId++, "Agnieszka", "Kamińska"));
+        readersRepo.add(new Reader(currentId++, "Mateusz", "Zieliński"));
+        readersRepo.add(new Reader(currentId++, "Barbara", "Szymańska"));
+        readersRepo.add(new Reader(currentId++, "Andrzej", "Woźniak"));
+        readersRepo.add(new Reader(currentId++, "Ewa", "Kozłowska"));
+        readersRepo.add(new Reader(currentId++, "Grzegorz", "Jankowski"));
+        readersRepo.add(new Reader(currentId++, "Magdalena", "Mazur"));
+        readersRepo.add(new Reader(currentId++, "Krzysztof", "Kwiatkowski"));
+        readersRepo.add(new Reader(currentId++, "Monika", "Krawczyk"));
+        readersRepo.add(new Reader(currentId++, "Paweł", "Zalewski"));
+        readersRepo.add(new Reader(currentId++, "Joanna", "Grabowska"));
+        readersRepo.add(new Reader(currentId++, "Rafał", "Piotrowski"));
+        readersRepo.add(new Reader(currentId++, "Natalia", "Nowacka"));
+        readersRepo.add(new Reader(currentId++, "Sebastian", "Czarnecki"));
     }
 
     @Override
@@ -42,11 +56,16 @@ public class ReadersService implements IReadersService {
     }
 
     @Override
+    public Response getReadersCount() {
+        return new Response(HttpStatus.OK, readersRepo.size());
+    }
+
+    @Override
     public Response addReader(Reader newReader) {
         newReader.setId(currentId);
         currentId++;
         readersRepo.add(newReader);
-        return new Response(HttpStatus.CREATED, newReader);
+        return new Response(HttpStatus.OK, newReader);
     }
 
     @Override

@@ -11,6 +11,8 @@ public interface IBooksService {
 
     Response getBook(int id);
 
+    Response getBooksCount();
+
     Response addBook(Book newBook, IAuthorsService authorsService);
 
     Response updateBook(Book book, IAuthorsService authorsService);

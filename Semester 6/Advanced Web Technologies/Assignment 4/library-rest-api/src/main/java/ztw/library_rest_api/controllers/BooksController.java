@@ -9,6 +9,7 @@ import ztw.library_rest_api.services.IAuthorsService;
 import ztw.library_rest_api.services.IBooksService;
 import ztw.library_rest_api.services.ILoansService;
 
+@CrossOrigin
 @RestController
 public class BooksController {
     @Autowired
@@ -29,6 +30,12 @@ public class BooksController {
     @RequestMapping(value = "/get/book/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getBook(@PathVariable("id") int id) {
         Response response = booksService.getBook(id);
+        return new ResponseEntity<>(response.getPayload(), response.getStatus());
+    }
+
+    @RequestMapping(value = "/get/books-count", method = RequestMethod.GET)
+    public ResponseEntity<Object> getBooksCount() {
+        Response response = booksService.getBooksCount();
         return new ResponseEntity<>(response.getPayload(), response.getStatus());
     }
 

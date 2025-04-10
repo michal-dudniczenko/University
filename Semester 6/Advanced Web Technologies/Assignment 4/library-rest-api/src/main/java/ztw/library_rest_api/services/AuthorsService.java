@@ -15,12 +15,16 @@ public class AuthorsService implements IAuthorsService {
     private static int currentId = 1;
 
     static {
-        authorsRepo.add(new Author(1, "Henryk", "Sienkiewicz"));
-        currentId++;
-        authorsRepo.add(new Author(2, "Stanisław", "Reymont"));
-        currentId++;
-        authorsRepo.add(new Author(3,"Adam", "Mickiewicz"));
-        currentId++;
+        authorsRepo.add(new Author(currentId++, "Henryk", "Sienkiewicz"));
+        authorsRepo.add(new Author(currentId++, "Stanisław", "Reymont"));
+        authorsRepo.add(new Author(currentId++, "Adam", "Mickiewicz"));
+        authorsRepo.add(new Author(currentId++, "Juliusz", "Słowacki"));
+        authorsRepo.add(new Author(currentId++, "Bolesław", "Prus"));
+        authorsRepo.add(new Author(currentId++, "Zofia", "Nałkowska"));
+        authorsRepo.add(new Author(currentId++, "Bruno", "Schulz"));
+        authorsRepo.add(new Author(currentId++, "Czesław", "Miłosz"));
+        authorsRepo.add(new Author(currentId++, "Wisława", "Szymborska"));
+        authorsRepo.add(new Author(currentId++, "Olga", "Tokarczuk"));
     }
 
     @Override
@@ -43,11 +47,16 @@ public class AuthorsService implements IAuthorsService {
     }
 
     @Override
+    public Response getAuthorsCount() {
+        return new Response(HttpStatus.OK, authorsRepo.size());
+    }
+
+    @Override
     public Response addAuthor(Author newAuthor) {
         newAuthor.setId(currentId);
         currentId++;
         authorsRepo.add(newAuthor);
-        return new Response(HttpStatus.CREATED, newAuthor);
+        return new Response(HttpStatus.OK, newAuthor);
     }
 
     @Override

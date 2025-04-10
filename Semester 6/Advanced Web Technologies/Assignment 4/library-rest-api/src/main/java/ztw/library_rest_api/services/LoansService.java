@@ -16,12 +16,36 @@ public class LoansService implements ILoansService{
     private final static int maxBorrowedBooks = 3;
     
     static {
-        loansRepo.add(new Loan(1, 1, 2));
-        currentId++;
-        loansRepo.add(new Loan(2, 2, 3));
-        currentId++;
-        loansRepo.add(new Loan(3,1, 1));
-        currentId++;
+        loansRepo.add(new Loan(currentId++, 8, 7));
+        loansRepo.add(new Loan(currentId++, 5, 8));
+        loansRepo.add(new Loan(currentId++, 1, 5));
+        loansRepo.add(new Loan(currentId++, 3, 12));
+        loansRepo.add(new Loan(currentId++, 10, 16));
+        loansRepo.add(new Loan(currentId++, 2, 3));
+        loansRepo.add(new Loan(currentId++, 6, 18));
+        loansRepo.add(new Loan(currentId++, 9, 6));
+        loansRepo.add(new Loan(currentId++, 4, 2));
+        loansRepo.add(new Loan(currentId++, 1, 11));
+        loansRepo.add(new Loan(currentId++, 7, 9));
+        loansRepo.add(new Loan(currentId++, 5, 7));
+        loansRepo.add(new Loan(currentId++, 6, 17));
+        loansRepo.add(new Loan(currentId++, 9, 1));
+        loansRepo.add(new Loan(currentId++, 8, 15));
+        loansRepo.add(new Loan(currentId++, 4, 14));
+        loansRepo.add(new Loan(currentId++, 10, 20));
+        loansRepo.add(new Loan(currentId++, 2, 9));
+        loansRepo.add(new Loan(currentId++, 1, 13));
+        loansRepo.add(new Loan(currentId++, 7, 4));
+        loansRepo.add(new Loan(currentId++, 6, 3));
+        loansRepo.add(new Loan(currentId++, 5, 12));
+        loansRepo.add(new Loan(currentId++, 3, 13));
+        loansRepo.add(new Loan(currentId++, 4, 18));
+        loansRepo.add(new Loan(currentId++, 10, 19));
+        loansRepo.add(new Loan(currentId++, 2, 6));
+        loansRepo.add(new Loan(currentId++, 3, 4));
+        loansRepo.add(new Loan(currentId++, 9, 5));
+        loansRepo.add(new Loan(currentId++, 8, 19));
+        loansRepo.add(new Loan(currentId++, 7, 10));
     }
 
     @Override
@@ -44,7 +68,12 @@ public class LoansService implements ILoansService{
     }
 
     @Override
-    public Response getReaderLoans(int readerId, IReadersService readersService, int idFrom, int idTo) {
+    public Response getLoansCount() {
+        return new Response(HttpStatus.OK, loansRepo.size());
+    }
+
+    @Override
+    public Response getReaderActiveLoans(int readerId, IReadersService readersService) {
         if (readersService.getReader(readerId) == null) {
             return new Response(HttpStatus.NOT_FOUND, "No reader with specified id in repository.");
         }
@@ -53,7 +82,7 @@ public class LoansService implements ILoansService{
                 .filter(l -> l.getReaderId() == readerId && !l.isReturned())
                 .toList();
 
-        return new Response(HttpStatus.OK, readerLoans.subList(idFrom, Math.min(idTo + 1, loansRepo.size())));
+        return new Response(HttpStatus.OK, readerLoans);
     }
 
     @Override
@@ -101,10 +130,10 @@ public class LoansService implements ILoansService{
     public boolean isBookBorrowed(int bookId) {
         for (Loan loan : loansRepo) {
             if (loan.getBookId() == bookId && !loan.isReturned()) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override

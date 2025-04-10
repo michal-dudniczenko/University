@@ -15,12 +15,26 @@ public class BooksService implements IBooksService {
     private static int currentId = 1;
 
     static {
-        booksRepo.add(new Book(1, "Potop", 1, 936));
-        currentId++;
-        booksRepo.add(new Book(2, "Wesele", 2, 150));
-        currentId++;
-        booksRepo.add(new Book(3, "Dziady", 3, 292));
-        currentId++;
+        booksRepo.add(new Book(currentId++, "Quo Vadis", 1, 500));
+        booksRepo.add(new Book(currentId++, "The Knights of the Cross", 1, 650));
+        booksRepo.add(new Book(currentId++, "The Peasants", 2, 800));
+        booksRepo.add(new Book(currentId++, "Pan Tadeusz", 3, 400));
+        booksRepo.add(new Book(currentId++, "Ballads and Romances", 3, 200));
+        booksRepo.add(new Book(currentId++, "Kordian", 4, 350));
+        booksRepo.add(new Book(currentId++, "Lalka", 5, 700));
+        booksRepo.add(new Book(currentId++, "The Doll", 5, 720));
+        booksRepo.add(new Book(currentId++, "Medallions", 6, 180));
+        booksRepo.add(new Book(currentId++, "The Street of Crocodiles", 7, 250));
+        booksRepo.add(new Book(currentId++, "The Captive Mind", 8, 300));
+        booksRepo.add(new Book(currentId++, "The Issa Valley", 8, 280));
+        booksRepo.add(new Book(currentId++, "View with a Grain of Sand", 9, 230));
+        booksRepo.add(new Book(currentId++, "Here", 9, 210));
+        booksRepo.add(new Book(currentId++, "Flights", 10, 450));
+        booksRepo.add(new Book(currentId++, "The Books of Jacob", 10, 900));
+        booksRepo.add(new Book(currentId++, "Primeval and Other Times", 10, 370));
+        booksRepo.add(new Book(currentId++, "House of Day, House of Night", 10, 400));
+        booksRepo.add(new Book(currentId++, "Drive Your Plow Over the Bones of the Dead", 10, 320));
+        booksRepo.add(new Book(currentId++, "The Tender Narrator", 10, 280));
     }
 
     @Override
@@ -43,6 +57,11 @@ public class BooksService implements IBooksService {
     }
 
     @Override
+    public Response getBooksCount() {
+        return new Response(HttpStatus.OK, booksRepo.size());
+    }
+
+    @Override
     public Response addBook(Book newBook, IAuthorsService authorsService) {
         if (authorsService.getAuthor(newBook.getAuthorId()).getPayload() == null) {
             return new Response(HttpStatus.BAD_REQUEST, "No author with specified id in repository.");
@@ -51,7 +70,7 @@ public class BooksService implements IBooksService {
         newBook.setId(currentId);
         currentId++;
         booksRepo.add(newBook);
-        return new Response(HttpStatus.CREATED, newBook);
+        return new Response(HttpStatus.OK, newBook);
     }
 
     @Override

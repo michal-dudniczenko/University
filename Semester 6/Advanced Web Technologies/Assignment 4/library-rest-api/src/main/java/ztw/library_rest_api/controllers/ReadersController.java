@@ -8,6 +8,7 @@ import ztw.library_rest_api.models.Response;
 import ztw.library_rest_api.services.IReadersService;
 import ztw.library_rest_api.services.ILoansService;
 
+@CrossOrigin
 @RestController
 public class ReadersController {
     @Autowired
@@ -25,6 +26,12 @@ public class ReadersController {
     @RequestMapping(value = "/get/reader/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getReader(@PathVariable("id") int id) {
         Response response = readersService.getReader(id);
+        return new ResponseEntity<>(response.getPayload(), response.getStatus());
+    }
+
+    @RequestMapping(value = "/get/readers-count", method = RequestMethod.GET)
+    public ResponseEntity<Object> getReadersCount() {
+        Response response = readersService.getReadersCount();
         return new ResponseEntity<>(response.getPayload(), response.getStatus());
     }
 

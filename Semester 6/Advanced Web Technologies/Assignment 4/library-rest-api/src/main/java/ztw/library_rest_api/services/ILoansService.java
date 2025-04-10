@@ -8,7 +8,9 @@ public interface ILoansService {
 
     Response getLoan(int id);
 
-    Response getReaderLoans(int readerId, IReadersService readersService, int idFrom, int idTo);
+    Response getLoansCount();
+
+    Response getReaderActiveLoans(int readerId, IReadersService readersService);
 
     Response borrowBook(int readerId, int bookId, IBooksService booksService, IReadersService readersService);
 

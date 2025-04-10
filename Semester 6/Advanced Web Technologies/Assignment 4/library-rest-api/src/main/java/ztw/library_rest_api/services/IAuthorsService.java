@@ -9,9 +9,13 @@ public interface IAuthorsService {
 
     Response getAuthor(int id);
 
+    Response getAuthorsCount();
+
     Response addAuthor(Author newAuthor);
 
     Response updateAuthor(Author author);
 
     Response deleteAuthor(int id, IBooksService booksService);
+
+
 }

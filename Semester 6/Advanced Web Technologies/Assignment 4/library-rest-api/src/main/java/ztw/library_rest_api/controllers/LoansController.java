@@ -8,6 +8,7 @@ import ztw.library_rest_api.services.IBooksService;
 import ztw.library_rest_api.services.ILoansService;
 import ztw.library_rest_api.services.IReadersService;
 
+@CrossOrigin()
 @RestController
 public class LoansController {
     @Autowired
@@ -31,13 +32,17 @@ public class LoansController {
         return new ResponseEntity<>(response.getPayload(), response.getStatus());
     }
 
-    @RequestMapping(value = "/get/reader-loans/{readerId}/{idFrom}/{idTo}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/loans-count", method = RequestMethod.GET)
+    public ResponseEntity<Object> getLoansCount() {
+        Response response = loansService.getLoansCount();
+        return new ResponseEntity<>(response.getPayload(), response.getStatus());
+    }
+
+    @RequestMapping(value = "/get/reader-active-loans/{readerId}", method = RequestMethod.GET)
     public ResponseEntity<Object> getReaderLoans(
-            @PathVariable("readerId") int readerId,
-            @PathVariable("idFrom") int idFrom,
-            @PathVariable("idTo") int idTo
+            @PathVariable("readerId") int readerId
     ) {
-        Response response = loansService.getReaderLoans(readerId, readersService, idFrom, idTo);
+        Response response = loansService.getReaderActiveLoans(readerId, readersService);
         return new ResponseEntity<>(response.getPayload(), response.getStatus());
     }
 

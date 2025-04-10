@@ -9,6 +9,8 @@ public interface IReadersService {
 
     Response getReader(int id);
 
+    Response getReadersCount();
+
     Response addReader(Reader newReader);
 
     Response updateReader(Reader reader);
