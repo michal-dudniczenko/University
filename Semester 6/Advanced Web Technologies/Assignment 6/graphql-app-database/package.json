@@ -1,0 +1,17 @@
+{
+  "name": "graphql-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -e js,graphql src/App.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "graphql-yoga": "^1.18.3",
+    "nodemon": "^3.1.9",
+    "pg": "^8.14.1"
+  }
+}
