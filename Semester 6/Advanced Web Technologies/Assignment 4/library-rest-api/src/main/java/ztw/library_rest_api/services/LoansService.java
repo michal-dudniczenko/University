@@ -87,9 +87,9 @@ public class LoansService implements ILoansService{
 
     @Override
     public Response borrowBook(int readerId, int bookId, IBooksService booksService, IReadersService readersService) {
-        if (booksService.getBook(bookId) == null) {
+        if (booksService.getBook(bookId).getStatus() != HttpStatus.OK) {
             return new Response(HttpStatus.BAD_REQUEST, "No book with specified id in repository.");
-        } else if (readersService.getReader(readerId) == null) {
+        } else if (readersService.getReader(readerId).getStatus() != HttpStatus.OK) {
             return new Response(HttpStatus.BAD_REQUEST, "No reader with specified id in repository.");
         } else if (isBookBorrowed(bookId)) {
             return new Response(HttpStatus.BAD_REQUEST, "This book is already borrowed.");
