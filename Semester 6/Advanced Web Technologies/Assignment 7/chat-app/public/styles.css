@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+}
+
+#bottom-bar {
+    background-color: rgba(0, 0, 0, 0.25);
+    display: flex;
+    position: fixed;
+    align-items: center;
+    width: 100%;
+    bottom: 0;
+    height: 5rem;
+    padding: 10px;
+}
+
+#form {
+    display: flex;
+    height: 100%;
+    gap: 10px;
+    margin-left: 20px;
+    flex-grow: 1;
+}
+
+#input {
+    flex-grow: 1;
+    height: 100%;
+    padding: 0 10px;
+    border: none;
+    border-radius: 10px;
+}
+
+#input:focus { 
+    outline: none; 
+}
+
+#messages { 
+    list-style-type: none; 
+    width: 100%; 
+}
+
+#messages > li { 
+    padding: 0.5rem 1rem; 
+    display: flex;
+}
+
+.show {
+    display: flex;
+}
+
+.hide {
+    display: none;
+}
+
+#login {
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#chat {
+    flex-direction: column;
+    padding-bottom: 5rem;
+}
+
+#sendButton, #leaveButton {
+    height: 100%;
+}
+
+#loginButton, #leaveButton, #sendButton {
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border-radius: 10px;
+}
+
+#usernameInput {
+    padding: 10px;
+}
+
+.center {
+    justify-content: center;
+}
+
+.dymek {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.niebieski {
+    background-color: lightblue;
+}
+
+.zielony {
+    background-color: lightgreen;
+}
+
+.align-right {
+    justify-content: end;
+}
