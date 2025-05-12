@@ -11,6 +11,7 @@ const loginDiv = document.getElementById('login');
 const chatDiv = document.getElementById('chat');
 const usernameInput = document.getElementById('usernameInput');
 const leaveButton = document.getElementById('leaveButton');
+const loginForm = document.getElementById('login-form');
 
 let isTyping = false;
 
@@ -28,7 +29,8 @@ input.addEventListener('input', () => {
     }
 });
 
-loginButton.addEventListener('click', () => {
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
     const name = usernameInput.value.trim();
     if (name) {
         username = name;

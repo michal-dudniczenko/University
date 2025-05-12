@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <title>Chat</title>
     <link rel="icon" href="favicon.png" type="image/png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
     <div id="login" class="show">
-        <h2>Enter username:</h2>
-        <input id="usernameInput" type="text" autocomplete="off">
-        <button id="loginButton">Join chat</button>
+        <form id="login-form", action="">
+            <h2>Enter username:</h2>
+            <div>
+                <input id="usernameInput" type="text" autocomplete="off">
+                <button id="loginButton" type="submit">Join chat</button>
+            </div>
+        </form>
     </div>
 
     <div id="chat" class="hide">        
