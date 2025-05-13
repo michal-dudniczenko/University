@@ -1,134 +1,109 @@
-﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Common.Domain.Bus;
-using Common.Domain.Commands;
 using Common.Domain.Events;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using Common.Domain;
 
 namespace Common.Bus;
 
 public sealed class RabbitMQBus : IEventBus
 {
-    private readonly IMediator _mediator;
-    private readonly Dictionary<string, List<Type>> _handlers;
-    private readonly List<Type> _eventTypes;
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public RabbitMQBus(IMediator mediator, IServiceScopeFactory serviceScopeFactory)
+    public RabbitMQBus(IServiceScopeFactory serviceScopeFactory)
     {
-        _mediator = mediator;
-        _handlers = new Dictionary<string, List<Type>>();
-        _eventTypes = new List<Type>();
         _serviceScopeFactory = serviceScopeFactory;
-    }
-
-    public Task SendCommand<T>(T command) where T : Command
-    {
-        return _mediator.Send(command);
     }
 
     public async Task Publish<T>(T @event) where T : Event
     {
-        var factory = new ConnectionFactory() { HostName = "localhost" };
+        var factory = new ConnectionFactory() { 
+            HostName = Domain.Constants.EC2_INSTANCE_IP,
+            UserName = Domain.Constants.RABBITMQ_USERNAME,
+            Password = Domain.Constants.RABBITMQ_PASSWORD,
+            VirtualHost = Domain.Constants.RABBITMQ_VIRTUAL_HOST,
+        };
         using (var connection = await factory.CreateConnectionAsync())
         using (var channel = await connection.CreateChannelAsync())
         {
             var eventName = @event.GetType().Name;
+            var exchangeName = eventName;
 
-            await channel.QueueDeclareAsync(eventName, false, false, false, null);
+            // create fanout exchange with name equal to event name
+            await channel.ExchangeDeclareAsync(exchangeName, ExchangeType.Fanout, durable: false, autoDelete: false);
 
             var message = JsonConvert.SerializeObject(@event);
             var body = Encoding.UTF8.GetBytes(message);
 
-            await channel.BasicPublishAsync("", eventName, body);
+            // publish message to that fanout exchange
+            await channel.BasicPublishAsync(exchange: exchangeName, routingKey: "", body: body);
+
         }
 
     }
 
-    public async Task Subscribe<T, TH>()
-        where T : Event
-        where TH : IEventHandler<T>
+    public async Task Subscribe<T, TH, TS>()
+    where T : Event
+    where TH : IEventHandler<T>
+    where TS : Service
     {
-        var eventName = typeof(T).Name;
-        var handlerType = typeof(TH);
-
-        if (!_eventTypes.Contains(typeof(T)))
+        var factory = new ConnectionFactory()
         {
-            _eventTypes.Add(typeof(T));
-        }
-
-        if (!_handlers.ContainsKey(eventName))
-        {
-            _handlers.Add(eventName, new List<Type>());
-        }
-
-        if (_handlers[eventName].Any(s => s.GetType() == handlerType))
-        {
-            throw new ArgumentException($"Handler Type {handlerType.Name} already is registered for {eventName}", nameof(handlerType));
-        }
-
-        _handlers[eventName].Add(handlerType);
-
-        await StartBasicConsumeAsync<T>();
-    }
-
-    private async Task StartBasicConsumeAsync<T>() where T : Event
-    {
-        var factory = new ConnectionFactory() { HostName = "localhost" };
-
+            HostName = Domain.Constants.EC2_INSTANCE_IP,
+            UserName = Domain.Constants.RABBITMQ_USERNAME,
+            Password = Domain.Constants.RABBITMQ_PASSWORD,
+            VirtualHost = Domain.Constants.RABBITMQ_VIRTUAL_HOST,
+        };
         var connection = await factory.CreateConnectionAsync();
         var channel = await connection.CreateChannelAsync();
 
-        var eventName = typeof(T).Name;
+        var exchangeName = typeof(T).Name;
+        var queueName = $"{typeof(TS).Name}-{typeof(TH).Name}";
 
-        await channel.QueueDeclareAsync(eventName, false, false, false, null);
+        await channel.ExchangeDeclareAsync(exchangeName, ExchangeType.Fanout, durable: false, autoDelete: false);
+        await channel.QueueDeclareAsync(queue: queueName, durable: false, exclusive: false, autoDelete: true);
+        await channel.QueueBindAsync(queue: queueName, exchange: exchangeName, routingKey: "");
 
         var consumer = new AsyncEventingBasicConsumer(channel);
 
-        consumer.ReceivedAsync += Consumer_Received;
-
-        await channel.BasicConsumeAsync(eventName, true, consumer);
-    }
-
-    private async Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
-    {
-        var eventName = @event.RoutingKey;
-        var message = Encoding.UTF8.GetString(@event.Body.ToArray());
-
-        try
+        consumer.ReceivedAsync += async (sender, args) =>
         {
-            await ProcessEvent(eventName, message).ConfigureAwait(false);
-        }
-        catch (Exception ex) { }
-    }
+            var message = Encoding.UTF8.GetString(args.Body.ToArray());
+            T @event;
 
-    private async Task ProcessEvent(string eventName, string message)
-    {
-        if (_handlers.ContainsKey(eventName))
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
+            try
             {
-                var subscriptions = _handlers[eventName];
-
-                foreach (var subscription in subscriptions)
-                {
-                    var handler = scope.ServiceProvider.GetService(subscription);
-
-                    if (handler == null) continue;
-
-                    var eventType = _eventTypes.SingleOrDefault(t => t.Name == eventName);
-
-                    var @event = JsonConvert.DeserializeObject(message, eventType);
-
-                    var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
-
-                    await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { @event });
-                }
+                @event = JsonConvert.DeserializeObject<T>(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to deserialize message: {ex.Message}");
+                return;
             }
 
-        }
+            using var scope = _serviceScopeFactory.CreateScope();
+            var handler = scope.ServiceProvider.GetService<TH>();
+
+            if (handler == null)
+            {
+                Console.WriteLine($"Handler not found for {typeof(T).Name}");
+                return;
+            }
+
+            try
+            {
+                await handler.Handle(@event);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error handling event {typeof(T).Name}: {ex.Message}");
+            }
+        };
+
+        await channel.BasicConsumeAsync(queue: queueName, autoAck: true, consumer: consumer);
     }
+
 }

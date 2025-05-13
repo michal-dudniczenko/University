@@ -6,7 +6,7 @@ using OrderService.Domain.Queries;
 
 namespace OrderService.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("")]
 [ApiController]
 public class OrderController : ControllerBase
 {
@@ -22,6 +22,8 @@ public class OrderController : ControllerBase
     [HttpGet("get-user-orders/{userId}")]
     public async Task<ActionResult<List<OrderDto>>> GetUserOrders(Guid userId)
     {
+        _logger.LogWarning("GET /get-user-orders/{userId}", userId);
+
         var result = await _mediator.Send(new GetUserOrdersQuery(userId));
         if (result != null)
         {
@@ -36,6 +38,8 @@ public class OrderController : ControllerBase
     [HttpGet("get-order-items/{orderId}")]
     public async Task<ActionResult<List<OrderItemDto>>> GetOrderItems(Guid orderId)
     {
+        _logger.LogWarning("GET /get-order-items/{orderId}", orderId);
+
         var result = await _mediator.Send(new GetOrderItemsQuery(orderId));
         if (result != null)
         {
@@ -50,7 +54,9 @@ public class OrderController : ControllerBase
     [HttpPost("make-order")]
     public async Task<IActionResult> MakeOrder([FromBody] MakeOrderDto makeOrderDto)
     {
-        var result = await _mediator.Send(new MakeOrderCommand(userId: makeOrderDto.UserId, orderItems: makeOrderDto.OrderItems));
+        _logger.LogWarning("POST /make-order");
+
+        var result = await _mediator.Send(new MakeOrderCommand(userId: makeOrderDto.UserId, token: makeOrderDto.Token));
         if (result)
         {
             return Ok();

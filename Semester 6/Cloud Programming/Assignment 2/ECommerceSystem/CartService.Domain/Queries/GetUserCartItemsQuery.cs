@@ -1,4 +1,4 @@
-﻿using CartService.Domain.DTO;
+﻿using Common.Domain.DTO;
 using MediatR;
 
 namespace CartService.Domain.Queries;

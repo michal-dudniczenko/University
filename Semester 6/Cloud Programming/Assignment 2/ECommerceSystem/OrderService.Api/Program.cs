@@ -1,4 +1,5 @@
 using Common.Bus;
+using Common.Domain;
 using Common.Domain.Bus;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(Constants.GetConnectionString("OrderService")));
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
@@ -32,13 +33,15 @@ builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 builder.Services.AddSingleton<IEventBus, RabbitMQBus>(sp =>
 {
     var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
-    return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory);
+    return new RabbitMQBus(scopeFactory);
 });
 
 builder.Services.AddTransient<IRequestHandler<MakeOrderCommand, bool>, MakeOrderCommandHandler>();
 
 builder.Services.AddTransient<IRequestHandler<GetOrderItemsQuery, List<OrderItemDto>>, GetOrderItemsQueryHandler>();
 builder.Services.AddTransient<IRequestHandler<GetUserOrdersQuery, List<OrderDto>>, GetUserOrdersQueryHandler>();
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

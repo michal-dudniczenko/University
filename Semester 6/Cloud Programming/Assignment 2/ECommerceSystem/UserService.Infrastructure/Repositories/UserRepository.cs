@@ -25,6 +25,14 @@ public class UserRepository : IUserRepository
         return await _context.Users.FirstOrDefaultAsync(user => user.Email == email);
     }
 
+    public async Task<string?> GetUserEmail(Guid id)
+    {
+        return await _context.Users
+            .Where(user => user.Id == id)
+            .Select(user => user.Email)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<List<User>> GetAllUsers()
     {
         return await _context.Users.ToListAsync();
@@ -51,4 +59,5 @@ public class UserRepository : IUserRepository
     {
         return secretKey;
     }
+
 }

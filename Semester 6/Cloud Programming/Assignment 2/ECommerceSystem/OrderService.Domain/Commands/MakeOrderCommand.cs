@@ -1,16 +1,15 @@
 ﻿using Common.Domain.Commands;
-using OrderService.Domain.DTO;
 
 namespace OrderService.Domain.Commands;
 
 public class MakeOrderCommand : Command
 {
     public Guid UserId { get; set; }
-    public List<ItemQuantityDto> OrderItems { get; set; }
+    public string Token { get; set; }
 
-    public MakeOrderCommand(Guid userId, List<ItemQuantityDto> orderItems)
+    public MakeOrderCommand(Guid userId, string token)
     {
         UserId = userId;
-        OrderItems = orderItems;
+        Token = token;
     }
 }

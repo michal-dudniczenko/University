@@ -1,8 +1,8 @@
 ﻿using Common.Domain.Bus;
+using Common.Domain.Events.UserService;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using UserService.Domain.Commands;
-using UserService.Domain.Events;
 using UserService.Infrastructure.Repositories;
 
 namespace UserService.Infrastructure.CommandHandlers;
@@ -11,15 +11,19 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, bool>
 {
     private readonly IUserRepository _userRepository;
     private readonly IEventBus _eventBus;
+    private readonly ILogger<LoginUserCommandHandler> _logger;
 
-    public LoginUserCommandHandler(IUserRepository userRepository, IEventBus eventBus)
+    public LoginUserCommandHandler(IUserRepository userRepository, IEventBus eventBus, ILogger<LoginUserCommandHandler> logger)
     {
         _userRepository = userRepository;
         _eventBus = eventBus;
+        _logger = logger;
     }
 
     public async Task<bool> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogWarning("LoginUserCommand");
+
         var user = await _userRepository.GetUserLogin(request.Email, request.Password);
         if (user == null)
         {
@@ -28,7 +32,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, bool>
         }
         else
         {
-            await _eventBus.Publish(new UserLoginSuccessEvent(request.Email));
+            await _eventBus.Publish(new UserLoginSuccessEvent(user.Id, request.Email));
             return true;
         }
     }

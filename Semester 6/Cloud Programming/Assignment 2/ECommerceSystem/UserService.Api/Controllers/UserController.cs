@@ -7,7 +7,7 @@ using UserService.Domain.Queries;
 
 namespace UserService.Api.Controllers;
 
-[Route("[controller]")]
+[Route("")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -25,6 +25,8 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto request)
     {
+        _logger.LogWarning("POST /register");
+
         var result = await _mediator.Send(new RegisterUserCommand(request.Email, request.Password));
 
         if (result)
@@ -33,28 +35,32 @@ public class UserController : ControllerBase
         }
         else
         {
-            return Conflict("User with that email already exists.");
+            return Conflict(new { error = "User with that email already exists." });
         }
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserDto request)
     {
+        _logger.LogWarning("POST /login");
+
         var result = await _mediator.Send(new LoginUserCommand(request.Email, request.Password));
 
         if (!result)
         {
-            return Unauthorized("Invalid email or password.");
+            return Unauthorized(new { error = "Invalid email or password." });
             
         }
 
         var token = await _tokenService.GenerateToken(request.Email);
-        return Ok(token);
+        return Ok(new { token = token });
     }
 
     [HttpPost("authorize")]
     public async Task<IActionResult> Authorize([FromBody] AuthorizeUserDto request)
     {
+        _logger.LogWarning("POST /authorize");
+
         var result = await _mediator.Send(new AuthorizeUserCommand(request.Token));
 
         if ( result)
@@ -62,14 +68,29 @@ public class UserController : ControllerBase
             return Ok();
         } else
         {
-            return Unauthorized("Invalid token.");
+            return Unauthorized(new { error = "Invalid token." });
         }
     }
 
     [HttpGet("get-all-users")]
     public async Task<IActionResult> GetAllUsers()
     {
+        _logger.LogWarning("GET /get-all-users");
+
         var result = await _mediator.Send(new GetAllUsersQuery());
+        return Ok(result);
+    }
+
+    [HttpGet("get-user-email/{id}")]
+    public async Task<IActionResult> GetUserEmail(Guid id)
+    {
+        _logger.LogWarning($"GET /get-user-email/{id}");
+
+        var result = await _mediator.Send(new GetUserEmailQuery(id));
+        if (result == null)
+        {
+            return NotFound();
+        }
         return Ok(result);
     }
 }

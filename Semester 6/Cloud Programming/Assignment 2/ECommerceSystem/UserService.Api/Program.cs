@@ -1,5 +1,7 @@
 using Common.Bus;
+using Common.Domain;
 using Common.Domain.Bus;
+using Common.Domain.DTO;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using UserService.Domain.Commands;
@@ -23,14 +25,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(Constants.GetConnectionString("UserService")));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddSingleton<IEventBus, RabbitMQBus>(sp =>
 {
     var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
-    return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory);
+    return new RabbitMQBus(scopeFactory);
 });
 
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -40,6 +42,7 @@ builder.Services.AddTransient<IRequestHandler<LoginUserCommand, bool>, LoginUser
 builder.Services.AddTransient<IRequestHandler<RegisterUserCommand, bool>, RegisterUserCommandHandler>();
 
 builder.Services.AddTransient<IRequestHandler<GetAllUsersQuery, List<UserDto>>, GetAllUsersQueryHandler>();
+builder.Services.AddTransient<IRequestHandler<GetUserEmailQuery, UserEmailDto>, GetUserEmailQueryHandler>();
 
 var app = builder.Build();
 

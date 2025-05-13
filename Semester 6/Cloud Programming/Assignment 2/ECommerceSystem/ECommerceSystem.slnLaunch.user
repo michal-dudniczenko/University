@@ -1,0 +1,27 @@
+[
+  {
+    "Name": "All services",
+    "Projects": [
+      {
+        "Path": "UserService.Api\\UserService.Api.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "ProductService.Api\\ProductService.Api.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "CartService.Api\\CartService.Api.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "OrderService.Api\\OrderService.Api.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "NotificationService.Api\\NotificationService.Api.csproj",
+        "Action": "StartWithoutDebugging"
+      }
+    ]
+  }
+]

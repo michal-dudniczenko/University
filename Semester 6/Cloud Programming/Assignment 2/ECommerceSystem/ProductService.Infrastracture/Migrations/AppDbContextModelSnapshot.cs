@@ -37,7 +37,7 @@ namespace ProductService.Infrastracture.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("DECIMAL(18, 2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");

@@ -1,5 +1,5 @@
-﻿using CartService.Domain.DTO;
-using CartService.Domain.Entities;
+﻿using CartService.Domain.Entities;
+using Common.Domain.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace CartService.Infrastructure.Repositories;
@@ -43,6 +43,15 @@ public class CartRepository : ICartRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<List<Guid>> GetUsersHavingProductInCart(Guid productId)
+    {
+        return await _context.CartEntries
+            .Where(x => x.ProductId == productId)
+            .Select(x => x.UserId)
+            .Distinct()
+            .ToListAsync();
+    }
+
     public async Task<List<CartEntryDto>> GetUserCartItems(Guid userId)
     {
         return await _context.CartEntries
@@ -75,4 +84,5 @@ public class CartRepository : ICartRepository
         }
         await _context.SaveChangesAsync();
     }
+
 }

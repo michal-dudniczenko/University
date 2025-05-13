@@ -8,6 +8,8 @@ public interface IUserRepository
 
     Task<User?> GetUserByEmail(string email);
 
+    Task<string?> GetUserEmail(Guid id);
+
     Task<List<User>> GetAllUsers();
 
     Task AddUser(User user);

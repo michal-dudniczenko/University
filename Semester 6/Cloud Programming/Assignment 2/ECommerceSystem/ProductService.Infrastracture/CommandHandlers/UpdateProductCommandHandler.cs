@@ -1,7 +1,8 @@
 ﻿using Common.Domain.Bus;
+using Common.Domain.Events.ProductService;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using ProductService.Domain.Commands;
-using ProductService.Domain.Events;
 using ProductService.Infrastracture.Repositories;
 
 namespace ProductService.Infrastracture.CommandHandlers;
@@ -10,15 +11,19 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 {
     private readonly IProductRepository _productRepository;
     private readonly IEventBus _eventBus;
+    private readonly ILogger<UpdateProductCommandHandler> _logger;
 
-    public UpdateProductCommandHandler(IProductRepository productRepository, IEventBus eventBus)
+    public UpdateProductCommandHandler(IProductRepository productRepository, IEventBus eventBus, ILogger<UpdateProductCommandHandler> logger)
     {
         _productRepository = productRepository;
         _eventBus = eventBus;
+        _logger = logger;
     }
 
     public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogWarning("UpdateProductCommand");
+
         var product = await _productRepository.GetProductById(request.Id);
         if (product == null)
         {

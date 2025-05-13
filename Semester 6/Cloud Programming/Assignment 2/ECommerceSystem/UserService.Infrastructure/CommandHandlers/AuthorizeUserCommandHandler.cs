@@ -1,66 +1,38 @@
 ﻿using Common.Domain.Bus;
+using Common.Domain.Events.UserService;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using UserService.Domain.Commands;
-using UserService.Domain.Events;
-using UserService.Infrastructure.Repositories;
+using UserService.Infrastructure.Helpers;
 
 namespace UserService.Infrastructure.CommandHandlers;
 
 public class AuthorizeUserCommandHandler : IRequestHandler<AuthorizeUserCommand, bool>
 {
-    private readonly IUserRepository _userRepository;
+    private readonly ITokenService _tokenService;
     private readonly IEventBus _eventBus;
+    private readonly ILogger<AuthorizeUserCommandHandler> _logger;
 
-    public AuthorizeUserCommandHandler(IUserRepository userRepository, IEventBus eventBus)
+    public AuthorizeUserCommandHandler(ITokenService tokenService, IEventBus eventBus, ILogger<AuthorizeUserCommandHandler> logger)
     {
-        _userRepository = userRepository;
+        _tokenService = tokenService;
         _eventBus = eventBus;
+        _logger = logger;
     }
 
     public async Task<bool> Handle(AuthorizeUserCommand request, CancellationToken cancellationToken)
     {
-        var hasher = new PasswordHasher<object>();
+        _logger.LogWarning("AuthorizeUserCommand");
 
-        var secretKey = await _userRepository.GetSecretKey();
-
-        var token = request.Token;
-
-        var tokenParts = token.Split('.');
-
-        /* debugging
-        if (tokenParts.Length != 3)
+        if ((await _tokenService.ValidateToken(request.Token)) == true)
         {
-            Console.WriteLine("wrong length");
-        }
-
-        if (hasher.VerifyHashedPassword(new object(), tokenParts[2], $"{tokenParts[0]}{tokenParts[1]}{secretKey}") != PasswordVerificationResult.Success)
+            await _eventBus.Publish(new AuthorizationSuccessEvent(request.Token));
+            return true;
+        } 
+        else
         {
-            Console.WriteLine("wrong hash");
-        }
-
-        if (long.Parse(tokenParts[1]) <= DateTimeOffset.UtcNow.ToUnixTimeSeconds())
-        {
-            Console.WriteLine("expired");
-        }
-
-        if ((await _userRepository.GetUserById(Guid.Parse(tokenParts[0]))) == null)
-        {
-            Console.WriteLine("user not found");
-        }
-        */
-
-        if (
-            (tokenParts.Length != 3) ||
-            (hasher.VerifyHashedPassword(new object(), tokenParts[2], $"{tokenParts[0]}{tokenParts[1]}{secretKey}") != PasswordVerificationResult.Success) ||
-            (long.Parse(tokenParts[1]) <= DateTimeOffset.UtcNow.ToUnixTimeSeconds()) ||
-            ((await _userRepository.GetUserById(Guid.Parse(tokenParts[0]))) == null)
-        )
-        {
-            await _eventBus.Publish(new AuthorizationFailureEvent(token));
+            await _eventBus.Publish(new AuthorizationFailureEvent(request.Token));
             return false;
         }
-        await _eventBus.Publish(new AuthorizationSuccessEvent(token));
-        return true;
     }
 }
