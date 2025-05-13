@@ -26,7 +26,7 @@ public class OrderCreatedEventHandler : IEventHandler<OrderCreatedEvent>
     {
         _logger.LogWarning("OrderCreatedEventHandler");
 
-        var response = await _httpClient.GetAsync($"https://localhost:50001/get-user-email/{@event.UserId}");
+        var response = await _httpClient.GetAsync($"http://userservice-app:5001/get-user-email/{@event.UserId}");
         
         if (!response.IsSuccessStatusCode)
         {

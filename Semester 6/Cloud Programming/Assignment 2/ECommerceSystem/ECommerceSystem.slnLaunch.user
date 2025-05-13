@@ -4,23 +4,28 @@
     "Projects": [
       {
         "Path": "UserService.Api\\UserService.Api.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "http"
       },
       {
         "Path": "ProductService.Api\\ProductService.Api.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "http"
       },
       {
         "Path": "CartService.Api\\CartService.Api.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "http"
       },
       {
         "Path": "OrderService.Api\\OrderService.Api.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "http"
       },
       {
         "Path": "NotificationService.Api\\NotificationService.Api.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "http"
       }
     ]
   }

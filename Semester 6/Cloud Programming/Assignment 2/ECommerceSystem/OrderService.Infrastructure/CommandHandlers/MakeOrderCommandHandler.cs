@@ -36,14 +36,14 @@ public class MakeOrderCommandHandler : IRequestHandler<MakeOrderCommand, bool>
         var json = JsonSerializer.Serialize(new { token = request.Token });
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync($"https://localhost:50001/authorize", content);
+        var response = await _httpClient.PostAsync($"http://userservice-app:5001/authorize", content);
 
         if (!response.IsSuccessStatusCode)
         {
             return false;
         }
 
-        response = await _httpClient.GetAsync($"https://localhost:50003/get-user-cart-items/{request.UserId}");
+        response = await _httpClient.GetAsync($"http://cartservice-app:5003/get-user-cart-items/{request.UserId}");
 
         if (!response.IsSuccessStatusCode)
         {

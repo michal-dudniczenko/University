@@ -14,6 +14,12 @@ using OrderService.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Konfiguracja Kestrel
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5004);
+});
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
 
 // Add services to the container.
@@ -47,7 +53,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
