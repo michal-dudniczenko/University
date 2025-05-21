@@ -1,0 +1,92 @@
+package com.example.befit.trainingprograms
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.befit.R
+import com.example.befit.common.CustomFloatingButton
+import com.example.befit.common.CustomText
+import com.example.befit.common.Heading
+import com.example.befit.common.adaptiveHeight
+import com.example.befit.common.adaptiveWidth
+import com.example.befit.common.bigFontSize
+
+@Composable
+fun ProgramsListScreen(
+    navController: NavHostController,
+    viewModel: TrainingProgramsViewModel,
+    modifier: Modifier = Modifier
+) {
+    val programs by viewModel.programs.collectAsState()
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        CustomFloatingButton(
+            icon = R.drawable.settings,
+            description = "App settings",
+            onClick = { navController.navigate("Settings") },
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+        )
+        CustomFloatingButton(
+            icon = R.drawable.add,
+            description = "Add button",
+            onClick = { navController.navigate("Add program") },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
+                .fillMaxWidth(0.8f)
+                .fillMaxHeight(0.9f)
+                .align(Alignment.Center)
+        ) {
+            Heading("Your programs")
+            if (programs.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    CustomText(
+                        text = "Nothing here yet!",
+                        fontSize = bigFontSize,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .offset(y = adaptiveHeight(-75).dp)
+                    )
+                }
+            } else {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth(0.95f)
+                        .fillMaxHeight()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    for (program in programs) {
+                        ProgramRow(
+                            program = program,
+                            navController = navController)
+                    }
+                }
+            }
+        }
+    }
+}
