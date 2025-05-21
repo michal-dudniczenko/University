@@ -21,7 +21,7 @@ COPY --from=build /app/publish .
 # Ustawiamy zmienną środowiskową dla trybu Development
 ENV ASPNETCORE_ENVIRONMENT=Development
 
-# Otwieramy port 5001
+# Otwieramy port 5003
 EXPOSE 5003
 
 # Ustawiamy punkt wejścia dla aplikacji
