@@ -12,12 +12,13 @@ fun CustomText(
     text: String,
     color: Color = bright,
     fontSize: Int = mediumFontSize,
+    isBoldFont: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
         color = color,
-        fontWeight = FontWeight.Bold,
+        fontWeight = if (isBoldFont) FontWeight.Bold else FontWeight.Normal,
         fontSize = adaptiveWidth(fontSize).sp,
         modifier = modifier
     )

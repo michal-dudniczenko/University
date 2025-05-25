@@ -12,10 +12,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.core.view.WindowCompat
+import com.example.befit.common.InitScreenDimensions
 import com.example.befit.common.appBackground
 import com.example.befit.database.AppDatabase
-import com.example.befit.health.weightmanager.WeightManagerViewModel
+import com.example.befit.health.HealthViewModel
+import com.example.befit.health.caloriecalculator.CalorieCalculatorViewModel
+import com.example.befit.health.weighthistory.WeightHistoryViewModel
+import com.example.befit.settings.SettingsViewModel
 import com.example.befit.stopwatches.StopwatchesViewModel
 import com.example.befit.trainingprograms.TrainingProgramsViewModel
 
@@ -29,8 +32,7 @@ class MainActivity : ComponentActivity() {
 
         val database = AppDatabase.getDatabase(this)
 
-        val stopwatchesViewModel = StopwatchesViewModel(database.stopwatchDao())
-        val weightManagerViewModel = WeightManagerViewModel(database.weightDao())
+        val appViewModel = AppViewModel()
         val trainingProgramsViewModel = TrainingProgramsViewModel(
             database.exerciseDao(),
             database.programDao(),
@@ -38,16 +40,31 @@ class MainActivity : ComponentActivity() {
             database.trainingDayExerciseDao(),
             database.trainingDayExerciseSetDao()
         )
+        val stopwatchesViewModel = StopwatchesViewModel(database.stopwatchDao())
+        val healthViewModel = HealthViewModel(
+            database.userDataDao()
+        )
+        val weightHistoryViewModel = WeightHistoryViewModel(database.weightDao())
+        val calorieCalculatorViewModel = CalorieCalculatorViewModel(
+            healthViewModel = healthViewModel
+        )
+        val settingsViewModel = SettingsViewModel()
 
         setContent {
+            InitScreenDimensions()
+
             Scaffold(
                 modifier = Modifier
                     .fillMaxSize()
             ) { innerPadding ->
-                App(
-                    stopwatchesViewModel = stopwatchesViewModel,
-                    weightManagerViewModel = weightManagerViewModel,
+                AppNavigation(
+                    viewModel = appViewModel,
                     trainingProgramsViewModel = trainingProgramsViewModel,
+                    stopwatchesViewModel = stopwatchesViewModel,
+                    healthViewModel = healthViewModel,
+                    weightHistoryViewModel = weightHistoryViewModel,
+                    calorieCalculatorViewModel = calorieCalculatorViewModel,
+                    settingsViewModel = settingsViewModel,
                     modifier = Modifier
                         .padding(innerPadding)
                         .background(appBackground)

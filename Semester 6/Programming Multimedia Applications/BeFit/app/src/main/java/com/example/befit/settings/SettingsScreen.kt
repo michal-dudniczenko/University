@@ -1,40 +1,28 @@
-package com.example.befit.health.proteincalculator
+package com.example.befit.settings
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.material3.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
-import com.example.befit.common.CustomFloatingButton
-import com.example.befit.common.HEALTH_SCREENS
+import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.adaptiveWidth
 
 @Composable
-fun ProteinCalculatorScreen(
+fun SettingsListScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Box (
         modifier = modifier
             .fillMaxSize()
     ) {
-        CustomFloatingButton(
-            icon = R.drawable.back,
-            description = "Back button",
-            onClick = { navController.navigate(HEALTH_SCREENS[0]) },
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
-        )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
@@ -42,7 +30,17 @@ fun ProteinCalculatorScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Protein Calculator")
+            Heading(
+                text = "App Settings"
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                CustomText("Settings list")
+            }
         }
     }
 }

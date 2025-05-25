@@ -19,17 +19,18 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.befit.R
 import com.example.befit.common.CustomText
 import com.example.befit.common.STOPWATCH_BUTTON_SIZE
 import com.example.befit.common.STOPWATCH_FONT_SIZE
+import com.example.befit.common.StopwatchesRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.bright
@@ -38,19 +39,17 @@ import com.example.befit.common.editColor
 import com.example.befit.common.formatTime
 import com.example.befit.common.lightRed
 import com.example.befit.common.smallFontSize
-import kotlinx.coroutines.launch
 
 @Composable
 fun Stopwatch(
     stopwatchState: StopwatchState,
     viewModel: StopwatchesViewModel,
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     val time by stopwatchState.time
     val isRunning by stopwatchState.isRunning
     val isEditMode by viewModel.isEditMode
-
-    val coroutineScope = rememberCoroutineScope()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -65,6 +64,10 @@ fun Stopwatch(
                     .clip(RoundedCornerShape(adaptiveWidth(10).dp))
                     .background(color = if (isEditMode) editColor else bright)
                     .padding(horizontal = adaptiveWidth(12).dp, vertical = adaptiveWidth(8).dp)
+                    .clickable(
+                        enabled = isEditMode,
+                        onClick = { navController.navigate(StopwatchesRoutes.EDIT(stopwatchState.id)) }
+                    )
             ) {
                 CustomText(
                     text = stopwatchState.name,
@@ -80,9 +83,10 @@ fun Stopwatch(
                         .background(color = lightRed)
                         .clickable(
                             onClick = {
-                                coroutineScope.launch {
-                                    viewModel.deleteStopwatch(stopwatchState.id)
+                                if (viewModel.stopwatches.value.size == 1) {
+                                    viewModel.isEditMode.value = false
                                 }
+                                viewModel.deleteStopwatch(stopwatchState.id)
                             }
                         )
                         .padding(horizontal = adaptiveWidth(16).dp, vertical = adaptiveWidth(8).dp)

@@ -1,4 +1,4 @@
-package com.example.befit.health.weightmanager
+package com.example.befit.health.weighthistory
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.common.CustomText
+import com.example.befit.common.WeightHistoryRoutes
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.darkBackground
 import com.example.befit.common.formatDateFromLong
@@ -22,7 +23,7 @@ import java.util.Locale
 @Composable
 fun WeightRow(
     weight: Weight,
-    navController: NavHostController,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -31,7 +32,7 @@ fun WeightRow(
             .fillMaxWidth()
             .clip(RoundedCornerShape(adaptiveWidth(16).dp))
             .background(color = darkBackground)
-            .clickable { navController.navigate("Edit weight/${weight.id}") }
+            .clickable(onClick = onClick)
             .padding(adaptiveWidth(16).dp)
     ) {
         CustomText(

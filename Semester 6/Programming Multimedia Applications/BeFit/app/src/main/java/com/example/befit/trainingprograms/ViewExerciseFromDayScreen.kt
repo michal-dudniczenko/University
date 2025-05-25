@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -20,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,12 +34,12 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.bigFontSize
 import com.example.befit.common.bright
 import com.example.befit.common.darkBackground
 import com.example.befit.common.mediumFontSize
-import kotlinx.coroutines.launch
 
 @Composable
 fun ViewExerciseFromDayScreen(
@@ -48,19 +48,19 @@ fun ViewExerciseFromDayScreen(
     viewModel: TrainingProgramsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val trainingDayExercise = viewModel.getTrainingDayExerciseById(trainingDayExerciseId)
+    val trainingDayExercises by viewModel.trainingDaysExercises
+    val exercises by viewModel.exercises
 
-    val exercise = viewModel.getExerciseById(trainingDayExercise?.exerciseId ?: 0)
+    val trainingDayExercise = trainingDayExercises.find { it.id == trainingDayExerciseId }
+    val exercise = exercises.find { it.id == trainingDayExercise?.exerciseId }
 
-    val trainingDayId = trainingDayExercise?.trainingDayId ?: 0
+    val trainingDayId = trainingDayExercise?.trainingDayId ?: -1
 
     var viewModelNotes by viewModel.currentNotes
 
     var notes by remember { mutableStateOf(viewModelNotes.ifEmpty { exercise?.notes ?: "" }) }
 
     val restTime = trainingDayExercise?.restTime ?: ""
-
-    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -69,20 +69,35 @@ fun ViewExerciseFromDayScreen(
             icon = R.drawable.back,
             description = "Back button",
             onClick = {
-                coroutineScope.launch {
+                if (exercise != null) {
                     viewModel.updateExercise(
-                        id = exercise?.id ?: 0,
-                        name = exercise?.name ?: "",
+                        id = exercise.id,
+                        name = exercise.name,
                         notes = notes
                     )
-                    viewModelNotes = ""
-                    navController.navigate("View training day/$trainingDayId")
+                }
+                viewModelNotes = ""
+                if (trainingDayId != -1) {
+                    navController.navigate(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId))
+                } else {
+                    navController.navigate(TrainingProgramsRoutes.START)
                 }
             },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
         )
+        if (trainingDayExercise == null || exercise == null) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator(
+                    color = bright,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                return
+            }
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier

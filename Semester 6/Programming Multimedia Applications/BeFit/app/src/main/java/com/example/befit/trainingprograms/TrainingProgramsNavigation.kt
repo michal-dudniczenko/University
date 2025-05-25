@@ -4,13 +4,15 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.trainingprograms.settings.AddExerciseScreen
 import com.example.befit.trainingprograms.settings.EditExerciseListScreen
 import com.example.befit.trainingprograms.settings.EditExerciseScreen
@@ -22,38 +24,43 @@ fun TrainingProgramsNavigation(
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
+    val currentRoute by viewModel.currentRoute
 
-    val startDestination = remember(viewModel.currentRoute) { viewModel.currentRoute }
+    LaunchedEffect(Unit) {
+        viewModel.navigationEvent.collect { route ->
+            navController.navigate(route)
+        }
+    }
 
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = currentRoute,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         modifier = modifier
             .fillMaxSize()
     ) {
-        composable(route = "Programs list") {
-            viewModel.updateCurrentRoute("Programs list")
+        composable(route = TrainingProgramsRoutes.PROGRAMS_LIST) {
+            viewModel.updateCurrentRoute(TrainingProgramsRoutes.PROGRAMS_LIST)
             ProgramsListScreen(
                 viewModel = viewModel,
                 navController = navController
             )
         }
-        composable(route = "Add program") {
-            viewModel.updateCurrentRoute("Add program")
+        composable(route = TrainingProgramsRoutes.ADD_PROGRAM) {
+            viewModel.updateCurrentRoute(TrainingProgramsRoutes.ADD_PROGRAM)
             AddProgramScreen(
                 viewModel = viewModel,
                 navController = navController
             )
         }
         composable(
-            route = "Edit program/{programId}",
-            arguments = listOf(navArgument("programId") { type = NavType.IntType })
+            route = TrainingProgramsRoutes.EDIT_PROGRAM,
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { backStackEntry ->
-            val programId = backStackEntry.arguments?.getInt("programId")
+            val programId = backStackEntry.arguments?.getInt("id")
             programId?.let {
-                viewModel.updateCurrentRoute("Edit program/${programId}")
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.EDIT_PROGRAM(programId))
                 EditProgramScreen(
                     programId = it,
                     viewModel = viewModel,
@@ -62,12 +69,12 @@ fun TrainingProgramsNavigation(
             }
         }
         composable(
-            route = "Training days list/{programId}",
-            arguments = listOf(navArgument("programId") { type = NavType.IntType })
+            route = TrainingProgramsRoutes.TRAINING_DAYS_LIST,
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { backStackEntry ->
-            val programId = backStackEntry.arguments?.getInt("programId")
+            val programId = backStackEntry.arguments?.getInt("id")
             programId?.let {
-                viewModel.updateCurrentRoute("Training days list/${programId}")
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.TRAINING_DAYS_LIST(programId))
                 TrainingDaysListScreen(
                     programId = it,
                     viewModel = viewModel,
@@ -76,12 +83,12 @@ fun TrainingProgramsNavigation(
             }
         }
         composable(
-            route = "Add training day/{programId}",
+            route = TrainingProgramsRoutes.ADD_TRAINING_DAY,
             arguments = listOf(navArgument("programId") { type = NavType.IntType })
         ) { backStackEntry ->
             val programId = backStackEntry.arguments?.getInt("programId")
             programId?.let {
-                viewModel.updateCurrentRoute("Add training day/${programId}")
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.ADD_TRAINING_DAY(programId))
                 AddTrainingDayScreen(
                     programId = it,
                     viewModel = viewModel,
@@ -90,14 +97,14 @@ fun TrainingProgramsNavigation(
             }
         }
         composable(
-            route = "Edit training day/{trainingDayId}",
+            route = TrainingProgramsRoutes.EDIT_TRAINING_DAY,
             arguments = listOf(
-                navArgument("trainingDayId") { type = NavType.IntType },
+                navArgument("id") { type = NavType.IntType },
             )
         ) { backStackEntry ->
-            val trainingDayId = backStackEntry.arguments?.getInt("trainingDayId")
+            val trainingDayId = backStackEntry.arguments?.getInt("id")
             if (trainingDayId != null) {
-                viewModel.updateCurrentRoute("Edit training day/$trainingDayId")
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.EDIT_TRAINING_DAY(trainingDayId))
                 EditTrainingDayScreen(
                     trainingDayId = trainingDayId,
                     viewModel = viewModel,
@@ -106,14 +113,14 @@ fun TrainingProgramsNavigation(
             }
         }
         composable(
-            route = "View training day/{trainingDayId}",
+            route = TrainingProgramsRoutes.VIEW_TRAINING_DAY,
             arguments = listOf(
-                navArgument("trainingDayId") { type = NavType.IntType }
+                navArgument("id") { type = NavType.IntType }
             )
         ) { backStackEntry ->
-            val trainingDayId = backStackEntry.arguments?.getInt("trainingDayId")
+            val trainingDayId = backStackEntry.arguments?.getInt("id")
             if (trainingDayId != null) {
-                viewModel.updateCurrentRoute("View training day/$trainingDayId")
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId))
                 ViewTrainingDayScreen(
                     trainingDayId = trainingDayId,
                     viewModel = viewModel,
@@ -122,7 +129,7 @@ fun TrainingProgramsNavigation(
             }
         }
         composable(
-            route = "Add exercise to day/{trainingDayId}",
+            route = TrainingProgramsRoutes.ADD_EXERCISE_TO_DAY,
             arguments = listOf(
                 navArgument("trainingDayId") { type = NavType.IntType },
             )
@@ -130,7 +137,7 @@ fun TrainingProgramsNavigation(
             val trainingDayId = backStackEntry.arguments?.getInt("trainingDayId")
 
             if (trainingDayId != null) {
-                viewModel.updateCurrentRoute("Add exercise to day/${trainingDayId}")
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.ADD_EXERCISE_TO_DAY(trainingDayId))
                 AddExerciseToDayScreen(
                     trainingDayId = trainingDayId,
                     viewModel = viewModel,
@@ -139,15 +146,15 @@ fun TrainingProgramsNavigation(
             }
         }
         composable(
-            route = "Edit exercise from day/{trainingDayExerciseId}",
+            route = TrainingProgramsRoutes.EDIT_EXERCISE_FROM_DAY,
             arguments = listOf(
-                navArgument("trainingDayExerciseId") { type = NavType.IntType },
+                navArgument("id") { type = NavType.IntType },
             )
         ) { backStackEntry ->
-            val trainingDayExerciseId = backStackEntry.arguments?.getInt("trainingDayExerciseId")
+            val trainingDayExerciseId = backStackEntry.arguments?.getInt("id")
 
             if (trainingDayExerciseId != null) {
-                viewModel.updateCurrentRoute("Edit exercise from day/${trainingDayExerciseId}")
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.EDIT_EXERCISE_FROM_DAY(trainingDayExerciseId))
                 EditExerciseFromDayScreen(
                     trainingDayExerciseId = trainingDayExerciseId,
                     viewModel = viewModel,
@@ -156,15 +163,15 @@ fun TrainingProgramsNavigation(
             }
         }
         composable(
-            route = "View exercise from day/{trainingDayExerciseId}",
+            route = TrainingProgramsRoutes.VIEW_EXERCISE_FROM_DAY,
             arguments = listOf(
-                navArgument("trainingDayExerciseId") { type = NavType.IntType },
+                navArgument("id") { type = NavType.IntType },
             )
         ) { backStackEntry ->
-            val trainingDayExerciseId = backStackEntry.arguments?.getInt("trainingDayExerciseId")
+            val trainingDayExerciseId = backStackEntry.arguments?.getInt("id")
 
             if (trainingDayExerciseId != null) {
-                viewModel.updateCurrentRoute("View exercise from day/${trainingDayExerciseId}")
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.VIEW_EXERCISE_FROM_DAY(trainingDayExerciseId))
                 ViewExerciseFromDayScreen(
                     trainingDayExerciseId = trainingDayExerciseId,
                     viewModel = viewModel,
@@ -172,33 +179,33 @@ fun TrainingProgramsNavigation(
                 )
             }
         }
-        composable(route = "Settings") {
-            viewModel.updateCurrentRoute("Settings")
+        composable(route = TrainingProgramsRoutes.SETTINGS) {
+            viewModel.updateCurrentRoute(TrainingProgramsRoutes.SETTINGS)
             SettingsScreen(
                 navController = navController
             )
         }
-        composable(route = "Edit exercise list") {
-            viewModel.updateCurrentRoute("Edit exercise list")
+        composable(route = TrainingProgramsRoutes.EDIT_EXERCISE_LIST) {
+            viewModel.updateCurrentRoute(TrainingProgramsRoutes.EDIT_EXERCISE_LIST)
             EditExerciseListScreen(
                 navController = navController,
                 trainingProgramsViewModel = viewModel
             )
         }
-        composable(route = "Add exercise") {
-            viewModel.updateCurrentRoute("Add exercise")
+        composable(route = TrainingProgramsRoutes.ADD_EXERCISE) {
+            viewModel.updateCurrentRoute(TrainingProgramsRoutes.ADD_EXERCISE)
             AddExerciseScreen(
                 navController = navController,
                 viewModel = viewModel
             )
         }
         composable(
-            route = "Edit exercise/{exerciseId}",
-            arguments = listOf(navArgument("exerciseId") { type = NavType.IntType })
+            route = TrainingProgramsRoutes.EDIT_EXERCISE,
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { backStackEntry ->
-            val exerciseId = backStackEntry.arguments?.getInt("exerciseId")
+            val exerciseId = backStackEntry.arguments?.getInt("id")
             exerciseId?.let {
-                viewModel.updateCurrentRoute("Edit exercise/${exerciseId}")
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.EDIT_EXERCISE(exerciseId))
                 EditExerciseScreen(
                     exerciseId = it,
                     viewModel = viewModel,

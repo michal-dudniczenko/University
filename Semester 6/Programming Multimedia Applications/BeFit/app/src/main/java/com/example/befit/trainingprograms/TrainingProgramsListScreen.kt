@@ -1,27 +1,38 @@
 package com.example.befit.trainingprograms
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.bigFontSize
+import com.example.befit.common.bright
+import com.example.befit.common.editColor
+import com.example.befit.common.mediumGreen
 
 @Composable
 fun ProgramsListScreen(
@@ -29,7 +40,8 @@ fun ProgramsListScreen(
     viewModel: TrainingProgramsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val programs by viewModel.programs.collectAsState()
+    val programs by viewModel.programs
+    var isEditMode by viewModel.isEditMode
 
     Box(
         modifier = modifier
@@ -38,19 +50,31 @@ fun ProgramsListScreen(
         CustomFloatingButton(
             icon = R.drawable.settings,
             description = "App settings",
-            onClick = { navController.navigate("Settings") },
+            onClick = { navController.navigate(TrainingProgramsRoutes.SETTINGS) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
         )
-        CustomFloatingButton(
-            icon = R.drawable.add,
-            description = "Add button",
-            onClick = { navController.navigate("Add program") },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
-        )
+        if (programs.isEmpty()) {
+            CustomFloatingButton(
+                icon = R.drawable.add,
+                description = "Add button",
+                onClick = { navController.navigate(TrainingProgramsRoutes.ADD_PROGRAM) },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+            )
+        } else {
+            CustomFloatingButton(
+                icon = if (isEditMode) R.drawable.edit_white else R.drawable.edit,
+                color = if (isEditMode) editColor else bright,
+                description = "Edit button",
+                onClick = { isEditMode = !isEditMode },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+            )
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
@@ -80,10 +104,31 @@ fun ProgramsListScreen(
                         .fillMaxHeight()
                         .verticalScroll(rememberScrollState())
                 ) {
+                    if (isEditMode) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(adaptiveWidth(16).dp))
+                                .background(color = mediumGreen)
+                                .clickable {
+                                    navController.navigate(TrainingProgramsRoutes.ADD_PROGRAM)
+                                }
+                        ) {
+                            CustomText(
+                                text = "Add program",
+                                modifier = Modifier.padding(adaptiveWidth(16).dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(adaptiveWidth(28).dp))
+                    }
                     for (program in programs) {
                         ProgramRow(
-                            program = program,
-                            navController = navController)
+                            programId = program.id,
+                            programName = program.name,
+                            viewModel = viewModel,
+                            navController = navController
+                        )
                     }
                 }
             }

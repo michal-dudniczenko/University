@@ -1,4 +1,4 @@
-package com.example.befit.health.weightmanager
+package com.example.befit.health.weighthistory
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,28 +31,25 @@ import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.common.WeightHistoryRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.formatDateFromLong
 import com.example.befit.common.isValidDate
 import com.example.befit.common.lightGreen
 import com.example.befit.common.lightRed
-import kotlinx.coroutines.launch
 
 @Composable
 fun EditWeightScreen(
     navController: NavHostController,
     weightId: Int,
-    viewModel: WeightManagerViewModel,
+    viewModel: WeightHistoryViewModel,
     modifier: Modifier = Modifier
 ) {
-
     val weight = viewModel.getWeightById(id = weightId)
 
     var selectedDate by remember { mutableStateOf(formatDateFromLong(weight?.date ?: System.currentTimeMillis())) }
     var selectedWeight by remember { mutableFloatStateOf(weight?.weight ?: 0f) }
-
-    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -66,10 +62,8 @@ fun EditWeightScreen(
                 if (selectedWeight != 0f) {
                     val date = isValidDate(selectedDate)
                     if (date != null) {
-                        coroutineScope.launch {
-                            viewModel.updateWeight(id = weightId, date = date.time, weight = selectedWeight)
-                            navController.navigate("Weight history")
-                        }
+                        viewModel.updateWeight(id = weightId, date = date.time, weight = selectedWeight)
+                        navController.navigate(WeightHistoryRoutes.HISTORY)
                     }
                 }
             },
@@ -80,7 +74,7 @@ fun EditWeightScreen(
         CustomFloatingButton(
             icon = R.drawable.back,
             description = "Back button",
-            onClick = { navController.navigate("Weight history") },
+            onClick = { navController.navigate(WeightHistoryRoutes.HISTORY) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
@@ -122,10 +116,8 @@ fun EditWeightScreen(
                         .background(color = lightRed)
                         .clickable(
                             onClick = {
-                                coroutineScope.launch {
-                                    viewModel.deleteWeight(id = weightId)
-                                    navController.navigate("Weight history")
-                                }
+                                viewModel.deleteWeight(id = weightId)
+                                navController.navigate(WeightHistoryRoutes.HISTORY)
                             }
                         )
                 ) {

@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.befit.common.FunctionalityRow
-import com.example.befit.common.HEALTH_SCREENS
 import com.example.befit.common.Heading
+import com.example.befit.common.HealthRoutes
 
 @Composable
 fun HealthToolsListScreen(
@@ -41,13 +41,11 @@ fun HealthToolsListScreen(
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
             ) {
-                for ( (index, healthScreen) in HEALTH_SCREENS.withIndex()) {
-                    if (index == 0) continue
-
+                for (i in 1 until HealthRoutes.screens.size) {
                     FunctionalityRow(
-                        text = healthScreen,
+                        text = HealthRoutes.screens[i],
                         onClick = {
-                            navController.navigate(healthScreen)
+                            navController.navigate(HealthRoutes.screens[i])
                         }
                     )
                 }

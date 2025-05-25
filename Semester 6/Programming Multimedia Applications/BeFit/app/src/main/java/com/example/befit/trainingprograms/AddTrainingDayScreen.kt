@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,11 +22,11 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.lightGreen
 import com.example.befit.common.lightRed
-import kotlinx.coroutines.launch
 
 @Composable
 fun AddTrainingDayScreen(
@@ -38,8 +37,6 @@ fun AddTrainingDayScreen(
 ) {
     var selectedName by remember { mutableStateOf("") }
 
-    val coroutineScope = rememberCoroutineScope()
-
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -49,10 +46,8 @@ fun AddTrainingDayScreen(
             color = lightGreen,
             onClick = {
                 if (selectedName.isNotEmpty()) {
-                    coroutineScope.launch {
-                        viewModel.addTrainingDay(programId = programId, name = selectedName)
-                        navController.navigate("Training days list/$programId")
-                    }
+                    viewModel.addTrainingDay(programId = programId, name = selectedName)
+                    navController.navigate(TrainingProgramsRoutes.TRAINING_DAYS_LIST(programId))
                 }
             },
             modifier = Modifier
@@ -63,7 +58,7 @@ fun AddTrainingDayScreen(
             icon = R.drawable.cancel,
             description = "Cancel button",
             color = lightRed,
-            onClick = { navController.navigate("Training days list/$programId") },
+            onClick = { navController.navigate(TrainingProgramsRoutes.TRAINING_DAYS_LIST(programId)) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)

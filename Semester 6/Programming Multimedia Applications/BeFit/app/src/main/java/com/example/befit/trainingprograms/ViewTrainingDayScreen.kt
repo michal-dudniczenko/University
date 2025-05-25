@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -25,6 +26,7 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.bigFontSize
@@ -39,13 +41,16 @@ fun ViewTrainingDayScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val trainingDays by viewModel.trainingDays
+    val allTrainingDayExercises by viewModel.trainingDaysExercises
+
     var isEditMode by viewModel.isEditMode
 
-    val trainingDay = viewModel.getTrainingDayById(trainingDayId)
+    val trainingDay = trainingDays.find { it.id == trainingDayId }
 
     val programId = trainingDay?.programId ?: 0
 
-    val exercises = viewModel.getExercisesFromTrainingDay(trainingDayId)
+    val exercises =  allTrainingDayExercises.filter { it.trainingDayId == trainingDayId }
 
     val scrollState by viewModel.scrollState
 
@@ -57,7 +62,11 @@ fun ViewTrainingDayScreen(
             icon = R.drawable.back,
             description = "Back button",
             onClick = {
-                navController.navigate("Training days list/$programId")
+                if (trainingDay == null) {
+                    navController.navigate(TrainingProgramsRoutes.START)
+                } else {
+                    navController.navigate(TrainingProgramsRoutes.TRAINING_DAYS_LIST(programId))
+                }
                 isEditMode = false
                 viewModel.resetScroll()
             },
@@ -74,6 +83,17 @@ fun ViewTrainingDayScreen(
                 .align(Alignment.BottomEnd)
                 .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
         )
+        if (trainingDay == null) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator(
+                    color = bright,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                return
+            }
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
@@ -98,39 +118,38 @@ fun ViewTrainingDayScreen(
                     )
                 }
             } else {
-                if (isEditMode) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-                            .background(color = mediumGreen)
-                            .clickable {
-                                navController.navigate("Add exercise to day/$trainingDayId")
-                            }
-                    ) {
-                        CustomText(
-                            text = "Add exercise",
-                            modifier = Modifier.padding(adaptiveWidth(16).dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(adaptiveWidth(32).dp))
-                }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(0.95f)
+                        .fillMaxHeight()
                         .verticalScroll(scrollState)
                 ) {
-                    var i = 1
-                    for (exercise in exercises) {
+                    if (isEditMode) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(adaptiveWidth(16).dp))
+                                .background(color = mediumGreen)
+                                .clickable {
+                                    navController.navigate(TrainingProgramsRoutes.ADD_EXERCISE_TO_DAY(trainingDayId))
+                                }
+                        ) {
+                            CustomText(
+                                text = "Add exercise",
+                                modifier = Modifier.padding(adaptiveWidth(16).dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(adaptiveWidth(32).dp))
+                    }
+                    for ((i, exercise) in exercises.withIndex()) {
                         ExerciseBlock(
-                            exerciseNumber = i,
+                            exerciseNumber = i + 1,
                             trainingDayExercise = exercise,
                             viewModel = viewModel,
                             navController = navController
                         )
-                        i++
                     }
                     Spacer(modifier = Modifier.height(adaptiveHeight(300).dp))
                 }

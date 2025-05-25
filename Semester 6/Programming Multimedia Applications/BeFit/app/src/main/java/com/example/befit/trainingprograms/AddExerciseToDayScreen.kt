@@ -10,12 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,12 +26,12 @@ import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomIntPicker
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.lightGreen
 import com.example.befit.common.lightRed
 import com.example.befit.database.Exercise
-import kotlinx.coroutines.launch
 
 @Composable
 fun AddExerciseToDayScreen(
@@ -42,14 +40,13 @@ fun AddExerciseToDayScreen(
     viewModel: TrainingProgramsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val exercises by viewModel.exercises.collectAsState()
+    val exercises by viewModel.exercises
+    val trainingDayExercises by viewModel.trainingDaysExercises
 
     var selectedExercise by remember { mutableStateOf<Exercise?>(null) }
     var selectedSetsNumber by remember { mutableIntStateOf(0) }
     var selectedRestTime by remember { mutableStateOf("") }
     var selectedWeight by remember { mutableStateOf<Float?>(null) }
-
-    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -59,18 +56,17 @@ fun AddExerciseToDayScreen(
             description = "Confirm button",
             color = lightGreen,
             onClick = {
-                coroutineScope.launch {
-                    if (selectedExercise != null) {
-                        if (!viewModel.checkIfExerciseExists(trainingDayId, selectedExercise?.id ?: 0)) {
-                            viewModel.addTrainingDayExercise(
-                                trainingDayId = trainingDayId,
-                                exerciseId = selectedExercise?.id ?: 0,
-                                restTime = selectedRestTime,
-                                setsNumber = selectedSetsNumber,
-                                weight = selectedWeight
-                            )
-                            navController.navigate("View training day/$trainingDayId")
-                        }
+                if (selectedExercise != null) {
+                    // nie mozna miec dwa razy tego samego cwiczenia w tym samym dniu treningowym
+                    if (trainingDayExercises.find { it.trainingDayId == trainingDayId && it.exerciseId == selectedExercise!!.id } == null) {
+                        viewModel.addTrainingDayExercise(
+                            trainingDayId = trainingDayId,
+                            exerciseId = selectedExercise!!.id,
+                            restTime = selectedRestTime,
+                            setsNumber = selectedSetsNumber,
+                            weight = selectedWeight
+                        )
+                        navController.navigate(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId))
                     }
                 }
             },
@@ -82,7 +78,7 @@ fun AddExerciseToDayScreen(
             icon = R.drawable.cancel,
             description = "Cancel button",
             color = lightRed,
-            onClick = { navController.navigate("View training day/$trainingDayId") },
+            onClick = { navController.navigate(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId)) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)

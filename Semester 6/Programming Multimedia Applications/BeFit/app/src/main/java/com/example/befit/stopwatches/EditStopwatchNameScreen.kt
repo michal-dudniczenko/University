@@ -1,40 +1,38 @@
-package com.example.befit.trainingprograms.settings
+package com.example.befit.stopwatches
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
-import com.example.befit.common.CustomText
+import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
-import com.example.befit.common.TrainingProgramsRoutes
+import com.example.befit.common.StopwatchesRoutes
 import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.darkBackground
 
 @Composable
-fun SettingsScreen(
+fun EditStopwatchNameScreen(
+    stopwatchId: Int,
     navController: NavHostController,
+    viewModel: StopwatchesViewModel,
     modifier: Modifier = Modifier
 ) {
+    var selectedName by remember { mutableStateOf(viewModel.getStopwatchName(stopwatchId) ?: "") }
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -42,7 +40,10 @@ fun SettingsScreen(
             icon = R.drawable.back,
             description = "Back button",
             onClick = {
-                navController.navigate(TrainingProgramsRoutes.PROGRAMS_LIST)
+                if (selectedName.isNotEmpty()) {
+                    viewModel.updateStopwatch(id = stopwatchId, name = selectedName)
+                }
+                navController.navigate(StopwatchesRoutes.STOPWATCHES)
             },
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -55,46 +56,21 @@ fun SettingsScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Settings")
+            Heading("Edit stopwatch")
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
                 modifier = modifier
                     .fillMaxWidth(0.95f)
                     .fillMaxHeight()
+                    .padding(bottom = 125.dp)
             ) {
-                SettingsItem(
-                    text = "Edit exercise list",
-                    onClick = { navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE_LIST) }
+                CustomStringPicker(
+                    selectedValue = selectedName,
+                    label = "Stopwatch name",
+                    onValueChange = { selectedName = it }
                 )
             }
         }
     }
-}
-
-@Composable
-fun SettingsItem(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-            .background(color = darkBackground)
-            .clickable(onClick = onClick)
-            .padding(adaptiveWidth(20).dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-        ) {
-            CustomText(
-                text = text
-            )
-        }
-    }
-    Spacer(modifier = Modifier.height(adaptiveWidth(32).dp))
 }

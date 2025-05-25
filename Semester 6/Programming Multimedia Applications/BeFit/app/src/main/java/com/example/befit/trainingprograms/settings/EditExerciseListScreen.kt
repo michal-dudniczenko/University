@@ -18,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,10 +28,10 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.darkBackground
-import com.example.befit.database.Exercise
 import com.example.befit.trainingprograms.TrainingProgramsViewModel
 
 @Composable
@@ -41,8 +40,7 @@ fun EditExerciseListScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-
-    val exercises by trainingProgramsViewModel.exercises.collectAsState()
+    val exercises by trainingProgramsViewModel.exercises
 
     Box(
         modifier = modifier
@@ -52,7 +50,7 @@ fun EditExerciseListScreen(
             icon = R.drawable.add,
             description = "Add new exercise",
             onClick = {
-                navController.navigate("Add exercise")
+                navController.navigate(TrainingProgramsRoutes.ADD_EXERCISE)
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -62,7 +60,7 @@ fun EditExerciseListScreen(
             icon = R.drawable.back,
             description = "Back button",
             onClick = {
-                navController.navigate("Settings")
+                navController.navigate(TrainingProgramsRoutes.SETTINGS)
             },
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -85,8 +83,8 @@ fun EditExerciseListScreen(
             ) {
                 for (exercise in exercises) {
                     SettingsExerciseItem(
-                        exercise = exercise,
-                        navController = navController
+                        exerciseName = exercise.name,
+                        onClick = { navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE(exercise.id)) }
                     )
                 }
                 Spacer(Modifier.height(adaptiveHeight(200).dp))
@@ -97,8 +95,8 @@ fun EditExerciseListScreen(
 
 @Composable
 fun SettingsExerciseItem(
-    exercise: Exercise,
-    navController: NavHostController,
+    exerciseName: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -107,9 +105,7 @@ fun SettingsExerciseItem(
             .fillMaxWidth()
             .clip(RoundedCornerShape(adaptiveWidth(16).dp))
             .background(color = darkBackground)
-            .clickable {
-                navController.navigate("Edit exercise/${exercise.id}")
-            }
+            .clickable(onClick = onClick)
             .padding(adaptiveWidth(16).dp)
     ) {
         Row(
@@ -118,7 +114,7 @@ fun SettingsExerciseItem(
                 .horizontalScroll(rememberScrollState())
         ) {
             CustomText(
-                text = exercise.name
+                text = exerciseName
             )
         }
     }

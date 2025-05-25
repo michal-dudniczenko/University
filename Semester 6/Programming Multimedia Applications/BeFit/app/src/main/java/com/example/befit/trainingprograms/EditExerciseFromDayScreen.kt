@@ -14,13 +14,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,11 +34,11 @@ import com.example.befit.common.CustomIntPicker
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.lightGreen
 import com.example.befit.common.lightRed
-import kotlinx.coroutines.launch
 
 @Composable
 fun EditExerciseFromDayScreen(
@@ -49,20 +47,20 @@ fun EditExerciseFromDayScreen(
     viewModel: TrainingProgramsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val exercises by viewModel.exercises.collectAsState()
+    val exercises by viewModel.exercises
+    val trainingDayExercises by viewModel.trainingDaysExercises
+    val sets by viewModel.sets
 
-    val trainingDayExercise = viewModel.getTrainingDayExerciseById(trainingDayExerciseId)
+    val trainingDayExercise = trainingDayExercises.find { it.id == trainingDayExerciseId }
 
-    val trainingDayId = trainingDayExercise?.trainingDayId
+    val trainingDayId = trainingDayExercise?.trainingDayId ?: 0
 
-    var selectedExercise by remember { mutableStateOf(viewModel.getExerciseById(trainingDayExercise?.exerciseId ?: 0)) }
-    var selectedSetsNumber by remember { mutableIntStateOf(viewModel.getNumberOfSets(trainingDayExerciseId)) }
+    var selectedExercise by remember { mutableStateOf(exercises.find { it.id == (trainingDayExercise?.exerciseId ?: 0) }) }
+    var selectedSetsNumber by remember { mutableIntStateOf(sets.count { it.trainingDayExerciseId == trainingDayExerciseId }) }
     var selectedRestTime by remember { mutableStateOf(trainingDayExercise?.restTime ?: "") }
     var selectedWeight by remember { mutableFloatStateOf(trainingDayExercise?.weight ?: 0f) }
 
-    val coroutineScope = rememberCoroutineScope()
-
-    val initialExerciseId = remember { selectedExercise?.id ?: 0 }
+    val initialExerciseId = remember { selectedExercise?.id }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -72,21 +70,19 @@ fun EditExerciseFromDayScreen(
             description = "Confirm button",
             color = lightGreen,
             onClick = {
-                coroutineScope.launch {
-                    if (selectedExercise != null) {
-                        val wasExerciseChanged = selectedExercise?.id != initialExerciseId
-                        if (!wasExerciseChanged || !viewModel.checkIfExerciseExists(trainingDayId ?: 0, selectedExercise?.id ?: 0)) {
-                            viewModel.updateTrainingDayExercise(
-                                trainingDayExerciseId = trainingDayExerciseId,
-                                trainingDayId = trainingDayId ?: 0,
-                                exerciseId = selectedExercise?.id ?: 0,
-                                wasExerciseChanged = wasExerciseChanged,
-                                setsNumber = selectedSetsNumber,
-                                restTime = selectedRestTime,
-                                weight = if (selectedWeight == 0f) null else selectedWeight
-                            )
-                            navController.navigate("View training day/$trainingDayId")
-                        }
+                if (selectedExercise != null) {
+                    val wasExerciseChanged = selectedExercise?.id != initialExerciseId
+                    if (!wasExerciseChanged || trainingDayExercises.find { it.trainingDayId == trainingDayId && it.exerciseId == selectedExercise!!.id } == null) {
+                        viewModel.updateTrainingDayExercise(
+                            trainingDayExerciseId = trainingDayExerciseId,
+                            trainingDayId = trainingDayId,
+                            exerciseId = selectedExercise!!.id,
+                            wasExerciseChanged = wasExerciseChanged,
+                            setsNumber = selectedSetsNumber,
+                            restTime = selectedRestTime,
+                            weight = if (selectedWeight == 0f) null else selectedWeight
+                        )
+                        navController.navigate(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId))
                     }
                 }
             },
@@ -98,7 +94,7 @@ fun EditExerciseFromDayScreen(
             icon = R.drawable.cancel,
             description = "Cancel button",
             color = lightRed,
-            onClick = { navController.navigate("View training day/$trainingDayId") },
+            onClick = { navController.navigate(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId)) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
@@ -153,10 +149,8 @@ fun EditExerciseFromDayScreen(
                         .background(color = lightRed)
                         .clickable(
                             onClick = {
-                                coroutineScope.launch {
-                                    viewModel.deleteTrainingDayExercise(id = trainingDayExerciseId)
-                                    navController.navigate("View training day/$trainingDayId")
-                                }
+                                viewModel.deleteTrainingDayExercise(id = trainingDayExerciseId)
+                                navController.navigate(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId))
                             }
                         )
                 ) {

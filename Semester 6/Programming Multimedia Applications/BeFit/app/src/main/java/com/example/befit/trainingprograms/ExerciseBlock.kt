@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.befit.common.CustomText
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.appBackground
 import com.example.befit.common.bright
@@ -44,7 +44,6 @@ import com.example.befit.common.mediumFontSize
 import com.example.befit.common.smallFontSize
 import com.example.befit.database.TrainingDayExercise
 import com.example.befit.database.TrainingDayExerciseSet
-import kotlinx.coroutines.launch
 
 @Composable
 fun ExerciseBlock(
@@ -54,15 +53,16 @@ fun ExerciseBlock(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val exercises by viewModel.exercises
+    val allSets by viewModel.sets
+
     val trainingDayExerciseId = trainingDayExercise.id
 
     var weight by remember { mutableStateOf(trainingDayExercise.weight) }
 
-    val exercise = viewModel.getExerciseById(trainingDayExercise.exerciseId)
+    val exercise = exercises.find { it.id == trainingDayExercise.exerciseId }
 
-    var sets by remember { mutableStateOf(viewModel.getSetsFromExercise(trainingDayExerciseId)) }
-
-    var chosenSet by remember { mutableStateOf(null as TrainingDayExerciseSet?)}
+    var chosenSet by remember { mutableStateOf<TrainingDayExerciseSet?>(null)}
 
     val isEditMode by viewModel.isEditMode
 
@@ -73,7 +73,7 @@ fun ExerciseBlock(
         EditWeightPopup(
             exercise = trainingDayExercise,
             closePopup = {
-                weight = viewModel.getTrainingDayExerciseById(trainingDayExerciseId)?.weight
+                weight = it
                 weightEdit = false
             },
             weight = weight,
@@ -84,7 +84,6 @@ fun ExerciseBlock(
         EditSetPopup(
             set = chosenSet,
             closePopup = {
-                sets = viewModel.getSetsFromExercise(trainingDayExerciseId)
                 setEdit = false
             },
             viewModel = viewModel
@@ -107,9 +106,9 @@ fun ExerciseBlock(
                 .clickable(
                     onClick = {
                         if (isEditMode) {
-                            navController.navigate("Edit exercise from day/${trainingDayExerciseId}")
+                            navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE_FROM_DAY(trainingDayExerciseId))
                         } else {
-                            navController.navigate("View exercise from day/${trainingDayExerciseId}")
+                            navController.navigate(TrainingProgramsRoutes.VIEW_EXERCISE_FROM_DAY(trainingDayExerciseId))
                         }
                     },
                 )
@@ -151,6 +150,7 @@ fun ExerciseBlock(
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
             ) {
+                val sets = allSets.filter { it.trainingDayExerciseId == trainingDayExerciseId }
                 for (i in sets.indices) {
                     EditableItem(
                         text = sets[i].reps?.toString() ?: " ? ",
@@ -195,29 +195,26 @@ fun EditableItem(
 fun EditWeightPopup(
     exercise: TrainingDayExercise?,
     weight: Float?,
-    closePopup: () -> Unit,
+    closePopup: (Float?) -> Unit,
     viewModel: TrainingProgramsViewModel,
     modifier: Modifier = Modifier
 ) {
     var text by remember { mutableStateOf(floatToString(weight)) }
 
-    val coroutineScope = rememberCoroutineScope()
-
     Dialog(
         onDismissRequest = {
             if (exercise != null) {
-                coroutineScope.launch {
-                    viewModel.updateTrainingDayExercise(
-                        trainingDayExerciseId = exercise.id,
-                        trainingDayId = exercise.trainingDayId,
-                        exerciseId = exercise.exerciseId,
-                        wasExerciseChanged = false,
-                        setsNumber = exercise.id,
-                        restTime = exercise.restTime,
-                        weight = text.toFloatOrNull()
-                    )
-                    closePopup()
-                }
+                val weight = text.toFloatOrNull()
+                viewModel.updateTrainingDayExercise(
+                    trainingDayExerciseId = exercise.id,
+                    trainingDayId = exercise.trainingDayId,
+                    exerciseId = exercise.exerciseId,
+                    wasExerciseChanged = false,
+                    setsNumber = exercise.id,
+                    restTime = exercise.restTime,
+                    weight = weight
+                )
+                closePopup(weight)
             }
         }
     ) {
@@ -263,19 +260,15 @@ fun EditSetPopup(
 ) {
     var text by remember { mutableStateOf(if (set?.reps == null) "" else set.reps.toString()) }
 
-    val coroutineScope = rememberCoroutineScope()
-
     Dialog(
         onDismissRequest = {
             if (set != null) {
-                coroutineScope.launch {
-                    viewModel.updateSet(
-                        trainingDayExerciseSetId = set.id,
-                        trainingDayExerciseId = set.trainingDayExerciseId,
-                        reps = text.toIntOrNull()
-                    )
-                    closePopup()
-                }
+                viewModel.updateSet(
+                    trainingDayExerciseSetId = set.id,
+                    trainingDayExerciseId = set.trainingDayExerciseId,
+                    reps = text.toIntOrNull()
+                )
+                closePopup()
             }
         }
     ) {

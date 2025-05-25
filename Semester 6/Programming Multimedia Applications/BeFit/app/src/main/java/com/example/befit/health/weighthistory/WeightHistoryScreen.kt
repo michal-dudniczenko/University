@@ -1,4 +1,4 @@
-package com.example.befit.health.weightmanager
+package com.example.befit.health.weighthistory
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,8 +19,9 @@ import androidx.navigation.NavHostController
 import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
-import com.example.befit.common.HEALTH_SCREENS
 import com.example.befit.common.Heading
+import com.example.befit.common.HealthRoutes
+import com.example.befit.common.WeightHistoryRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.bigFontSize
@@ -30,10 +30,10 @@ import com.example.befit.common.bigFontSize
 fun WeightHistoryScreen(
     navController: NavHostController,
     topLevelNavController: NavHostController,
-    viewModel: WeightManagerViewModel,
+    viewModel: WeightHistoryViewModel,
     modifier: Modifier = Modifier
 ) {
-    val weights by viewModel.weights.collectAsState()
+    val weights by viewModel.weights
 
     Box(
         modifier = modifier
@@ -42,7 +42,7 @@ fun WeightHistoryScreen(
         CustomFloatingButton(
             icon = R.drawable.back,
             description = "Back button",
-            onClick = { topLevelNavController.navigate(HEALTH_SCREENS[0]) },
+            onClick = { topLevelNavController.navigate(HealthRoutes.TOOLS_LIST) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
@@ -50,7 +50,7 @@ fun WeightHistoryScreen(
         CustomFloatingButton(
             icon = R.drawable.add,
             description = "Add button",
-            onClick = { navController.navigate("Add weight") },
+            onClick = { navController.navigate(WeightHistoryRoutes.ADD) },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
@@ -84,7 +84,10 @@ fun WeightHistoryScreen(
                         .fillMaxHeight()
                 ) {
                     items(weights) { weight ->
-                        WeightRow(weight, navController)
+                        WeightRow(
+                            weight = weight,
+                            onClick = { navController.navigate(WeightHistoryRoutes.EDIT(weight.id)) }
+                        )
                         Spacer(modifier = Modifier.height(adaptiveWidth(22).dp))
                     }
                     item { Spacer(modifier = Modifier.height(adaptiveWidth(100).dp))}

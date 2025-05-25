@@ -31,7 +31,7 @@ fun isValidDate(dateString: String): Date? {
     try {
         val date: Date = dateFormat.parse(dateString) ?: return null
         return date
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         return null
     }
 }

@@ -1,4 +1,4 @@
-package com.example.befit.health.caloriecalculator
+package com.example.befit.health.waterintakecalculator
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,8 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -25,12 +23,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.R
-import com.example.befit.common.CalorieCalculatorRoutes
-import com.example.befit.common.CustomActivityLevelPicker
 import com.example.befit.common.CustomFloatPicker
 import com.example.befit.common.CustomFloatingButton
-import com.example.befit.common.CustomIntPicker
-import com.example.befit.common.CustomSexPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.common.HealthRoutes
@@ -40,20 +34,16 @@ import com.example.befit.common.bright
 import com.example.befit.health.HealthViewModel
 
 @Composable
-fun CalorieCalculatorScreen(
-    viewModel: CalorieCalculatorViewModel,
+fun WaterIntakeCalculatorScreen(
     healthViewModel: HealthViewModel,
     navController: NavHostController,
-    topLevelNavController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     val userData by healthViewModel.userData
 
-    var selectedAge by remember { mutableIntStateOf(userData?.age ?: 0) }
-    var selectedHeight by remember { mutableIntStateOf(userData?.height ?: 0) }
     var selectedWeight by remember { mutableFloatStateOf(userData?.weight ?: 0f) }
-    var selectedSex by remember { mutableStateOf<String>(userData?.sex ?: "") }
-    var selectedActivityLevel by remember { mutableIntStateOf(userData?.activityLevel ?: 0) }
+
+    var waterIntake by remember { mutableFloatStateOf(0f) }
 
     Box(
         modifier = modifier
@@ -62,7 +52,7 @@ fun CalorieCalculatorScreen(
         CustomFloatingButton(
             icon = R.drawable.back,
             description = "Back button",
-            onClick = { topLevelNavController.navigate(HealthRoutes.TOOLS_LIST) },
+            onClick = { navController.navigate(HealthRoutes.TOOLS_LIST) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
@@ -74,62 +64,30 @@ fun CalorieCalculatorScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Calorie Calculator")
+            Heading("Water intake Calculator")
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
-                    .fillMaxHeight()
-                    .padding(bottom = 107.dp)
+                    .padding(top = 75.dp)
             ) {
-                CustomIntPicker(
-                    selectedValue = selectedAge,
-                    onValueChange = { selectedAge = it },
-                    label = "Age"
-                )
-                Spacer(Modifier.height(24.dp))
-                CustomIntPicker(
-                    selectedValue = selectedHeight,
-                    onValueChange = { selectedHeight = it },
-                    label = "Height"
-                )
-                Spacer(Modifier.height(24.dp))
                 CustomFloatPicker(
                     selectedValue = selectedWeight,
                     onValueChange = { selectedWeight = it },
                     label = "Weight"
                 )
                 Spacer(Modifier.height(24.dp))
-                CustomSexPicker(
-                    selectedValue = if (selectedSex.isEmpty()) null else selectedSex,
-                    onValueSelected = { selectedSex = it }
-                )
-                Spacer(Modifier.height(24.dp))
-                CustomActivityLevelPicker(
-                    selectedValue = if (selectedActivityLevel > 0) ActivityLevels.levels[selectedActivityLevel-1] else null,
-                    onValueSelected = { selectedActivityLevel = it }
-                )
-                Spacer(Modifier.height(32.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
                         .clip(RoundedCornerShape(adaptiveWidth(32).dp))
                         .background(color = bright)
                         .clickable {
-                            if (selectedAge > 0
-                                && selectedHeight > 0
-                                && selectedWeight > 0
-                                && !selectedSex.isEmpty()
-                                && selectedActivityLevel > 0
+                            if (selectedWeight > 0
                             ) {
-                                viewModel.calculateCalories(
-                                    age = selectedAge,
-                                    height = selectedHeight,
+                                waterIntake = healthViewModel.calculateWaterIntake(
                                     weight = selectedWeight,
-                                    sex = selectedSex,
-                                    activityLevel = ActivityLevels.levels[selectedActivityLevel-1]
                                 )
-                                navController.navigate(CalorieCalculatorRoutes.RESULT)
                             }
                         }
                         .padding(16.dp)
@@ -141,6 +99,10 @@ fun CalorieCalculatorScreen(
                             .align(Alignment.Center)
                     )
                 }
+                Spacer(Modifier.height(50.dp))
+            }
+            if (waterIntake > 0) {
+                WaterIntakeResult(waterIntake)
             }
         }
     }

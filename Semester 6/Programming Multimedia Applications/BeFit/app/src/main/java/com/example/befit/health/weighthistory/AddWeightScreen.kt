@@ -1,4 +1,4 @@
-package com.example.befit.health.weightmanager
+package com.example.befit.health.weighthistory
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +14,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,24 +24,22 @@ import com.example.befit.common.CustomFloatPicker
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
+import com.example.befit.common.WeightHistoryRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
 import com.example.befit.common.formatDateFromLong
 import com.example.befit.common.isValidDate
 import com.example.befit.common.lightGreen
 import com.example.befit.common.lightRed
-import kotlinx.coroutines.launch
 
 @Composable
 fun AddWeightScreen(
     navController: NavHostController,
-    viewModel: WeightManagerViewModel,
+    viewModel: WeightHistoryViewModel,
     modifier: Modifier = Modifier
 ) {
     var selectedDate by remember { mutableStateOf(formatDateFromLong(System.currentTimeMillis())) }
     var selectedWeight by remember { mutableFloatStateOf(0f) }
-
-    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -55,10 +52,8 @@ fun AddWeightScreen(
                 if (selectedWeight != 0f) {
                     val date = isValidDate(selectedDate)
                     if (date != null) {
-                        coroutineScope.launch {
-                            viewModel.addWeight(date = date.time, weight = selectedWeight)
-                            navController.navigate("Weight history")
-                        }
+                        viewModel.addWeight(date = date.time, weight = selectedWeight)
+                        navController.navigate(WeightHistoryRoutes.HISTORY)
                     }
                 }
             },
@@ -70,7 +65,7 @@ fun AddWeightScreen(
             icon = R.drawable.cancel,
             description = "Cancel button",
             color = lightRed,
-            onClick = { navController.navigate("Weight history") },
+            onClick = { navController.navigate(WeightHistoryRoutes.HISTORY) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)

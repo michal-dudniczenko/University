@@ -13,11 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,12 +30,13 @@ import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.common.adaptiveHeight
 import com.example.befit.common.adaptiveWidth
+import com.example.befit.common.bright
 import com.example.befit.common.lightGreen
 import com.example.befit.common.lightRed
 import com.example.befit.trainingprograms.TrainingProgramsViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun EditExerciseScreen(
@@ -44,11 +45,10 @@ fun EditExerciseScreen(
     viewModel: TrainingProgramsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val exercise = viewModel.getExerciseById(id = exerciseId)
+    val exercises by viewModel.exercises
+    val exercise = exercises.find { it.id == exerciseId }
 
     var selectedName by remember { mutableStateOf(exercise?.name ?: "") }
-
-    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -59,10 +59,10 @@ fun EditExerciseScreen(
             color = lightGreen,
             onClick = {
                 if (selectedName.isNotEmpty()) {
-                    coroutineScope.launch {
-                        viewModel.updateExercise(id = exerciseId, name = selectedName, notes = exercise?.notes ?: "")
-                        navController.navigate("Edit exercise list")
+                    if (exercise != null) {
+                        viewModel.updateExercise(id = exerciseId, name = selectedName, notes = exercise.notes)
                     }
+                    navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE_LIST)
                 }
             },
             modifier = Modifier
@@ -72,11 +72,22 @@ fun EditExerciseScreen(
         CustomFloatingButton(
             icon = R.drawable.back,
             description = "Back button",
-            onClick = { navController.navigate("Edit exercise list") },
+            onClick = { navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE_LIST) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
         )
+        if (exercise == null) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator(
+                    color = bright,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                return
+            }
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
@@ -106,10 +117,8 @@ fun EditExerciseScreen(
                         .background(color = lightRed)
                         .clickable(
                             onClick = {
-                                coroutineScope.launch {
-                                    viewModel.deleteExercise(id = exerciseId)
-                                    navController.navigate("Edit exercise list")
-                                }
+                                viewModel.deleteExercise(id = exerciseId)
+                                navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE_LIST)
                             }
                         )
                 ) {

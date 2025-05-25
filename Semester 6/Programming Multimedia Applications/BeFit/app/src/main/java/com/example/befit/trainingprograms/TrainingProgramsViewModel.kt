@@ -1,10 +1,12 @@
 package com.example.befit.trainingprograms
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.befit.common.DEFAULT_EXERCISES
+import com.example.befit.common.TrainingProgramsRoutes
 import com.example.befit.database.Exercise
 import com.example.befit.database.ExerciseDao
 import com.example.befit.database.Program
@@ -15,8 +17,8 @@ import com.example.befit.database.TrainingDayExercise
 import com.example.befit.database.TrainingDayExerciseDao
 import com.example.befit.database.TrainingDayExerciseSet
 import com.example.befit.database.TrainingDayExerciseSetDao
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class TrainingProgramsViewModel(
@@ -26,40 +28,50 @@ class TrainingProgramsViewModel(
     private val trainingDayExerciseDao: TrainingDayExerciseDao,
     private val trainingDayExerciseSetDao: TrainingDayExerciseSetDao
 ) : ViewModel() {
+    private val _navigationEvent = MutableSharedFlow<String>()
+    val navigationEvent = _navigationEvent.asSharedFlow()
 
-    val scrollState = mutableStateOf(ScrollState(0))
+    fun navigateToStart() {
+        viewModelScope.launch {
+            _navigationEvent.emit(TrainingProgramsRoutes.START)
+        }
+    }
+
+    private val _currentRoute = mutableStateOf(TrainingProgramsRoutes.START)
+    val currentRoute: State<String> = _currentRoute
+
+    fun updateCurrentRoute(route: String) {
+        if (route != _currentRoute.value) {
+            _currentRoute.value = route
+        }
+    }
+
+    val isEditMode = mutableStateOf(false)
 
     val currentNotes = mutableStateOf("")
+    
+    val scrollState = mutableStateOf(ScrollState(0))
 
     fun resetScroll() {
         viewModelScope.launch {
             scrollState.value.scrollTo(0)
         }
     }
+    
+    private val _programs = mutableStateOf<List<Program>>(emptyList())
+    val programs: State<List<Program>> = _programs
 
-    val isEditMode = mutableStateOf(false)
+    private val _exercises = mutableStateOf<List<Exercise>>(emptyList())
+    val exercises: State<List<Exercise>> = _exercises
 
-    private val _currentRoute = mutableStateOf("Programs list")
-    val currentRoute: String get() = _currentRoute.value
+    private val _trainingDays = mutableStateOf<List<TrainingDay>>(emptyList())
+    val trainingDays: State<List<TrainingDay>> = _trainingDays
 
-    fun updateCurrentRoute(route: String) {
-        _currentRoute.value = route
-    }
+    private val _trainingDaysExercises = mutableStateOf<List<TrainingDayExercise>>(emptyList())
+    val trainingDaysExercises: State<List<TrainingDayExercise>> = _trainingDaysExercises
 
-    private val _programs = MutableStateFlow<List<Program>>(emptyList())
-    val programs: StateFlow<List<Program>> = _programs
-
-    private val _exercises = MutableStateFlow<List<Exercise>>(emptyList())
-    val exercises: StateFlow<List<Exercise>> = _exercises
-
-    private val _trainingDays = MutableStateFlow<List<TrainingDay>>(emptyList())
-    val trainingDays: StateFlow<List<TrainingDay>> = _trainingDays
-
-    private val _trainingDaysExercises = MutableStateFlow<List<TrainingDayExercise>>(emptyList())
-    val trainingDaysExercises: StateFlow<List<TrainingDayExercise>> = _trainingDaysExercises
-
-    private val _sets = MutableStateFlow<List<TrainingDayExerciseSet>>(emptyList())
-    val sets: StateFlow<List<TrainingDayExerciseSet>> = _sets
+    private val _sets = mutableStateOf<List<TrainingDayExerciseSet>>(emptyList())
+    val sets: State<List<TrainingDayExerciseSet>> = _sets
 
     init {
         viewModelScope.launch {
@@ -84,27 +96,29 @@ class TrainingProgramsViewModel(
         _programs.value = programDao.getAll()
     }
 
-    suspend fun addProgram(name: String) {
+    fun addProgram(name: String) {
         if (name.isNotEmpty()) {
-            programDao.insert(Program(name = name))
-            refreshPrograms()
+            viewModelScope.launch {
+                programDao.insert(Program(name = name))
+                refreshPrograms()
+            }
         }
     }
 
-    suspend fun updateProgram(id: Int, name: String) {
+    fun updateProgram(id: Int, name: String) {
         if (name.isNotEmpty()) {
-            programDao.update(Program(id = id, name = name))
-            refreshPrograms()
+            viewModelScope.launch {
+                programDao.update(Program(id = id, name = name))
+                refreshPrograms()
+            }
         }
     }
 
-    suspend fun deleteProgram(id: Int) {
-        programDao.delete(Program(id = id))
-        refreshPrograms()
-    }
-
-    fun getProgramById(id: Int): Program? {
-        return _programs.value.find { it.id == id }
+    fun deleteProgram(id: Int) {
+        viewModelScope.launch {
+            programDao.delete(Program(id = id))
+            refreshPrograms()
+        }
     }
 
     // exercises
@@ -113,27 +127,29 @@ class TrainingProgramsViewModel(
         _exercises.value = exerciseDao.getAll().sortedBy { it.name.lowercase() }
     }
 
-    suspend fun addExercise(name: String) {
+    fun addExercise(name: String) {
         if (name.isNotEmpty()) {
-            exerciseDao.insert(Exercise(name = name))
-            refreshExercises()
+            viewModelScope.launch {
+                exerciseDao.insert(Exercise(name = name))
+                refreshExercises()
+            }
         }
     }
 
-    suspend fun updateExercise(id: Int, name: String, notes: String) {
+    fun updateExercise(id: Int, name: String, notes: String) {
         if (name.isNotEmpty()) {
-            exerciseDao.update(Exercise(id = id, name = name, notes = notes))
-            refreshExercises()
+            viewModelScope.launch {
+                exerciseDao.update(Exercise(id = id, name = name, notes = notes))
+                refreshExercises()
+            }
         }
     }
 
-    suspend fun deleteExercise(id: Int) {
-        exerciseDao.delete(Exercise(id = id))
-        refreshExercises()
-    }
-
-    fun getExerciseById(id: Int): Exercise? {
-        return _exercises.value.find { it.id == id }
+    fun deleteExercise(id: Int) {
+        viewModelScope.launch {
+            exerciseDao.delete(Exercise(id = id))
+            refreshExercises()
+        }
     }
 
     // training days
@@ -142,63 +158,74 @@ class TrainingProgramsViewModel(
         _trainingDays.value = trainingDayDao.getAll()
     }
 
-    suspend fun addTrainingDay(programId:Int, name: String) {
+    fun addTrainingDay(programId:Int, name: String) {
         if (name.isNotEmpty()) {
-            trainingDayDao.insert(TrainingDay(programId = programId, name = name))
-            refreshTrainingDays()
+            viewModelScope.launch {
+                trainingDayDao.insert(TrainingDay(programId = programId, name = name))
+                refreshTrainingDays()
+            }
         }
     }
 
-    suspend fun updateTrainingDay(trainingDayId: Int, programId:Int, name: String) {
+    fun updateTrainingDay(trainingDayId: Int, programId:Int, name: String) {
         if (name.isNotEmpty()) {
-            trainingDayDao.update(TrainingDay(id = trainingDayId, programId = programId, name = name))
-            refreshTrainingDays()
+            viewModelScope.launch {
+                trainingDayDao.update(
+                    TrainingDay(
+                        id = trainingDayId,
+                        programId = programId,
+                        name = name
+                    )
+                )
+                refreshTrainingDays()
+            }
         }
     }
 
-    suspend fun deleteTrainingDay(id: Int) {
-        trainingDayDao.delete(TrainingDay(id = id))
-        refreshTrainingDays()
-    }
-
-    fun getTrainingDayById(id: Int): TrainingDay? {
-        return _trainingDays.value.find { it.id == id }
+    fun deleteTrainingDay(id: Int) {
+        viewModelScope.launch {
+            trainingDayDao.delete(TrainingDay(id = id))
+            refreshTrainingDays()
+        }
     }
 
     // training days exercises
 
     private suspend fun refreshTrainingDaysExercises() {
-        _trainingDaysExercises.value = trainingDayExerciseDao.getAll()
+        val data = trainingDayExerciseDao.getAll()
+        _trainingDaysExercises.value = data
     }
 
-    suspend fun addTrainingDayExercise(
+    fun addTrainingDayExercise(
         trainingDayId: Int,
         exerciseId: Int,
         setsNumber: Int,
         restTime: String,
         weight: Float?
     ) {
-        trainingDayExerciseDao.insert(
-            TrainingDayExercise(
-                trainingDayId = trainingDayId,
-                exerciseId = exerciseId,
-                restTime = restTime.ifEmpty { null },
-                weight = weight
+        viewModelScope.launch {
+            trainingDayExerciseDao.insert(
+                TrainingDayExercise(
+                    trainingDayId = trainingDayId,
+                    exerciseId = exerciseId,
+                    restTime = restTime.ifEmpty { null },
+                    weight = weight
+                )
             )
-        )
-        refreshTrainingDaysExercises()
+            refreshTrainingDaysExercises()
 
-        val trainingDayExercise = _trainingDaysExercises.value.find {
-            it.trainingDayId == trainingDayId && it.exerciseId == exerciseId
-        }
+            val trainingDayExercise = _trainingDaysExercises.value.find {
+                it.trainingDayId == trainingDayId && it.exerciseId == exerciseId
+            }
 
-        for (i in 1..setsNumber) {
-            addSet(trainingDayExercise?.id ?: 0)
+            repeat(setsNumber) {
+                addSet(trainingDayExercise?.id ?: 0)
+            }
+            refreshSets()
         }
-        refreshSets()
     }
 
-    suspend fun updateTrainingDayExercise(
+    fun updateTrainingDayExercise(
         trainingDayExerciseId: Int,
         trainingDayId: Int,
         exerciseId: Int,
@@ -207,51 +234,51 @@ class TrainingProgramsViewModel(
         restTime: String?,
         weight: Float?
     ) {
-        trainingDayExerciseDao.update(
-            TrainingDayExercise(
-                id = trainingDayExerciseId,
-                trainingDayId = trainingDayId,
-                exerciseId = exerciseId,
-                restTime = restTime?.ifEmpty { null },
-                weight = weight
+        viewModelScope.launch {
+            trainingDayExerciseDao.update(
+                TrainingDayExercise(
+                    id = trainingDayExerciseId,
+                    trainingDayId = trainingDayId,
+                    exerciseId = exerciseId,
+                    restTime = restTime?.ifEmpty { null },
+                    weight = weight
+                )
             )
-        )
-        refreshTrainingDaysExercises()
+            refreshTrainingDaysExercises()
 
-        val currentSetsNumber = getNumberOfSets(trainingDayExerciseId)
+            val currentSetsNumber = _sets.value.count { it.trainingDayExerciseId == trainingDayExerciseId }
 
-        if (currentSetsNumber < setsNumber) {
-            for (i in 1..setsNumber-currentSetsNumber) {
-                addSet(trainingDayExerciseId)
+            if (currentSetsNumber < setsNumber) {
+                repeat(setsNumber - currentSetsNumber) {
+                    addSet(trainingDayExerciseId)
+                }
+            } else if (currentSetsNumber > setsNumber) {
+                val sets = _sets.value.filter { it.trainingDayExerciseId == trainingDayExerciseId }
+                for (i in 1..currentSetsNumber - setsNumber) {
+                    deleteSet(sets[currentSetsNumber - i].id)
+                }
+            } else if (wasExerciseChanged) {
+                val sets = _sets.value.filter { it.trainingDayExerciseId == trainingDayExerciseId }
+                for (set in sets) {
+                    deleteSet(set.id)
+                }
+                repeat(setsNumber) {
+                    addSet(trainingDayExerciseId)
+                }
             }
-        } else if (currentSetsNumber > setsNumber) {
-            val sets = getSetsFromExercise(trainingDayExerciseId)
-            for (i in 1..currentSetsNumber-setsNumber) {
-                deleteSet(sets[currentSetsNumber - i].id)
-            }
-        } else if (wasExerciseChanged) {
-            val sets = getSetsFromExercise(trainingDayExerciseId)
+            refreshSets()
+        }
+    }
+
+    fun deleteTrainingDayExercise(id: Int) {
+        viewModelScope.launch {
+            val sets = _sets.value.filter { it.trainingDayExerciseId == id }
             for (set in sets) {
                 deleteSet(set.id)
             }
-            for (i in 1..setsNumber) {
-                addSet(trainingDayExerciseId)
-            }
+            trainingDayExerciseDao.delete(TrainingDayExercise(id = id))
+            refreshTrainingDaysExercises()
         }
-        refreshSets()
-    }
-
-    suspend fun deleteTrainingDayExercise(id: Int) {
-        val sets = getSetsFromExercise(id)
-        for (set in sets) {
-            deleteSet(set.id)
-        }
-        trainingDayExerciseDao.delete(TrainingDayExercise(id = id))
-        refreshTrainingDaysExercises()
-    }
-
-    fun getTrainingDayExerciseById(id: Int): TrainingDayExercise? {
-        return _trainingDaysExercises.value.find { it.id == id }
     }
 
     // sets
@@ -260,63 +287,35 @@ class TrainingProgramsViewModel(
         _sets.value = trainingDayExerciseSetDao.getAll()
     }
 
-    suspend fun addSet(trainingDayExerciseId: Int) {
-        trainingDayExerciseSetDao.insert(TrainingDayExerciseSet(trainingDayExerciseId = trainingDayExerciseId))
-        refreshSets()
-    }
-
-    suspend fun updateSet(
-        trainingDayExerciseSetId: Int,
-        trainingDayExerciseId: Int,
-        reps: Int?) {
-        trainingDayExerciseSetDao.update(
-            TrainingDayExerciseSet(
-                id = trainingDayExerciseSetId,
-                trainingDayExerciseId = trainingDayExerciseId,
-                reps = reps
-            )
-        )
-        refreshSets()
-    }
-
-    suspend fun deleteSet(id: Int) {
-        trainingDayExerciseSetDao.delete(TrainingDayExerciseSet(id = id))
-        refreshSets()
-    }
-
-    fun getSetById(id: Int): TrainingDayExerciseSet? {
-        return _sets.value.find { it.id == id }
-    }
-
-
-    // main logic
-
-    fun getTrainingDaysFromProgram(programId: Int): List<TrainingDay> {
-        return _trainingDays.value.filter { it.programId == programId }
-    }
-
-    fun getExercisesFromTrainingDay(trainingDayId: Int): List<TrainingDayExercise> {
-        return _trainingDaysExercises.value.filter { it.trainingDayId == trainingDayId }
-    }
-
-    fun getSetsFromExercise(trainingDayExerciseId: Int): List<TrainingDayExerciseSet> {
-        return _sets.value.filter { it.trainingDayExerciseId == trainingDayExerciseId }
-    }
-
-    fun getExerciseFromTrainingDay(
-        trainingDayId: Int,
-        exerciseId: Int
-    ): TrainingDayExercise? {
-        return _trainingDaysExercises.value.find {
-            it.trainingDayId == trainingDayId && it.exerciseId == exerciseId
+    fun addSet(trainingDayExerciseId: Int) {
+        viewModelScope.launch {
+            trainingDayExerciseSetDao.insert(TrainingDayExerciseSet(trainingDayExerciseId = trainingDayExerciseId))
+            refreshSets()
         }
     }
 
-    fun getNumberOfSets(trainingDayExerciseId: Int): Int {
-        return getSetsFromExercise(trainingDayExerciseId).size
+    fun updateSet(
+        trainingDayExerciseSetId: Int,
+        trainingDayExerciseId: Int,
+        reps: Int?
+    ) {
+        viewModelScope.launch {
+            trainingDayExerciseSetDao.update(
+                TrainingDayExerciseSet(
+                    id = trainingDayExerciseSetId,
+                    trainingDayExerciseId = trainingDayExerciseId,
+                    reps = reps
+                )
+            )
+            refreshSets()
+        }
     }
 
-    fun checkIfExerciseExists(trainingDayId: Int, exerciseId: Int): Boolean {
-        return getExerciseFromTrainingDay(trainingDayId, exerciseId) != null
+    fun deleteSet(id: Int) {
+        viewModelScope.launch {
+            trainingDayExerciseSetDao.delete(TrainingDayExerciseSet(id = id))
+            refreshSets()
+        }
     }
+
 }

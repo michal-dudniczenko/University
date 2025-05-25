@@ -4,15 +4,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -30,14 +34,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.befit.R
 import com.example.befit.database.Exercise
+import com.example.befit.health.caloriecalculator.ActivityLevel
+import com.example.befit.health.caloriecalculator.ActivityLevels
 
 @Composable
 fun CustomIntPicker(
-    selectedValue: Int? = null,
     label: String,
-    imageId: Int,
     onValueChange: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedValue: Int? = null,
+    imageId: Int = R.drawable.numbers
 ) {
     var textValue by remember { mutableStateOf(
         if (selectedValue == 0 || selectedValue == null) "" else selectedValue.toString()
@@ -90,11 +96,11 @@ fun CustomIntPicker(
 
 @Composable
 fun CustomFloatPicker(
-    selectedValue: Float? = null,
     label: String,
-    imageId: Int,
     onValueChange: (Float) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedValue: Float? = null,
+    imageId: Int = R.drawable.numbers,
 ) {
     var textValue by remember { mutableStateOf(
         if (selectedValue == 0f || selectedValue == null) "" else floatToString(selectedValue)
@@ -147,11 +153,11 @@ fun CustomFloatPicker(
 
 @Composable
 fun CustomStringPicker(
-    selectedValue: String? = null,
     onValueChange: (String) -> Unit,
     label: String,
+    modifier: Modifier = Modifier,
+    selectedValue: String? = null,
     imageId: Int = R.drawable.abc,
-    modifier: Modifier = Modifier
 ) {
     var textValue by remember { mutableStateOf(selectedValue ?: "") }
 
@@ -196,10 +202,10 @@ fun CustomStringPicker(
 
 @Composable
 fun CustomExercisePicker(
-    selectedExercise: Exercise? = null,
     exercises: List<Exercise>,
     onExerciseSelected: (Exercise) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedExercise: Exercise? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(selectedExercise?.name ?: "Select exercise") }
@@ -232,7 +238,7 @@ fun CustomExercisePicker(
             onDismissRequest = { expanded = false },
             modifier = Modifier.fillMaxWidth(0.8f * 0.95f)
         ) {
-            exercises.forEach { exercise ->
+            exercises.forEachIndexed { index, exercise ->
                 DropdownMenuItem(
                     text = { Text(text = exercise.name) },
                     onClick = {
@@ -241,7 +247,147 @@ fun CustomExercisePicker(
                         expanded = false
                     }
                 )
+                if (index < exercises.lastIndex) {
+                    HorizontalDivider(
+                        thickness = 2.dp
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+fun CustomSexPicker(
+    onValueSelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    selectedValue: String? = null
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(selectedValue ?: "Sex") }
+
+    val options = listOf("Male", "Female")
+
+    Box(modifier = modifier.fillMaxWidth()) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = darkBackground,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .border(
+                    width = 1.dp,
+                    color = bright,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .clickable {
+                    expanded = !expanded
+                }
+                .padding(adaptiveWidth(16).dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
+            ) {
+                CustomText(
+                    text = selectedText,
+                    isBoldFont = false,
+                    fontSize = smallFontSize
+                )
+            }
+
+        }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.fillMaxWidth(0.8f * 0.7f)
+        ) {
+            options.forEachIndexed { index, option ->
+                DropdownMenuItem(
+                    text = { Text(text = option) },
+                    onClick = {
+                        onValueSelected(option)
+                        selectedText = option
+                        expanded = false
+                    }
+                )
+                if (index < options.lastIndex) {
+                    HorizontalDivider(
+                        thickness = 2.dp
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CustomActivityLevelPicker(
+    onValueSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    selectedValue: ActivityLevel? = null
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(selectedValue?.name ?: "Activity level") }
+
+    Box(modifier = modifier.fillMaxWidth()) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = darkBackground,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .border(
+                    width = 1.dp,
+                    color = bright,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .clickable {
+                    expanded = !expanded
+                }
+                .padding(adaptiveWidth(16).dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
+            ) {
+                CustomText(
+                    text = selectedText,
+                    isBoldFont = false,
+                    fontSize = smallFontSize
+                )
+            }
+
+        }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.fillMaxWidth(0.8f * 0.7f)
+        ) {
+            ActivityLevels.levels.forEachIndexed { index, option ->
+                DropdownMenuItem(
+                    text = { Text(text = option.name) },
+                    onClick = {
+                        onValueSelected(option.level)
+                        selectedText = option.name
+                        expanded = false
+                    }
+                )
+                if (index < ActivityLevels.levels.lastIndex) {
+                    HorizontalDivider(
+                        thickness = 2.dp
+                    )
+                }
+            }
+        }
+
     }
 }
