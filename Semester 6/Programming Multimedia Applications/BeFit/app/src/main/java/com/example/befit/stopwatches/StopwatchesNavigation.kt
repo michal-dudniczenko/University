@@ -13,7 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.befit.common.StopwatchesRoutes
+import com.example.befit.constants.StopwatchesRoutes
 
 @Composable
 fun StopwatchesNavigation(

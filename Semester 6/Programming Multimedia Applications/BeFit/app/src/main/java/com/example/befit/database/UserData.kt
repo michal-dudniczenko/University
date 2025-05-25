@@ -14,7 +14,7 @@ data class UserData(
     @PrimaryKey(autoGenerate = false)
     val id: Int = 1,
 
-    val sex: String = "",
+    val isMale: Boolean = true,
     val age: Int = 0,
     val height: Int = 0,
     val weight: Float = 0f,

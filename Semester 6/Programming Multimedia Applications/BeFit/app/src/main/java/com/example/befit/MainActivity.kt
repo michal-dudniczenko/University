@@ -12,8 +12,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.example.befit.common.InitScreenDimensions
-import com.example.befit.common.appBackground
+import com.example.befit.constants.InitScreenDimensions
+import com.example.befit.constants.appBackground
 import com.example.befit.database.AppDatabase
 import com.example.befit.health.HealthViewModel
 import com.example.befit.health.caloriecalculator.CalorieCalculatorViewModel

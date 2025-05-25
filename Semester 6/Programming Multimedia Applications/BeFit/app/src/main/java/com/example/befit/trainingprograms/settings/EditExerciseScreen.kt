@@ -30,12 +30,13 @@ import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.bright
-import com.example.befit.common.lightGreen
-import com.example.befit.common.lightRed
+import com.example.befit.constants.Strings
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bright
+import com.example.befit.constants.lightGreen
+import com.example.befit.constants.lightRed
 import com.example.befit.trainingprograms.TrainingProgramsViewModel
 
 @Composable
@@ -95,7 +96,7 @@ fun EditExerciseScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Edit exercise")
+            Heading(Strings.EDIT_EXERCISE)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -105,7 +106,7 @@ fun EditExerciseScreen(
             ) {
                 CustomStringPicker(
                     selectedValue = selectedName,
-                    label = "Exercise name",
+                    label = Strings.EXERCISE_NAME,
                     onValueChange = { selectedName = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(40).dp))
@@ -123,7 +124,7 @@ fun EditExerciseScreen(
                         )
                 ) {
                     CustomText(
-                        text = "Delete exercise",
+                        text = Strings.DELETE_EXERCISE,
                         color = Color.White,
                         modifier = Modifier.padding(adaptiveWidth(16).dp)
                     )

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.befit.common.HealthRoutes
+import com.example.befit.constants.HealthRoutes
 import com.example.befit.health.bmicalculator.BmiCalculatorScreen
 import com.example.befit.health.caloriecalculator.CalorieCalculatorNavigation
 import com.example.befit.health.caloriecalculator.CalorieCalculatorViewModel

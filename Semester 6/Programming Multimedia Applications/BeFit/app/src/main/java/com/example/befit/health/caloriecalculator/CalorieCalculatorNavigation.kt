@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.befit.common.CalorieCalculatorRoutes
+import com.example.befit.constants.CalorieCalculatorRoutes
 import com.example.befit.health.HealthViewModel
 
 @Composable

@@ -34,12 +34,13 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.bigFontSize
-import com.example.befit.common.bright
-import com.example.befit.common.darkBackground
-import com.example.befit.common.mediumFontSize
+import com.example.befit.constants.Strings
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bigFontSize
+import com.example.befit.constants.bright
+import com.example.befit.constants.darkBackground
+import com.example.befit.constants.mediumFontSize
 
 @Composable
 fun ViewExerciseFromDayScreen(
@@ -105,7 +106,7 @@ fun ViewExerciseFromDayScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Exercise info")
+            Heading(Strings.EXERCISE_INFO)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
@@ -135,7 +136,7 @@ fun ViewExerciseFromDayScreen(
                         .fillMaxWidth(0.85f)
                 ) {
                     CustomText(
-                        text = "Rest time:  $restTime"
+                        text = "${Strings.REST_TIME}:  $restTime"
                     )
                 }
                 Spacer(Modifier.height(adaptiveWidth(16).dp))
@@ -160,7 +161,7 @@ fun ViewExerciseFromDayScreen(
                         notes = input
                         viewModelNotes = input
                     },
-                    label = { Text("Notes") },
+                    label = { Text(Strings.NOTES) },
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
                         .fillMaxHeight(0.95f)

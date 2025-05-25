@@ -24,13 +24,14 @@ import com.example.befit.common.CustomFloatPicker
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
-import com.example.befit.common.WeightHistoryRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
+import com.example.befit.constants.WeightHistoryRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
 import com.example.befit.common.formatDateFromLong
 import com.example.befit.common.isValidDate
-import com.example.befit.common.lightGreen
-import com.example.befit.common.lightRed
+import com.example.befit.constants.Strings
+import com.example.befit.constants.lightGreen
+import com.example.befit.constants.lightRed
 
 @Composable
 fun AddWeightScreen(
@@ -77,7 +78,7 @@ fun AddWeightScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Add weight")
+            Heading(Strings.ADD_WEIGHT)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -88,12 +89,12 @@ fun AddWeightScreen(
                 CustomStringPicker(
                     selectedValue = selectedDate,
                     onValueChange = { selectedDate = it },
-                    label = "Date",
+                    label = Strings.DATE,
                     imageId = R.drawable.calendar,
                 )
                 Spacer(modifier = Modifier.height(adaptiveHeight(40).dp))
                 CustomFloatPicker(
-                    label = "Weight",
+                    label = Strings.WEIGHT_BODY,
                     imageId = R.drawable.scale_white,
                     onValueChange = { selectedWeight = it }
                 )

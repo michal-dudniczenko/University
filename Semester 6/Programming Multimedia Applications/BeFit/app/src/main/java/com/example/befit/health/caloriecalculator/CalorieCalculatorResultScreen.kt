@@ -15,12 +15,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.R
-import com.example.befit.common.CalorieCalculatorRoutes
+import com.example.befit.constants.CalorieCalculatorRoutes
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.Heading
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.bright
-import com.example.befit.common.darkBackground
+import com.example.befit.constants.Strings
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bright
+import com.example.befit.constants.darkBackground
 
 @Composable
 fun CalorieCalculatorResultScreen(
@@ -52,7 +53,7 @@ fun CalorieCalculatorResultScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Result")
+            Heading(Strings.RESULT)
             Column(
                 modifier = Modifier
                     .fillMaxWidth(0.95f)
@@ -60,36 +61,36 @@ fun CalorieCalculatorResultScreen(
                     .padding(bottom = 125.dp)
             ) {
                 ResultRow(
-                    text = "Your BMR is:",
+                    text = Strings.YOUR_BMR_IS,
                     kcal = result?.bmr,
                     backgroundColor = darkBackground,
                     fontColor = bright
                 )
                 ResultRow(
-                    text = "Maintain weight:",
+                    text = Strings.MAINTAIN_WEIGHT,
                     kcal = result?.maintain,
                     backgroundColor = Color(72, 196, 184, 255)
                 )
                 ResultRow(
-                    text = "Build muscle:",
+                    text = Strings.BUILD_MUSCLE,
                     kcal = result?.gainWeight,
                     backgroundColor = Color(134, 87, 222, 255)
                 )
                 ResultRow(
-                    text = "Slow weight loss:",
-                    bottomText = "0.25 kg/week",
+                    text = Strings.SLOW_WEIGHT_LOSS,
+                    bottomText = "0.25 kg/${Strings.WEEK}",
                     kcal = result?.slowWeightLoss,
                     backgroundColor = Color(96, 197, 77, 255)
                 )
                 ResultRow(
-                    text = "Weight loss:",
-                    bottomText = "0.5 kg/week",
+                    text = Strings.WEIGHT_LOSS,
+                    bottomText = "0.5 kg/${Strings.WEEK}",
                     kcal = result?.weightLoss,
                     backgroundColor = Color(239, 82, 41, 255)
                 )
                 ResultRow(
-                    text = "Fast weight loss:",
-                    bottomText = "1 kg/week",
+                    text = Strings.FAST_WEIGHT_LOSS,
+                    bottomText = "1 kg/${Strings.WEEK}",
                     kcal = result?.fastWeightLoss,
                     backgroundColor = Color(224, 53, 53, 255)
                 )

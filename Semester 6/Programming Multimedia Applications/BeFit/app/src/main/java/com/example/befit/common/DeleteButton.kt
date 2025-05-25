@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.befit.R
+import com.example.befit.constants.lightRed
 
 @Composable
 fun DeleteButton(

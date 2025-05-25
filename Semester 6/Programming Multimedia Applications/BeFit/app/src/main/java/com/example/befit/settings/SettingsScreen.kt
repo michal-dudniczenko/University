@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.constants.Strings
 
 @Composable
 fun SettingsListScreen(
@@ -30,9 +31,7 @@ fun SettingsListScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading(
-                text = "App Settings"
-            )
+            Heading(Strings.APP_SETTINGS)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier

@@ -18,7 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.befit.common.adaptiveWidth
+import com.example.befit.constants.Strings
+import com.example.befit.constants.adaptiveWidth
 import java.util.Locale
 
 @Composable
@@ -31,28 +32,28 @@ fun BmiResult(
 
     if (bmi > 40) {
         backgroundColor = Color(119, 0, 0, 255)
-        bottomText = "Obese Class III"
+        bottomText = Strings.OBESE_CLASS_III
     } else if (bmi > 35) {
         backgroundColor = Color(208, 37, 37, 255)
-        bottomText = "Obese Class II"
+        bottomText = Strings.OBESE_CLASS_II
     } else if (bmi > 30) {
         backgroundColor = Color(234, 77, 22, 255)
-        bottomText = "Obese Class I"
+        bottomText = Strings.OBESE_CLASS_I
     } else if (bmi > 25) {
         backgroundColor = Color(218, 134, 31, 255)
-        bottomText = "Overweight"
+        bottomText = Strings.OVERWEIGHT
     } else if (bmi > 18.5) {
         backgroundColor = Color(70, 150, 43, 255)
-        bottomText = "Normal weight"
+        bottomText = Strings.NORMAL_WEIGHT
     } else if (bmi > 17) {
         backgroundColor = Color(218, 134, 31, 255)
-        bottomText = "Mild underweight"
+        bottomText = Strings.MILD_UNDERWEIGHT
     } else if (bmi > 16) {
         backgroundColor = Color(234, 77, 22, 255)
-        bottomText = "Moderate underweight"
+        bottomText = Strings.MODERATE_UNDERWEIGHT
     } else {
         backgroundColor = Color(208, 37, 37, 255)
-        bottomText = "Severe underweight"
+        bottomText = Strings.SEVERE_UNDERWEIGHT
     }
 
     Column(
@@ -67,7 +68,7 @@ fun BmiResult(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "Your BMI is:",
+                text = Strings.YOUR_BMI_IS,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = adaptiveWidth(20).sp,

@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.befit.common.adaptiveWidth
+import com.example.befit.constants.adaptiveWidth
 
 @Composable
 fun ResultRow(
@@ -43,14 +43,14 @@ fun ResultRow(
                 text = text,
                 color = fontColor,
                 fontWeight = FontWeight.Bold,
-                fontSize = adaptiveWidth(20).sp,
+                fontSize = adaptiveWidth(17).sp,
             )
             if (bottomText != null) {
                 Text(
                     text = bottomText,
                     color = fontColor,
                     fontWeight = FontWeight.Normal,
-                    fontSize = adaptiveWidth(16).sp
+                    fontSize = adaptiveWidth(15).sp
                 )
             }
         }

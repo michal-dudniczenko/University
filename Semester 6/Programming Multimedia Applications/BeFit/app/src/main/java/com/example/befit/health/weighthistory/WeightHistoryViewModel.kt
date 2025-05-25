@@ -4,8 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.befit.common.CalorieCalculatorRoutes
-import com.example.befit.common.WeightHistoryRoutes
+import com.example.befit.constants.WeightHistoryRoutes
 import com.example.befit.database.Weight
 import com.example.befit.database.WeightDao
 import kotlinx.coroutines.flow.MutableSharedFlow

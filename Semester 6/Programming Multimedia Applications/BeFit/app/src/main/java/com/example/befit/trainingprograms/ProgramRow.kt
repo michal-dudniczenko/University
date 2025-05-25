@@ -22,12 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.common.CustomText
 import com.example.befit.common.DeleteButton
-import com.example.befit.common.ROW_HEIGHT
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.darkBackground
-import com.example.befit.common.editColor
-import com.example.befit.common.mediumFontSize
+import com.example.befit.constants.ROW_HEIGHT
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.darkBackground
+import com.example.befit.constants.editColor
+import com.example.befit.constants.mediumFontSize
 
 @Composable
 fun ProgramRow(

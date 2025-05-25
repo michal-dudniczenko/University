@@ -1,4 +1,4 @@
-package com.example.befit.common
+package com.example.befit.constants
 
 import androidx.compose.ui.graphics.Color
 

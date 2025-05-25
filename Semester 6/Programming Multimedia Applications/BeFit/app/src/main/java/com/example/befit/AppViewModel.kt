@@ -3,7 +3,7 @@ package com.example.befit
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.befit.common.AppRoutes
+import com.example.befit.constants.AppRoutes
 
 class AppViewModel : ViewModel() {
 

@@ -11,11 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.befit.common.CustomText
-import com.example.befit.common.WeightHistoryRoutes
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.darkBackground
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.darkBackground
 import com.example.befit.common.formatDateFromLong
 import com.example.befit.database.Weight
 import java.util.Locale

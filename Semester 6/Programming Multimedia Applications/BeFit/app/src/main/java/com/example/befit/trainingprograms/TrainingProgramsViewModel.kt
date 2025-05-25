@@ -5,8 +5,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.befit.common.DEFAULT_EXERCISES
-import com.example.befit.common.TrainingProgramsRoutes
+import com.example.befit.constants.DEFAULT_EXERCISES
+import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.database.Exercise
 import com.example.befit.database.ExerciseDao
 import com.example.befit.database.Program

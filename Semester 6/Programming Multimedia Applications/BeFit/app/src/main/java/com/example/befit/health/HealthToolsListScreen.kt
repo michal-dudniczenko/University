@@ -13,7 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.befit.common.FunctionalityRow
 import com.example.befit.common.Heading
-import com.example.befit.common.HealthRoutes
+import com.example.befit.constants.HealthRoutes
+import com.example.befit.constants.Strings
 
 @Composable
 fun HealthToolsListScreen(
@@ -31,9 +32,7 @@ fun HealthToolsListScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading(
-                text = "Health"
-            )
+            Heading(Strings.HEALTH)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier

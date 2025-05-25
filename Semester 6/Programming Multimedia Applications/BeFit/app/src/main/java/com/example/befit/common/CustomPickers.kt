@@ -33,6 +33,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.befit.R
+import com.example.befit.constants.Strings
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bright
+import com.example.befit.constants.darkBackground
+import com.example.befit.constants.mediumFontSize
+import com.example.befit.constants.smallFontSize
 import com.example.befit.database.Exercise
 import com.example.befit.health.caloriecalculator.ActivityLevel
 import com.example.befit.health.caloriecalculator.ActivityLevels
@@ -208,7 +214,7 @@ fun CustomExercisePicker(
     selectedExercise: Exercise? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(selectedExercise?.name ?: "Select exercise") }
+    var selectedText by remember { mutableStateOf(selectedExercise?.name ?: Strings.SELECT_EXERCISE) }
 
     Box(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -259,14 +265,14 @@ fun CustomExercisePicker(
 
 @Composable
 fun CustomSexPicker(
-    onValueSelected: (String) -> Unit,
+    onValueSelected: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     selectedValue: String? = null
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(selectedValue ?: "Sex") }
+    var selectedText by remember { mutableStateOf(selectedValue ?: Strings.SELECT_SEX) }
 
-    val options = listOf("Male", "Female")
+    val options = listOf(Strings.MALE, Strings.FEMALE)
 
     Box(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -310,7 +316,12 @@ fun CustomSexPicker(
                 DropdownMenuItem(
                     text = { Text(text = option) },
                     onClick = {
-                        onValueSelected(option)
+                        onValueSelected(
+                            when (option) {
+                                options[0] -> true
+                                else -> false
+                            }
+                        )
                         selectedText = option
                         expanded = false
                     }
@@ -332,7 +343,7 @@ fun CustomActivityLevelPicker(
     selectedValue: ActivityLevel? = null
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(selectedValue?.name ?: "Activity level") }
+    var selectedText by remember { mutableStateOf(selectedValue?.name ?: Strings.ACTIVITY_LEVEL) }
 
     Box(modifier = modifier.fillMaxWidth()) {
         Row(

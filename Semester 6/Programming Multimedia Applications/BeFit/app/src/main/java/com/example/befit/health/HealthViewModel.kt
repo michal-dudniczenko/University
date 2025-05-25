@@ -4,8 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.befit.common.HealthRoutes
-import com.example.befit.common.TrainingProgramsRoutes
+import com.example.befit.constants.HealthRoutes
 import com.example.befit.database.UserData
 import com.example.befit.database.UserDataDao
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -39,18 +38,14 @@ class HealthViewModel(
     init {
         viewModelScope.launch {
             val data = userDataDao.getAll()
-            if (data.isEmpty()) {
-                val temp = UserData()
-                userDataDao.insert(temp)
-                _userData.value = temp
-            } else {
+            if (!data.isEmpty()) {
                 _userData.value = data.first()
             }
         }
     }
 
     fun updateUserData(
-        sex: String? = null,
+        isMale: Boolean? = null,
         age: Int? = null,
         height: Int? = null,
         weight: Float? = null,
@@ -58,7 +53,7 @@ class HealthViewModel(
     ) {
         val newUserData = UserData(
             id = 1,
-            sex = sex ?: userData.value?.sex ?: "",
+            isMale = isMale ?: userData.value?.isMale ?: true,
             age = age ?: userData.value?.age ?: 0,
             height = height ?: userData.value?.height ?: 0,
             weight = weight ?: userData.value?.weight ?: 0f,
@@ -71,23 +66,33 @@ class HealthViewModel(
 
     }
 
+    fun updateUserData(
+        userData: UserData
+    ) {
+        viewModelScope.launch {
+            if (_userData.value == null) {
+                userDataDao.insert(userData)
+            } else {
+                userDataDao.update(userData)
+            }
+        }
+        _userData.value = userData
+    }
+
     fun calculateBmi(
         height: Int,
         weight: Float
     ): Float {
         val newUserData = UserData(
             id = 1,
-            sex = userData.value?.sex ?: "",
+            isMale = userData.value?.isMale ?: true,
             age = userData.value?.age ?: 0,
             height = height,
             weight = weight,
             activityLevel = userData.value?.activityLevel ?: -1,
         )
+        updateUserData(newUserData)
 
-        _userData.value = newUserData
-        viewModelScope.launch {
-            userDataDao.update(newUserData)
-        }
         return weight / ((height / 100f) * (height / 100f))
     }
 
@@ -96,17 +101,14 @@ class HealthViewModel(
     ): Float {
         val newUserData = UserData(
             id = 1,
-            sex = userData.value?.sex ?: "",
+            isMale = userData.value?.isMale ?: true,
             age = userData.value?.age ?: 0,
             height = userData.value?.height ?: 0,
             weight = weight,
             activityLevel = userData.value?.activityLevel ?: -1,
         )
+        updateUserData(newUserData)
 
-        _userData.value = newUserData
-        viewModelScope.launch {
-            userDataDao.update(newUserData)
-        }
         return weight * 35 / 1000
     }
 }

@@ -1,4 +1,4 @@
-package com.example.befit.common
+package com.example.befit.constants
 
 const val NAVBAR_HEIGHT = 64
 const val ROW_HEIGHT = 64

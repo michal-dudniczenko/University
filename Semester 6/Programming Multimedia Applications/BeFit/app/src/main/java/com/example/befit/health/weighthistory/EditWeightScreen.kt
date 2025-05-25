@@ -31,13 +31,14 @@ import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.WeightHistoryRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
+import com.example.befit.constants.WeightHistoryRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
 import com.example.befit.common.formatDateFromLong
 import com.example.befit.common.isValidDate
-import com.example.befit.common.lightGreen
-import com.example.befit.common.lightRed
+import com.example.befit.constants.Strings
+import com.example.befit.constants.lightGreen
+import com.example.befit.constants.lightRed
 
 @Composable
 fun EditWeightScreen(
@@ -86,7 +87,7 @@ fun EditWeightScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Edit weight")
+            Heading(Strings.EDIT_WEIGHT)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -97,13 +98,13 @@ fun EditWeightScreen(
                 CustomStringPicker(
                     selectedValue = selectedDate,
                     onValueChange = { selectedDate = it },
-                    label = "Date",
+                    label = Strings.DATE,
                     imageId = R.drawable.calendar,
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(40).dp))
                 CustomFloatPicker(
                     selectedValue = selectedWeight,
-                    label = "Weight",
+                    label = Strings.WEIGHT_BODY,
                     imageId = R.drawable.scale_white,
                     onValueChange = { selectedWeight = it }
                 )
@@ -122,7 +123,7 @@ fun EditWeightScreen(
                         )
                 ) {
                     CustomText(
-                        text = "Delete weight",
+                        text = Strings.DELETE_WEIGHT,
                         color = Color.White,
                         modifier = Modifier.padding(adaptiveWidth(16).dp)
                     )

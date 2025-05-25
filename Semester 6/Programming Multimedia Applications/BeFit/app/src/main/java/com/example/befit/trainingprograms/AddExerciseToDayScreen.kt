@@ -26,11 +26,12 @@ import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomIntPicker
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.lightGreen
-import com.example.befit.common.lightRed
+import com.example.befit.constants.Strings
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.lightGreen
+import com.example.befit.constants.lightRed
 import com.example.befit.database.Exercise
 
 @Composable
@@ -90,7 +91,7 @@ fun AddExerciseToDayScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Add exercise")
+            Heading(Strings.ADD_EXERCISE)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -104,19 +105,19 @@ fun AddExerciseToDayScreen(
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(30).dp))
                 CustomStringPicker(
-                    label = "Rest time",
+                    label = Strings.REST_TIME,
                     imageId = R.drawable.clock,
                     onValueChange = { selectedRestTime = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(30).dp))
                 CustomIntPicker(
-                    label = "How many sets",
+                    label = Strings.HOW_MANY_SETS,
                     imageId = R.drawable.numbers,
                     onValueChange = { selectedSetsNumber = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(30).dp))
                 CustomFloatPicker(
-                    label = "Weight",
+                    label = Strings.WEIGHT_GYM,
                     imageId = R.drawable.numbers,
                     onValueChange = { selectedWeight = it }
                 )

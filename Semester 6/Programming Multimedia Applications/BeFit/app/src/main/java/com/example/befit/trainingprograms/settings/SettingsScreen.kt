@@ -26,9 +26,10 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.darkBackground
+import com.example.befit.constants.Strings
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.darkBackground
 
 @Composable
 fun SettingsScreen(
@@ -55,7 +56,7 @@ fun SettingsScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Settings")
+            Heading(Strings.SETTINGS)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
@@ -63,7 +64,7 @@ fun SettingsScreen(
                     .fillMaxHeight()
             ) {
                 SettingsItem(
-                    text = "Edit exercise list",
+                    text = Strings.EDIT_EXERCISE_LIST,
                     onClick = { navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE_LIST) }
                 )
             }

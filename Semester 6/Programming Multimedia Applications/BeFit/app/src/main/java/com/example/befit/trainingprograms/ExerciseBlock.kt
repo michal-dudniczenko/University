@@ -33,15 +33,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.befit.common.CustomText
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.appBackground
-import com.example.befit.common.bright
-import com.example.befit.common.darkBackground
-import com.example.befit.common.editColor
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.appBackground
+import com.example.befit.constants.bright
+import com.example.befit.constants.darkBackground
+import com.example.befit.constants.editColor
 import com.example.befit.common.floatToString
-import com.example.befit.common.mediumFontSize
-import com.example.befit.common.smallFontSize
+import com.example.befit.constants.mediumFontSize
+import com.example.befit.constants.smallFontSize
 import com.example.befit.database.TrainingDayExercise
 import com.example.befit.database.TrainingDayExerciseSet
 

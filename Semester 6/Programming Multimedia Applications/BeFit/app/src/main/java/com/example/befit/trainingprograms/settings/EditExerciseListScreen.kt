@@ -28,10 +28,11 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.darkBackground
+import com.example.befit.constants.Strings
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.darkBackground
 import com.example.befit.trainingprograms.TrainingProgramsViewModel
 
 @Composable
@@ -73,7 +74,7 @@ fun EditExerciseListScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Edit exercises")
+            Heading(Strings.EDIT_EXERCISES)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier

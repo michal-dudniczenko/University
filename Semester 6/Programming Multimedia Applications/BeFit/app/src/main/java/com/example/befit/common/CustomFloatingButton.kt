@@ -15,6 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.example.befit.constants.FLOATING_BUTTON_SIZE
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bright
 
 @Composable
 fun CustomFloatingButton(

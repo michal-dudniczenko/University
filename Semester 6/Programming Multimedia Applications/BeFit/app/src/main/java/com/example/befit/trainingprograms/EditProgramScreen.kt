@@ -23,11 +23,11 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.bright
-import com.example.befit.common.lightGreen
+import com.example.befit.constants.Strings
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bright
 
 @Composable
 fun EditProgramScreen(
@@ -76,7 +76,7 @@ fun EditProgramScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Edit program")
+            Heading(Strings.EDIT_PROGRAM)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -86,7 +86,7 @@ fun EditProgramScreen(
             ) {
                 CustomStringPicker(
                     selectedValue = selectedName,
-                    label = "Program name",
+                    label = Strings.PROGRAM_NAME,
                     onValueChange = { selectedName = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveHeight(200).dp))

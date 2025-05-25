@@ -26,13 +26,14 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.bigFontSize
-import com.example.befit.common.bright
-import com.example.befit.common.editColor
-import com.example.befit.common.mediumGreen
+import com.example.befit.constants.Strings
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bigFontSize
+import com.example.befit.constants.bright
+import com.example.befit.constants.editColor
+import com.example.befit.constants.mediumGreen
 
 @Composable
 fun ProgramsListScreen(
@@ -82,14 +83,14 @@ fun ProgramsListScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Your programs")
+            Heading(Strings.YOUR_PROGRAMS)
             if (programs.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
                     CustomText(
-                        text = "Nothing here yet!",
+                        text = Strings.NOTHING_HERE_YET,
                         fontSize = bigFontSize,
                         modifier = Modifier
                             .align(Alignment.Center)
@@ -116,7 +117,7 @@ fun ProgramsListScreen(
                                 }
                         ) {
                             CustomText(
-                                text = "Add program",
+                                text = Strings.ADD_PROGRAM,
                                 modifier = Modifier.padding(adaptiveWidth(16).dp)
                             )
                         }

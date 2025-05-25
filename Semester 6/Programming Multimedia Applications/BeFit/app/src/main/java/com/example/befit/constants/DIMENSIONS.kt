@@ -1,4 +1,4 @@
-package com.example.befit.common
+package com.example.befit.constants
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext

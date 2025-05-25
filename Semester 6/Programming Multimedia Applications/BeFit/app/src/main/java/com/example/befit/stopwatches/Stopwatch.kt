@@ -28,17 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.R
 import com.example.befit.common.CustomText
-import com.example.befit.common.STOPWATCH_BUTTON_SIZE
-import com.example.befit.common.STOPWATCH_FONT_SIZE
-import com.example.befit.common.StopwatchesRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.bright
-import com.example.befit.common.darkBackground
-import com.example.befit.common.editColor
+import com.example.befit.constants.STOPWATCH_BUTTON_SIZE
+import com.example.befit.constants.STOPWATCH_FONT_SIZE
+import com.example.befit.constants.StopwatchesRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bright
+import com.example.befit.constants.darkBackground
+import com.example.befit.constants.editColor
 import com.example.befit.common.formatTime
-import com.example.befit.common.lightRed
-import com.example.befit.common.smallFontSize
+import com.example.befit.constants.Strings
+import com.example.befit.constants.lightRed
+import com.example.befit.constants.smallFontSize
 
 @Composable
 fun Stopwatch(
@@ -92,7 +93,7 @@ fun Stopwatch(
                         .padding(horizontal = adaptiveWidth(16).dp, vertical = adaptiveWidth(8).dp)
                 ) {
                     CustomText(
-                        text = "Delete",
+                        text = Strings.DELETE,
                         fontSize = smallFontSize,
                         color = Color.White,
                     )

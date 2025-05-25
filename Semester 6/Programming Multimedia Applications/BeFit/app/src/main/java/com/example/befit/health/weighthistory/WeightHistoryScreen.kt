@@ -20,11 +20,12 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.HealthRoutes
-import com.example.befit.common.WeightHistoryRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.bigFontSize
+import com.example.befit.constants.HealthRoutes
+import com.example.befit.constants.Strings
+import com.example.befit.constants.WeightHistoryRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bigFontSize
 
 @Composable
 fun WeightHistoryScreen(
@@ -62,14 +63,14 @@ fun WeightHistoryScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Weight history")
+            Heading(Strings.WEIGHT_HISTORY)
             if (weights.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
                     CustomText(
-                        text = "Nothing here yet!",
+                        text = Strings.NOTHING_HERE_YET,
                         fontSize = bigFontSize,
                         modifier = Modifier
                             .align(Alignment.Center)

@@ -18,7 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.befit.common.adaptiveWidth
+import com.example.befit.constants.Strings
+import com.example.befit.constants.adaptiveWidth
 import java.util.Locale
 
 @Composable
@@ -36,10 +37,10 @@ fun WaterIntakeResult(
         Text(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Normal)) {
-                    append("You should drink ")
+                    append(Strings.YOU_SHOULD_DRINK + " ")
                 }
                 withStyle(style = SpanStyle(fontWeight = FontWeight.ExtraBold)) {
-                    append("at least")
+                    append(Strings.AT_LEAST)
                 }
             },
             color = Color.White,
@@ -47,7 +48,7 @@ fun WaterIntakeResult(
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = String.format(Locale.US, "%.1f", waterIntake) + " liters",
+            text = String.format(Locale.US, "%.1f", waterIntake) + " " + Strings.LITERS,
             color = Color.White,
             fontWeight = FontWeight.ExtraBold,
             fontSize = adaptiveWidth(28).sp
@@ -56,10 +57,10 @@ fun WaterIntakeResult(
         Text(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Normal)) {
-                    append("of water ")
+                    append(Strings.OF_WATER + " ")
                 }
                 withStyle(style = SpanStyle(fontWeight = FontWeight.ExtraBold)) {
-                    append("every day")
+                    append(Strings.EVERY_DAY)
                 }
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Normal)) {
                     append(".")

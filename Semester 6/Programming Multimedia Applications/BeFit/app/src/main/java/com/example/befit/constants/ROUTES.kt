@@ -1,4 +1,4 @@
-package com.example.befit.common
+package com.example.befit.constants
 
 import com.example.befit.R
 
@@ -78,13 +78,13 @@ object StopwatchesRoutes {
 }
 
 object HealthRoutes {
-    const val TOOLS_LIST = "Tools List"
-    const val DIET_PLANS = "Diet Plans"
-    const val WEIGHT_HISTORY = "Weight History"
-    const val CALORIE_CALCULATOR = "Calorie Calculator"
-    const val BMI_CALCULATOR = "BMI Calculator"
-    const val WATER_INTAKE_CALCULATOR = "Water Intake Calculator"
-    const val START = TOOLS_LIST
+    val TOOLS_LIST = "Tools List"
+    val DIET_PLANS = Strings.DIET_PLANS
+    val WEIGHT_HISTORY = Strings.WEIGHT_HISTORY
+    val CALORIE_CALCULATOR = Strings.CALORIE_CALCULATOR
+    val BMI_CALCULATOR = Strings.BMI_CALCULATOR
+    val WATER_INTAKE_CALCULATOR = Strings.WATER_INTAKE_CALCULATOR
+    val START = TOOLS_LIST
 
     val screens = listOf(
         TOOLS_LIST,

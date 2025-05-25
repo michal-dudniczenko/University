@@ -21,8 +21,9 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
-import com.example.befit.common.StopwatchesRoutes
-import com.example.befit.common.adaptiveWidth
+import com.example.befit.constants.StopwatchesRoutes
+import com.example.befit.constants.Strings
+import com.example.befit.constants.adaptiveWidth
 
 @Composable
 fun EditStopwatchNameScreen(
@@ -56,7 +57,7 @@ fun EditStopwatchNameScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Edit stopwatch")
+            Heading(Strings.EDIT_STOPWATCH)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -67,7 +68,7 @@ fun EditStopwatchNameScreen(
             ) {
                 CustomStringPicker(
                     selectedValue = selectedName,
-                    label = "Stopwatch name",
+                    label = Strings.STOPWATCH_NAME,
                     onValueChange = { selectedName = it }
                 )
             }

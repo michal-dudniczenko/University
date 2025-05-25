@@ -14,7 +14,8 @@ import androidx.room.RoomDatabase
         TrainingDayExercise::class,
         TrainingDayExerciseSet::class,
         Stopwatch::class,
-        UserData::class
+        UserData::class,
+        AppSettings::class
     ],
     version = 1,
     exportSchema = false
@@ -29,6 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun trainingDayExerciseSetDao(): TrainingDayExerciseSetDao
     abstract fun stopwatchDao(): StopwatchDao
     abstract fun userDataDao(): UserDataDao
+    abstract fun appSettingDao(): AppSettingsDao
 
     companion object {
         @Volatile

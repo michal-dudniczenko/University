@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.befit.common.TrainingProgramsRoutes
+import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.trainingprograms.settings.AddExerciseScreen
 import com.example.befit.trainingprograms.settings.EditExerciseListScreen
 import com.example.befit.trainingprograms.settings.EditExerciseScreen

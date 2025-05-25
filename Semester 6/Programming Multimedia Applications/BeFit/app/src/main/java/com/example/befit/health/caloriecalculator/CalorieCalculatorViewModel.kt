@@ -4,8 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.befit.common.CalorieCalculatorRoutes
-import com.example.befit.common.StopwatchesRoutes
+import com.example.befit.constants.CalorieCalculatorRoutes
 import com.example.befit.health.HealthViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -42,10 +41,10 @@ class CalorieCalculatorViewModel(
         age: Int,
         height: Int,
         weight: Float,
-        sex: String,
+        isMale: Boolean,
         activityLevel: ActivityLevel
     ) {
-        val sexOffset = if (sex == "Male") 5 else -161
+        val sexOffset = if (isMale) 5 else -161
         val bmr = round(10 * weight + 6.25 * height - 5 * age + sexOffset).toInt()
         val maintain = round(bmr * activityLevel.multiplier).toInt()
 
@@ -62,7 +61,7 @@ class CalorieCalculatorViewModel(
             age = age,
             height = height,
             weight = weight,
-            sex = sex,
+            isMale = isMale,
             activityLevel = activityLevel.level
         )
     }

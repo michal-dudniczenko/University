@@ -25,7 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.R
-import com.example.befit.common.CalorieCalculatorRoutes
+import com.example.befit.constants.CalorieCalculatorRoutes
 import com.example.befit.common.CustomActivityLevelPicker
 import com.example.befit.common.CustomFloatPicker
 import com.example.befit.common.CustomFloatingButton
@@ -33,10 +33,11 @@ import com.example.befit.common.CustomIntPicker
 import com.example.befit.common.CustomSexPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.HealthRoutes
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.appBackground
-import com.example.befit.common.bright
+import com.example.befit.constants.HealthRoutes
+import com.example.befit.constants.Strings
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.appBackground
+import com.example.befit.constants.bright
 import com.example.befit.health.HealthViewModel
 
 @Composable
@@ -52,7 +53,7 @@ fun CalorieCalculatorScreen(
     var selectedAge by remember { mutableIntStateOf(userData?.age ?: 0) }
     var selectedHeight by remember { mutableIntStateOf(userData?.height ?: 0) }
     var selectedWeight by remember { mutableFloatStateOf(userData?.weight ?: 0f) }
-    var selectedSex by remember { mutableStateOf<String>(userData?.sex ?: "") }
+    var isMale by remember { mutableStateOf<Boolean?>(userData?.isMale) }
     var selectedActivityLevel by remember { mutableIntStateOf(userData?.activityLevel ?: 0) }
 
     Box(
@@ -74,7 +75,7 @@ fun CalorieCalculatorScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("Calorie Calculator")
+            Heading(Strings.CALORIE_CALCULATOR)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -85,24 +86,24 @@ fun CalorieCalculatorScreen(
                 CustomIntPicker(
                     selectedValue = selectedAge,
                     onValueChange = { selectedAge = it },
-                    label = "Age"
+                    label = Strings.AGE
                 )
                 Spacer(Modifier.height(24.dp))
                 CustomIntPicker(
                     selectedValue = selectedHeight,
                     onValueChange = { selectedHeight = it },
-                    label = "Height"
+                    label = Strings.HEIGHT
                 )
                 Spacer(Modifier.height(24.dp))
                 CustomFloatPicker(
                     selectedValue = selectedWeight,
                     onValueChange = { selectedWeight = it },
-                    label = "Weight"
+                    label = Strings.WEIGHT_BODY
                 )
                 Spacer(Modifier.height(24.dp))
                 CustomSexPicker(
-                    selectedValue = if (selectedSex.isEmpty()) null else selectedSex,
-                    onValueSelected = { selectedSex = it }
+                    selectedValue = if (isMale == null) null else if (isMale!!) Strings.MALE else Strings.FEMALE,
+                    onValueSelected = { isMale = it }
                 )
                 Spacer(Modifier.height(24.dp))
                 CustomActivityLevelPicker(
@@ -119,14 +120,14 @@ fun CalorieCalculatorScreen(
                             if (selectedAge > 0
                                 && selectedHeight > 0
                                 && selectedWeight > 0
-                                && !selectedSex.isEmpty()
+                                && isMale != null
                                 && selectedActivityLevel > 0
                             ) {
                                 viewModel.calculateCalories(
                                     age = selectedAge,
                                     height = selectedHeight,
                                     weight = selectedWeight,
-                                    sex = selectedSex,
+                                    isMale = isMale!!,
                                     activityLevel = ActivityLevels.levels[selectedActivityLevel-1]
                                 )
                                 navController.navigate(CalorieCalculatorRoutes.RESULT)
@@ -135,7 +136,7 @@ fun CalorieCalculatorScreen(
                         .padding(16.dp)
                 ) {
                     CustomText(
-                        text = "Calculate",
+                        text = Strings.CALCULATE,
                         color = appBackground,
                         modifier = Modifier
                             .align(Alignment.Center)

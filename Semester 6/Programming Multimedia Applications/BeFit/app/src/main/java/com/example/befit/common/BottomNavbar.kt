@@ -17,6 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.befit.constants.AppRoutes
+import com.example.befit.constants.NAVBAR_HEIGHT
+import com.example.befit.constants.bright
+import com.example.befit.constants.darkBackground
 import com.example.befit.health.HealthViewModel
 import com.example.befit.stopwatches.StopwatchesViewModel
 import com.example.befit.trainingprograms.TrainingProgramsViewModel

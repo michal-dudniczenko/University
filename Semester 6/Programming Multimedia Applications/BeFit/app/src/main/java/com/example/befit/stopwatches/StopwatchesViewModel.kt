@@ -5,7 +5,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.befit.common.StopwatchesRoutes
+import com.example.befit.constants.StopwatchesRoutes
+import com.example.befit.constants.Strings
 import com.example.befit.database.Stopwatch
 import com.example.befit.database.StopwatchDao
 import kotlinx.coroutines.delay
@@ -45,8 +46,8 @@ class StopwatchesViewModel(
         viewModelScope.launch {
             refreshStopwatches()
             if (_stopwatches.value.isEmpty()) {
-                stopwatchDao.insert(Stopwatch(name = "Stopwatch 1"))
-                stopwatchDao.insert(Stopwatch(name = "Stopwatch 2"))
+                stopwatchDao.insert(Stopwatch(name = Strings.STOPWATCH + " 1"))
+                stopwatchDao.insert(Stopwatch(name = Strings.STOPWATCH + " 2"))
                 refreshStopwatches()
             }
             while (true) {
@@ -87,7 +88,7 @@ class StopwatchesViewModel(
         _stopwatches.value = updatedList
     }
 
-    fun addStopwatch(name: String = "Stopwatch") {
+    fun addStopwatch(name: String = Strings.STOPWATCH) {
         if (name.isNotEmpty()) {
             viewModelScope.launch {
                 stopwatchDao.insert(Stopwatch(name = name))

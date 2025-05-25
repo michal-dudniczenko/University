@@ -26,13 +26,14 @@ import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.TrainingProgramsRoutes
-import com.example.befit.common.adaptiveHeight
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.bigFontSize
-import com.example.befit.common.bright
-import com.example.befit.common.editColor
-import com.example.befit.common.mediumGreen
+import com.example.befit.constants.Strings
+import com.example.befit.constants.TrainingProgramsRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.bigFontSize
+import com.example.befit.constants.bright
+import com.example.befit.constants.editColor
+import com.example.befit.constants.mediumGreen
 
 @Composable
 fun ViewTrainingDayScreen(
@@ -74,15 +75,26 @@ fun ViewTrainingDayScreen(
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
         )
-        CustomFloatingButton(
-            icon = if (isEditMode) R.drawable.edit_white else R.drawable.edit,
-            description = "Edit mode",
-            color = if (isEditMode) editColor else bright,
-            onClick = { isEditMode = !isEditMode },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
-        )
+        if (exercises.isEmpty()) {
+            CustomFloatingButton(
+                icon = R.drawable.add,
+                description = "Add button",
+                onClick = { navController.navigate(TrainingProgramsRoutes.ADD_EXERCISE_TO_DAY(trainingDayId)) },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+            )
+        } else {
+            CustomFloatingButton(
+                icon = if (isEditMode) R.drawable.edit_white else R.drawable.edit,
+                color = if (isEditMode) editColor else bright,
+                description = "Edit button",
+                onClick = { isEditMode = !isEditMode },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+            )
+        }
         if (trainingDay == null) {
             Box(
                 modifier = Modifier.fillMaxSize()
@@ -110,7 +122,7 @@ fun ViewTrainingDayScreen(
                         .fillMaxSize()
                 ) {
                     CustomText(
-                        text = "Nothing here yet!",
+                        text = Strings.NOTHING_HERE_YET,
                         fontSize = bigFontSize,
                         modifier = Modifier
                             .align(Alignment.Center)
@@ -137,7 +149,7 @@ fun ViewTrainingDayScreen(
                                 }
                         ) {
                             CustomText(
-                                text = "Add exercise",
+                                text = Strings.ADD_EXERCISE,
                                 modifier = Modifier.padding(adaptiveWidth(16).dp)
                             )
                         }

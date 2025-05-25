@@ -3,7 +3,7 @@ package com.example.befit.settings
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.befit.common.SettingsRoutes
+import com.example.befit.constants.SettingsRoutes
 
 class SettingsViewModel : ViewModel() {
 

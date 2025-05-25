@@ -29,10 +29,11 @@ import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomIntPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
-import com.example.befit.common.HealthRoutes
-import com.example.befit.common.adaptiveWidth
-import com.example.befit.common.appBackground
-import com.example.befit.common.bright
+import com.example.befit.constants.HealthRoutes
+import com.example.befit.constants.Strings
+import com.example.befit.constants.adaptiveWidth
+import com.example.befit.constants.appBackground
+import com.example.befit.constants.bright
 import com.example.befit.health.HealthViewModel
 
 @Composable
@@ -67,7 +68,7 @@ fun BmiCalculatorScreen(
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
         ) {
-            Heading("BMI Calculator")
+            Heading(Strings.BMI_CALCULATOR)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -77,13 +78,13 @@ fun BmiCalculatorScreen(
                 CustomIntPicker(
                     selectedValue = selectedHeight,
                     onValueChange = { selectedHeight = it },
-                    label = "Height"
+                    label = Strings.HEIGHT
                 )
                 Spacer(Modifier.height(24.dp))
                 CustomFloatPicker(
                     selectedValue = selectedWeight,
                     onValueChange = { selectedWeight = it },
-                    label = "Weight"
+                    label = Strings.WEIGHT_BODY
                 )
                 Spacer(Modifier.height(24.dp))
                 Box(
@@ -104,7 +105,7 @@ fun BmiCalculatorScreen(
                         .padding(16.dp)
                 ) {
                     CustomText(
-                        text = "Calculate",
+                        text = Strings.CALCULATE,
                         color = appBackground,
                         modifier = Modifier
                             .align(Alignment.Center)
