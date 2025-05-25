@@ -5,9 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 object Languages {
-    const val ENGLISH = "en"
-    const val POLISH = "pl"
-    const val SPANISH = "sp"
+    const val ENGLISH = "English"
+    const val POLISH = "Polish"
+    const val SPANISH = "Spanish"
+    const val DEFAULT = ENGLISH
+
+    val values = listOf(
+        ENGLISH, POLISH, SPANISH
+    )
 }
 
 var appLanguage by mutableStateOf(Languages.ENGLISH)

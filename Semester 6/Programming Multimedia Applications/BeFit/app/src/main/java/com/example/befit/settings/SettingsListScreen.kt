@@ -7,19 +7,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.bright
 
 @Composable
 fun SettingsListScreen(
-    navController: NavHostController,
+    viewModel: SettingsViewModel,
     modifier: Modifier = Modifier
 ) {
+    val appSettings by viewModel.appSettings
+
     Box (
         modifier = modifier
             .fillMaxSize()
@@ -32,13 +37,28 @@ fun SettingsListScreen(
                 .align(Alignment.Center)
         ) {
             Heading(Strings.APP_SETTINGS)
+            if (appSettings == null) {
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    CircularProgressIndicator(
+                        color = bright,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                    return
+                }
+            }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth(0.95f)
+                    .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
             ) {
-                CustomText("Settings list")
+                LanguageSelector(
+                    currentLanguage = appSettings!!.language,
+                    viewModel = viewModel
+                )
             }
         }
     }

@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
         val calorieCalculatorViewModel = CalorieCalculatorViewModel(
             healthViewModel = healthViewModel
         )
-        val settingsViewModel = SettingsViewModel()
+        val settingsViewModel = SettingsViewModel(database.appSettingDao())
 
         setContent {
             InitScreenDimensions()

@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.befit.R
+import com.example.befit.constants.Languages
 import com.example.befit.constants.Strings
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.constants.bright
@@ -389,6 +390,76 @@ fun CustomActivityLevelPicker(
                     onClick = {
                         onValueSelected(option.level)
                         selectedText = option.name
+                        expanded = false
+                    }
+                )
+                if (index < ActivityLevels.levels.lastIndex) {
+                    HorizontalDivider(
+                        thickness = 2.dp
+                    )
+                }
+            }
+        }
+
+    }
+}
+
+
+@Composable
+fun CustomLanguagePicker(
+    onValueSelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    selectedValue: String
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(selectedValue) }
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = darkBackground,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .border(
+                    width = 1.dp,
+                    color = bright,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .clickable {
+                    expanded = !expanded
+                }
+                .padding(adaptiveWidth(8).dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .horizontalScroll(rememberScrollState())
+            ) {
+                CustomText(
+                    text = selectedText,
+                    isBoldFont = false,
+                    fontSize = smallFontSize
+                )
+            }
+
+        }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.fillMaxWidth(0.8f * 0.7f)
+        ) {
+            Languages.values.forEachIndexed { index, option ->
+                DropdownMenuItem(
+                    text = { Text(text = option) },
+                    onClick = {
+                        onValueSelected(option)
+                        selectedText = option
                         expanded = false
                     }
                 )

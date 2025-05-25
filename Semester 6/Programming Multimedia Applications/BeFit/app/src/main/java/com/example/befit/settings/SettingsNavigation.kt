@@ -34,7 +34,7 @@ fun SettingsNavigation(
         ) {
             composable(route = SettingsRoutes.SETTINGS_LIST) {
                 viewModel.updateCurrentRoute(SettingsRoutes.SETTINGS_LIST)
-                SettingsListScreen(navController)
+                SettingsListScreen(viewModel)
             }
         }
     }
