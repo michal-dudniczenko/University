@@ -1,8 +1,6 @@
 package com.example.befit
 
 import android.app.Activity
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,8 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.befit.constants.AppRoutes
 import com.example.befit.common.BottomNavbar
+import com.example.befit.constants.AppRoutes
 import com.example.befit.constants.Themes
 import com.example.befit.health.HealthNavigation
 import com.example.befit.health.HealthViewModel
@@ -60,8 +58,6 @@ fun AppNavigation(
         NavHost(
             navController = navController,
             startDestination = currentRoute,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()

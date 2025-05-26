@@ -8,10 +8,11 @@ object Languages {
     const val ENGLISH = "English"
     const val POLISH = "Polish"
     const val SPANISH = "Spanish"
+    const val GERMAN = "German"
     const val DEFAULT = ENGLISH
 
     val values = listOf(
-        ENGLISH, POLISH, SPANISH
+        ENGLISH, POLISH, SPANISH, GERMAN
     )
 }
 
@@ -419,6 +420,82 @@ object LanguageSets {
             SEVERE_UNDERWEIGHT = "Delgadez severa",
             LANGUAGE = "Idioma",
             THEME = "Tema"
-        )
+        ),
+        Languages.GERMAN to LanguageSet(
+            NOTHING_HERE_YET = "Noch nichts hier!",
+            YOUR_PROGRAMS = "Deine Programme",
+            DELETE = "Löschen",
+            NAME = "Name",
+            ADD_PROGRAM = "Programm hinzufügen",
+            PROGRAM_NAME = "Programmname",
+            EDIT_PROGRAM = "Programm bearbeiten",
+            ADD_TRAINING_DAY = "Trainingstag hinzufügen",
+            EDIT_TRAINING_DAY = "Trainingstag bearbeiten",
+            ADD_EXERCISE = "Übung hinzufügen",
+            SELECT_EXERCISE = "Übung auswählen",
+            REST_TIME = "Pausezeit",
+            HOW_MANY_SETS = "Wie viele Sätze",
+            WEIGHT_GYM = "Gewicht",
+            WEIGHT_BODY = "Gewicht",
+            EXERCISE_INFO = "Übungsinformationen",
+            NOTES = "Notizen",
+            EDIT_EXERCISE = "Übung bearbeiten",
+            DELETE_EXERCISE = "Übung löschen",
+            SETTINGS = "Einstellungen",
+            EDIT_EXERCISE_LIST = "Übungsliste bearbeiten",
+            EDIT_EXERCISES = "Übungen bearbeiten",
+            EXERCISE_NAME = "Übungsname",
+            ADD_STOPWATCH = "Stoppuhr hinzufügen",
+            EDIT_STOPWATCH = "Stoppuhr bearbeiten",
+            STOPWATCH_NAME = "Name der Stoppuhr",
+            STOPWATCH = "Stoppuhr",
+            HEALTH = "Gesundheit",
+            DIET_PLANS = "Ernährungspläne",
+            WEIGHT_HISTORY = "Gewichtsverlauf",
+            CALORIE_CALCULATOR = "Kalorienrechner",
+            BMI_CALCULATOR = "BMI-Rechner",
+            WATER_INTAKE_CALCULATOR = "Wasseraufnahme-Rechner",
+            ADD_WEIGHT = "Gewicht hinzufügen",
+            DATE = "Datum",
+            EDIT_WEIGHT = "Gewicht bearbeiten",
+            DELETE_WEIGHT = "Gewicht löschen",
+            AGE = "Alter",
+            HEIGHT = "Größe",
+            SELECT_SEX = "Geschlecht auswählen",
+            ACTIVITY_LEVEL = "Aktivitätsniveau",
+            CALCULATE = "Berechnen",
+            RESULT = "Ergebnis",
+            YOUR_BMI_IS = "Dein BMI ist:",
+            MAINTAIN_WEIGHT = "Gewicht halten:",
+            BUILD_MUSCLE = "Muskeln aufbauen:",
+            SLOW_WEIGHT_LOSS = "Langsamer Gewichtsverlust:",
+            WEIGHT_LOSS = "Gewichtsverlust:",
+            FAST_WEIGHT_LOSS = "Schneller Gewichtsverlust:",
+            WEEK = "Woche",
+            YOUR_BMR_IS = "Dein BMR ist:",
+            YOU_SHOULD_DRINK = "Du solltest trinken",
+            AT_LEAST = "mindestens",
+            LITERS = "Liter",
+            OF_WATER = "Wasser",
+            EVERY_DAY = "jeden Tag",
+            APP_SETTINGS = "App-Einstellungen",
+            LITTLE_OR_NO_EXERCISE = "Wenig oder kein Sport",
+            LIGHT_EXERCISE = "Leichte Aktivität 1–3 Tage/Woche",
+            MODERATE_EXERCISE = "Mäßige Aktivität 3–5 Tage/Woche",
+            INTENSE_EXERCISE = "Intensive Aktivität 6–7 Tage/Woche",
+            VERY_HARD_EXERCISE = "Sehr harte tägliche Aktivität oder körperliche Arbeit",
+            MALE = "Männlich",
+            FEMALE = "Weiblich",
+            NORMAL_WEIGHT = "Normalgewicht",
+            OVERWEIGHT = "Übergewicht",
+            OBESE_CLASS_I = "Adipositas Klasse I",
+            OBESE_CLASS_II = "Adipositas Klasse II",
+            OBESE_CLASS_III = "Adipositas Klasse III",
+            MILD_UNDERWEIGHT = "Leichtes Untergewicht",
+            MODERATE_UNDERWEIGHT = "Mäßiges Untergewicht",
+            SEVERE_UNDERWEIGHT = "Schweres Untergewicht",
+            LANGUAGE = "Sprache",
+            THEME = "Thema"
+        ),
     )
 }

@@ -25,8 +25,6 @@ import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
-import com.example.befit.constants.adaptiveHeight
-import com.example.befit.constants.adaptiveWidth
 
 @Composable
 fun EditProgramScreen(
@@ -55,7 +53,7 @@ fun EditProgramScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         if (program == null) {
             Box(

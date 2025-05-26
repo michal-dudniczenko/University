@@ -30,7 +30,6 @@ import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
-import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.trainingprograms.TrainingProgramsViewModel
 
@@ -54,7 +53,7 @@ fun EditExerciseListScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = (-30).dp, y = (-30).dp)
         )
         CustomFloatingButton(
             icon = Themes.BACK_ON_SECONDARY,
@@ -64,7 +63,7 @@ fun EditExerciseListScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

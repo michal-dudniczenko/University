@@ -46,7 +46,7 @@ fun SettingsScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

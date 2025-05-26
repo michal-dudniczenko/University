@@ -75,48 +75,53 @@ fun BmiCalculatorScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .fillMaxWidth(0.7f)
+                    .fillMaxWidth()
                     .fillMaxHeight()
                     .padding(bottom = PADDING_BOTTOM.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                CustomIntPicker(
-                    selectedValue = selectedHeight,
-                    onValueChange = { selectedHeight = it },
-                    label = Strings.HEIGHT
-                )
-                Spacer(Modifier.height(24.dp))
-                CustomFloatPicker(
-                    selectedValue = selectedWeight,
-                    onValueChange = { selectedWeight = it },
-                    label = Strings.WEIGHT_BODY
-                )
-                Spacer(Modifier.height(24.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .clip(RoundedCornerShape(adaptiveWidth(32).dp))
-                        .background(color = Themes.SECONDARY)
-                        .clickable {
-                            if (selectedWeight > 0
-                                && selectedHeight > 0
-                            ) {
-                                bmi = healthViewModel.calculateBmi(
-                                    height = selectedHeight,
-                                    weight = selectedWeight,
-                                )
-                            }
-                        }
-                        .padding(16.dp)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth(0.7f)
                 ) {
-                    CustomText(
-                        text = Strings.CALCULATE,
-                        color = Themes.ON_SECONDARY,
-                        modifier = Modifier
-                            .align(Alignment.Center)
+                    CustomIntPicker(
+                        selectedValue = selectedHeight,
+                        onValueChange = { selectedHeight = it },
+                        label = Strings.HEIGHT
                     )
+                    Spacer(Modifier.height(24.dp))
+                    CustomFloatPicker(
+                        selectedValue = selectedWeight,
+                        onValueChange = { selectedWeight = it },
+                        label = Strings.WEIGHT_BODY
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .clip(RoundedCornerShape(adaptiveWidth(32).dp))
+                            .background(color = Themes.SECONDARY)
+                            .clickable {
+                                if (selectedWeight > 0
+                                    && selectedHeight > 0
+                                ) {
+                                    bmi = healthViewModel.calculateBmi(
+                                        height = selectedHeight,
+                                        weight = selectedWeight,
+                                    )
+                                }
+                            }
+                            .padding(16.dp)
+                    ) {
+                        CustomText(
+                            text = Strings.CALCULATE,
+                            color = Themes.ON_SECONDARY,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                        )
+                    }
+                    Spacer(Modifier.height(40.dp))
                 }
-                Spacer(Modifier.height(40.dp))
                 if (bmi > 0) {
                     BmiResult(bmi)
                 }

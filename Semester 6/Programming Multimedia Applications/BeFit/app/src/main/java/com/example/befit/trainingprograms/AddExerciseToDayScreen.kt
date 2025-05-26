@@ -28,7 +28,6 @@ import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
-import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.database.Exercise
 
@@ -71,7 +70,7 @@ fun AddExerciseToDayScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = (-30).dp, y = (-30).dp)
         )
         CustomFloatingButton(
             icon = Themes.CANCEL_ON_DELETE_CANCEL,
@@ -80,7 +79,7 @@ fun AddExerciseToDayScreen(
             onClick = { navController.navigate(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId)) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

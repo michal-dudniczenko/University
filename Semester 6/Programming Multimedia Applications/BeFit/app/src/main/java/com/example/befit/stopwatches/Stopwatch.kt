@@ -32,7 +32,6 @@ import com.example.befit.constants.STOPWATCH_FONT_SIZE
 import com.example.befit.constants.StopwatchesRoutes
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
-import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.constants.smallFontSize
 

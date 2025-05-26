@@ -25,7 +25,6 @@ import com.example.befit.constants.PADDING_BOTTOM
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.WeightHistoryRoutes
-import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.constants.bigFontSize
 
@@ -48,7 +47,7 @@ fun WeightHistoryScreen(
             onClick = { topLevelNavController.navigate(HealthRoutes.TOOLS_LIST) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         CustomFloatingButton(
             icon = Themes.ADD_ON_SECONDARY,
@@ -56,7 +55,7 @@ fun WeightHistoryScreen(
             onClick = { navController.navigate(WeightHistoryRoutes.ADD) },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = (-30).dp, y = (-30).dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

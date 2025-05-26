@@ -60,7 +60,7 @@ fun TrainingDaysListScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         if (trainingDaysFromProgram.isEmpty()) {
             CustomFloatingButton(
@@ -69,7 +69,7 @@ fun TrainingDaysListScreen(
                 onClick = { navController.navigate(TrainingProgramsRoutes.ADD_TRAINING_DAY(programId)) },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                    .offset(x = (-30).dp, y = (-30).dp)
             )
         } else {
             CustomFloatingButton(
@@ -79,7 +79,7 @@ fun TrainingDaysListScreen(
                 onClick = { isEditMode = !isEditMode },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                    .offset(x = (-30).dp, y = (-30).dp)
             )
         }
         if (program == null) {

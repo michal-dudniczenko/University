@@ -30,8 +30,6 @@ import com.example.befit.common.isValidDate
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.WeightHistoryRoutes
-import com.example.befit.constants.adaptiveHeight
-import com.example.befit.constants.adaptiveWidth
 
 @Composable
 fun AddWeightScreen(
@@ -60,7 +58,7 @@ fun AddWeightScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = (-30).dp, y = (-30).dp)
         )
         CustomFloatingButton(
             icon = Themes.CANCEL_ON_DELETE_CANCEL,
@@ -69,7 +67,7 @@ fun AddWeightScreen(
             onClick = { navController.navigate(WeightHistoryRoutes.HISTORY) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

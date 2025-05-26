@@ -1,7 +1,5 @@
 package com.example.befit.health
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -44,8 +42,6 @@ fun HealthNavigation(
         NavHost(
             navController = navController,
             startDestination = currentRoute,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
             modifier = Modifier
                 .fillMaxSize()
         ) {

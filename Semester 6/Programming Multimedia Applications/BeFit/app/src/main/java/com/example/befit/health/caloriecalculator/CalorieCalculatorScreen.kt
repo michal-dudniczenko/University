@@ -56,6 +56,8 @@ fun CalorieCalculatorScreen(
     var isMale by remember { mutableStateOf<Boolean?>(userData?.isMale) }
     var selectedActivityLevel by remember { mutableIntStateOf(userData?.activityLevel ?: 0) }
 
+    val activityLevels = ActivityLevels.getLevels()
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -66,7 +68,7 @@ fun CalorieCalculatorScreen(
             onClick = { topLevelNavController.navigate(HealthRoutes.TOOLS_LIST) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -108,7 +110,7 @@ fun CalorieCalculatorScreen(
                 )
                 Spacer(Modifier.height(24.dp))
                 CustomActivityLevelPicker(
-                    selectedValue = if (selectedActivityLevel > 0) ActivityLevels.levels[selectedActivityLevel-1] else null,
+                    selectedValue = if (selectedActivityLevel > 0) activityLevels[selectedActivityLevel-1] else null,
                     onValueSelected = { selectedActivityLevel = it }
                 )
                 Spacer(Modifier.height(32.dp))
@@ -129,7 +131,7 @@ fun CalorieCalculatorScreen(
                                     height = selectedHeight,
                                     weight = selectedWeight,
                                     isMale = isMale!!,
-                                    activityLevel = ActivityLevels.levels[selectedActivityLevel-1]
+                                    activityLevel = activityLevels[selectedActivityLevel-1]
                                 )
                                 navController.navigate(CalorieCalculatorRoutes.RESULT)
                             }

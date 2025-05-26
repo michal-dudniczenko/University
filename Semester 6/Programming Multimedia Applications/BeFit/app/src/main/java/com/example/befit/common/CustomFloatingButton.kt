@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.befit.constants.FLOATING_BUTTON_SIZE
 import com.example.befit.constants.Themes
-import com.example.befit.constants.adaptiveWidth
 
 @Composable
 fun CustomFloatingButton(

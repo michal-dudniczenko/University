@@ -1,7 +1,5 @@
 package com.example.befit.trainingprograms
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,8 +33,6 @@ fun TrainingProgramsNavigation(
     NavHost(
         navController = navController,
         startDestination = currentRoute,
-        enterTransition = { EnterTransition.None },
-        exitTransition = { ExitTransition.None },
         modifier = modifier
             .fillMaxSize()
     ) {

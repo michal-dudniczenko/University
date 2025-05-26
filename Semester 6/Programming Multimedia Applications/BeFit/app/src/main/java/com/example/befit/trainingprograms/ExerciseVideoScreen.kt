@@ -33,7 +33,6 @@ import androidx.media3.ui.PlayerView
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.Heading
 import com.example.befit.constants.Themes
-import com.example.befit.constants.adaptiveWidth
 
 @Composable
 fun ExerciseVideoScreen(
@@ -81,7 +80,7 @@ fun ExerciseVideoScreen(
             onClick = onBack,
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         CustomFloatingButton(
             icon = if (isMuted) Themes.SOUND_MUTED_ON_SECONDARY else Themes.SOUND_ON_SECONDARY,
@@ -92,7 +91,7 @@ fun ExerciseVideoScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = (-30).dp, y = (-30).dp)
         )
         if (exercise == null) {
             Box(

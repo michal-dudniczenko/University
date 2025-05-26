@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.befit.constants.Themes
-import com.example.befit.constants.adaptiveWidth
 import com.example.befit.constants.bigFontSize
 
 @Composable

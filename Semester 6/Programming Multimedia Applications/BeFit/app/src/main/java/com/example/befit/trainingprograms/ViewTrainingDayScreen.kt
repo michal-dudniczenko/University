@@ -28,7 +28,6 @@ import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
-import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.constants.bigFontSize
 
@@ -70,7 +69,7 @@ fun ViewTrainingDayScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         if (exercises.isEmpty()) {
             CustomFloatingButton(
@@ -79,7 +78,7 @@ fun ViewTrainingDayScreen(
                 onClick = { navController.navigate(TrainingProgramsRoutes.ADD_EXERCISE_TO_DAY(trainingDayId)) },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                    .offset(x = (-30).dp, y = (-30).dp)
             )
         } else {
             CustomFloatingButton(
@@ -89,7 +88,7 @@ fun ViewTrainingDayScreen(
                 onClick = { isEditMode = !isEditMode },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                    .offset(x = (-30).dp, y = (-30).dp)
             )
         }
         if (trainingDay == null) {

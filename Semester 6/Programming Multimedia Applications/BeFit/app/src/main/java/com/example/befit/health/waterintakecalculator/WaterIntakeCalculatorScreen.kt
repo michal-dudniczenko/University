@@ -58,7 +58,7 @@ fun WaterIntakeCalculatorScreen(
             onClick = { navController.navigate(HealthRoutes.TOOLS_LIST) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -72,40 +72,45 @@ fun WaterIntakeCalculatorScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .fillMaxWidth(0.7f)
+                    .fillMaxWidth()
                     .fillMaxHeight()
                     .padding(bottom = PADDING_BOTTOM.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                CustomFloatPicker(
-                    selectedValue = selectedWeight,
-                    onValueChange = { selectedWeight = it },
-                    label = Strings.WEIGHT_BODY
-                )
-                Spacer(Modifier.height(24.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .clip(RoundedCornerShape(adaptiveWidth(32).dp))
-                        .background(color = Themes.SECONDARY)
-                        .clickable {
-                            if (selectedWeight > 0
-                            ) {
-                                waterIntake = healthViewModel.calculateWaterIntake(
-                                    weight = selectedWeight,
-                                )
-                            }
-                        }
-                        .padding(16.dp)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth(0.7f)
                 ) {
-                    CustomText(
-                        text = Strings.CALCULATE,
-                        color = Themes.ON_SECONDARY,
-                        modifier = Modifier
-                            .align(Alignment.Center)
+                    CustomFloatPicker(
+                        selectedValue = selectedWeight,
+                        onValueChange = { selectedWeight = it },
+                        label = Strings.WEIGHT_BODY
                     )
+                    Spacer(Modifier.height(24.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .clip(RoundedCornerShape(adaptiveWidth(32).dp))
+                            .background(color = Themes.SECONDARY)
+                            .clickable {
+                                if (selectedWeight > 0
+                                ) {
+                                    waterIntake = healthViewModel.calculateWaterIntake(
+                                        weight = selectedWeight,
+                                    )
+                                }
+                            }
+                            .padding(16.dp)
+                    ) {
+                        CustomText(
+                            text = Strings.CALCULATE,
+                            color = Themes.ON_SECONDARY,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                        )
+                    }
+                    Spacer(Modifier.height(50.dp))
                 }
-                Spacer(Modifier.height(50.dp))
                 if (waterIntake > 0) {
                     WaterIntakeResult(waterIntake)
                 }

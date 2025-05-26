@@ -85,7 +85,7 @@ fun ViewExerciseFromDayScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
 
         if (trainingDayExercise == null || exercise == null) {
@@ -108,7 +108,7 @@ fun ViewExerciseFromDayScreen(
                 },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                    .offset(x = (-30).dp, y = (-30).dp)
             )
         }
         Column(

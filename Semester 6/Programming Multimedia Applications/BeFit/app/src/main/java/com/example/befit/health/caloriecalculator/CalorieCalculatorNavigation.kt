@@ -1,7 +1,5 @@
 package com.example.befit.health.caloriecalculator
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -37,8 +35,6 @@ fun CalorieCalculatorNavigation(
         NavHost(
             navController = navController,
             startDestination = currentRoute,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
             modifier = Modifier
                 .fillMaxSize()
         ) {

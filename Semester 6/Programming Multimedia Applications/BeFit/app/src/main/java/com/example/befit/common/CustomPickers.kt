@@ -60,11 +60,11 @@ fun CustomIntPicker(
             fontWeight = FontWeight.Bold
         ),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Themes.ON_PRIMARY,
-            unfocusedBorderColor = Themes.ON_PRIMARY,
+            focusedBorderColor = Themes.ON_BACKGROUND,
+            unfocusedBorderColor = Themes.ON_BACKGROUND,
             focusedTextColor = Themes.ON_PRIMARY,
             unfocusedTextColor = Themes.ON_PRIMARY,
-            focusedLabelColor = Themes.ON_PRIMARY,
+            focusedLabelColor = Themes.ON_BACKGROUND,
             unfocusedLabelColor = Themes.ON_PRIMARY,
             focusedTrailingIconColor = Themes.ON_PRIMARY,
             unfocusedTrailingIconColor = Themes.ON_PRIMARY,
@@ -117,11 +117,11 @@ fun CustomFloatPicker(
             fontWeight = FontWeight.Bold
         ),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Themes.ON_PRIMARY,
-            unfocusedBorderColor = Themes.ON_PRIMARY,
+            focusedBorderColor = Themes.ON_BACKGROUND,
+            unfocusedBorderColor = Themes.ON_BACKGROUND,
             focusedTextColor = Themes.ON_PRIMARY,
             unfocusedTextColor = Themes.ON_PRIMARY,
-            focusedLabelColor = Themes.ON_PRIMARY,
+            focusedLabelColor = Themes.ON_BACKGROUND,
             unfocusedLabelColor = Themes.ON_PRIMARY,
             focusedTrailingIconColor = Themes.ON_PRIMARY,
             unfocusedTrailingIconColor = Themes.ON_PRIMARY,
@@ -172,11 +172,11 @@ fun CustomStringPicker(
             fontWeight = FontWeight.Bold
         ),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Themes.ON_PRIMARY,
-            unfocusedBorderColor = Themes.ON_PRIMARY,
+            focusedBorderColor = Themes.ON_BACKGROUND,
+            unfocusedBorderColor = Themes.ON_BACKGROUND,
             focusedTextColor = Themes.ON_PRIMARY,
             unfocusedTextColor = Themes.ON_PRIMARY,
-            focusedLabelColor = Themes.ON_PRIMARY,
+            focusedLabelColor = Themes.ON_BACKGROUND,
             unfocusedLabelColor = Themes.ON_PRIMARY,
             focusedTrailingIconColor = Themes.ON_PRIMARY,
             unfocusedTrailingIconColor = Themes.ON_PRIMARY,
@@ -224,7 +224,7 @@ fun CustomExercisePicker(
                 )
                 .border(
                     width = 1.dp,
-                    color = Themes.ON_PRIMARY,
+                    color = Themes.ON_BACKGROUND,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .clickable {
@@ -283,7 +283,7 @@ fun CustomSexPicker(
                 )
                 .border(
                     width = 1.dp,
-                    color = Themes.ON_PRIMARY,
+                    color = Themes.ON_BACKGROUND,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .clickable {
@@ -343,6 +343,8 @@ fun CustomActivityLevelPicker(
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(selectedValue?.name ?: Strings.ACTIVITY_LEVEL) }
 
+    val activityLevels = ActivityLevels.getLevels()
+
     Box(modifier = modifier.fillMaxWidth()) {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -354,7 +356,7 @@ fun CustomActivityLevelPicker(
                 )
                 .border(
                     width = 1.dp,
-                    color = Themes.ON_PRIMARY,
+                    color = Themes.ON_BACKGROUND,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .clickable {
@@ -381,7 +383,7 @@ fun CustomActivityLevelPicker(
             onDismissRequest = { expanded = false },
             modifier = Modifier.fillMaxWidth(0.8f * 0.7f)
         ) {
-            ActivityLevels.levels.forEachIndexed { index, option ->
+            activityLevels.forEachIndexed { index, option ->
                 DropdownMenuItem(
                     text = { Text(text = option.name) },
                     onClick = {
@@ -390,7 +392,7 @@ fun CustomActivityLevelPicker(
                         expanded = false
                     }
                 )
-                if (index < ActivityLevels.levels.lastIndex) {
+                if (index < activityLevels.lastIndex) {
                     HorizontalDivider(
                         thickness = 2.dp
                     )
@@ -426,7 +428,7 @@ fun CustomStringOptionPicker(
                 )
                 .border(
                     width = 1.dp,
-                    color = Themes.ON_PRIMARY,
+                    color = Themes.ON_BACKGROUND,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .clickable {

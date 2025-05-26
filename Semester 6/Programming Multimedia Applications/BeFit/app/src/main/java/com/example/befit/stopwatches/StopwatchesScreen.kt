@@ -26,7 +26,6 @@ import com.example.befit.common.CustomText
 import com.example.befit.constants.PADDING_BOTTOM
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
-import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.constants.bigFontSize
 
@@ -50,7 +49,7 @@ fun StopwatchesScreen(
                 onClick = { viewModel.addStopwatch() },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                    .offset(x = (-30).dp, y = (-30).dp)
             )
         } else {
             CustomFloatingButton(
@@ -60,7 +59,7 @@ fun StopwatchesScreen(
                 onClick = { isEditMode = !isEditMode },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                    .offset(x = (-30).dp, y = (-30).dp)
             )
         }
         if (stopwatches.isEmpty()) {
