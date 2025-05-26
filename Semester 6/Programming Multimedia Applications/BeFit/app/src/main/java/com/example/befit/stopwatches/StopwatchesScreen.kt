@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
+import com.example.befit.constants.PADDING_BOTTOM
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveHeight
@@ -66,6 +67,7 @@ fun StopwatchesScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(bottom = PADDING_BOTTOM.dp)
             ) {
                 CustomText(
                     text = Strings.NOTHING_HERE_YET,
@@ -73,7 +75,6 @@ fun StopwatchesScreen(
                     fontSize = bigFontSize,
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .offset(y = adaptiveHeight(-75).dp)
                 )
             }
         } else {
@@ -115,9 +116,9 @@ fun StopwatchesScreen(
                             viewModel = viewModel,
                             navController = navController
                         )
-                        Spacer(Modifier.height(adaptiveHeight(24).dp))
+                        Spacer(Modifier.height(24.dp))
                     }
-                    Spacer(modifier = Modifier.height(adaptiveWidth(100).dp))
+                    Spacer(modifier = Modifier.height(100.dp))
                 }
             }
         }

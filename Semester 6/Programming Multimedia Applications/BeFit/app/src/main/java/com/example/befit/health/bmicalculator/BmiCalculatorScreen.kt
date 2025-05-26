@@ -2,6 +2,7 @@ package com.example.befit.health.bmicalculator
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -29,6 +32,7 @@ import com.example.befit.common.CustomIntPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.HealthRoutes
+import com.example.befit.constants.PADDING_BOTTOM
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
@@ -57,7 +61,7 @@ fun BmiCalculatorScreen(
             onClick = { navController.navigate(HealthRoutes.TOOLS_LIST) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
+                .offset(x = 30.dp, y = (-30).dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -68,10 +72,13 @@ fun BmiCalculatorScreen(
         ) {
             Heading(Strings.BMI_CALCULATOR)
             Column(
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
-                    .padding(top = 50.dp)
+                    .fillMaxHeight()
+                    .padding(bottom = PADDING_BOTTOM.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 CustomIntPicker(
                     selectedValue = selectedHeight,
@@ -110,9 +117,9 @@ fun BmiCalculatorScreen(
                     )
                 }
                 Spacer(Modifier.height(40.dp))
-            }
-            if (bmi > 0) {
-                BmiResult(bmi)
+                if (bmi > 0) {
+                    BmiResult(bmi)
+                }
             }
         }
     }

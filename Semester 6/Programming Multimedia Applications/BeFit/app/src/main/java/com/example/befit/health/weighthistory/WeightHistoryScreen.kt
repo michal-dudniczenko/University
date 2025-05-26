@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.HealthRoutes
+import com.example.befit.constants.PADDING_BOTTOM
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.WeightHistoryRoutes
@@ -68,6 +70,7 @@ fun WeightHistoryScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(bottom = PADDING_BOTTOM.dp)
                 ) {
                     CustomText(
                         text = Strings.NOTHING_HERE_YET,
@@ -75,7 +78,6 @@ fun WeightHistoryScreen(
                         fontSize = bigFontSize,
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .offset(y = adaptiveHeight(-75).dp)
                     )
                 }
             } else {

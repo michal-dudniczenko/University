@@ -95,7 +95,7 @@ fun Stopwatch(
                 }
             }
         }
-        Spacer(Modifier.height(adaptiveHeight(8).dp))
+        Spacer(Modifier.height(8.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,

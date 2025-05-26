@@ -89,7 +89,7 @@ fun EditTrainingDayScreen(
                     label = Strings.NAME,
                     onValueChange = { selectedName = it }
                 )
-                Spacer(modifier = Modifier.height(adaptiveHeight(200).dp))
+                Spacer(modifier = Modifier.height(200.dp))
             }
         }
     }

@@ -158,7 +158,7 @@ fun EditExerciseFromDayScreen(
                         modifier = Modifier.padding(adaptiveWidth(16).dp)
                     )
                 }
-                Spacer(modifier = Modifier.height(adaptiveHeight(100).dp))
+                Spacer(modifier = Modifier.height(100.dp))
             }
         }
     }

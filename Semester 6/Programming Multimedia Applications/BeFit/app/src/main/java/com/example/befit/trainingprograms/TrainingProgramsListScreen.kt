@@ -25,6 +25,7 @@ import androidx.navigation.NavHostController
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.constants.PADDING_BOTTOM
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
@@ -70,7 +71,7 @@ fun ProgramsListScreen(
                 onClick = { isEditMode = !isEditMode },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+                    .offset(x = (-30).dp, y = (-30).dp)
             )
         }
         Column(
@@ -85,6 +86,7 @@ fun ProgramsListScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(bottom = PADDING_BOTTOM.dp)
                 ) {
                     CustomText(
                         text = Strings.NOTHING_HERE_YET,
@@ -92,7 +94,6 @@ fun ProgramsListScreen(
                         fontSize = bigFontSize,
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .offset(y = adaptiveHeight(-75).dp)
                     )
                 }
             } else {

@@ -29,10 +29,10 @@ fun FunctionalityRow(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(adaptiveWidth(16).dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(color = Themes.PRIMARY)
             .clickable(onClick = onClick)
-            .padding(adaptiveWidth(16).dp)
+            .padding(16.dp)
     ) {
         Row(
             modifier = Modifier
@@ -45,5 +45,5 @@ fun FunctionalityRow(
             )
         }
     }
-    Spacer(modifier = Modifier.height(adaptiveWidth(32).dp))
+    Spacer(modifier = Modifier.height(32.dp))
 }

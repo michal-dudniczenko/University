@@ -2,6 +2,7 @@ package com.example.befit.health.waterintakecalculator
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -27,6 +30,7 @@ import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.HealthRoutes
+import com.example.befit.constants.PADDING_BOTTOM
 import com.example.befit.constants.Strings
 import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
@@ -65,10 +69,13 @@ fun WaterIntakeCalculatorScreen(
         ) {
             Heading(Strings.WATER_INTAKE_CALCULATOR)
             Column(
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
-                    .padding(top = 75.dp)
+                    .fillMaxHeight()
+                    .padding(bottom = PADDING_BOTTOM.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 CustomFloatPicker(
                     selectedValue = selectedWeight,
@@ -99,9 +106,9 @@ fun WaterIntakeCalculatorScreen(
                     )
                 }
                 Spacer(Modifier.height(50.dp))
-            }
-            if (waterIntake > 0) {
-                WaterIntakeResult(waterIntake)
+                if (waterIntake > 0) {
+                    WaterIntakeResult(waterIntake)
+                }
             }
         }
     }

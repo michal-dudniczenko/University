@@ -25,9 +25,9 @@ fun Heading(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(adaptiveWidth(16).dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(Themes.SECONDARY)
-            .padding(adaptiveWidth(16).dp)
+            .padding(16.dp)
     ) {
         CustomText(
             text = text,
@@ -35,5 +35,5 @@ fun Heading(
             color = Themes.ON_SECONDARY
         )
     }
-    Spacer(modifier = Modifier.height(adaptiveWidth(32).dp))
+    Spacer(modifier = Modifier.height(32.dp))
 }

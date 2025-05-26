@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -75,6 +77,7 @@ fun AddWeightScreen(
                 .fillMaxWidth(0.8f)
                 .fillMaxHeight(0.9f)
                 .align(Alignment.Center)
+
         ) {
             Heading(Strings.ADD_WEIGHT)
             Column(
@@ -83,6 +86,7 @@ fun AddWeightScreen(
                 modifier = modifier
                     .fillMaxWidth(0.95f)
                     .fillMaxHeight()
+                    .verticalScroll(rememberScrollState())
             ) {
                 CustomStringPicker(
                     selectedValue = selectedDate,
@@ -90,13 +94,13 @@ fun AddWeightScreen(
                     label = Strings.DATE,
                     imageId = Themes.CALENDAR_ON_PRIMARY,
                 )
-                Spacer(modifier = Modifier.height(adaptiveHeight(40).dp))
+                Spacer(modifier = Modifier.height(40.dp))
                 CustomFloatPicker(
                     label = Strings.WEIGHT_BODY,
                     imageId = Themes.NUMBERS_ON_PRIMARY,
                     onValueChange = { selectedWeight = it }
                 )
-                Spacer(modifier = Modifier.height(adaptiveHeight(200).dp))
+                Spacer(modifier = Modifier.height(200.dp))
             }
         }
     }

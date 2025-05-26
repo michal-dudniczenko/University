@@ -29,8 +29,8 @@ fun CustomFloatingButton(
 ) {
     Box(
         modifier = modifier
-            .size(adaptiveWidth(FLOATING_BUTTON_SIZE).dp)
-            .clip(RoundedCornerShape(adaptiveWidth(10).dp))
+            .size(FLOATING_BUTTON_SIZE.dp)
+            .clip(RoundedCornerShape(10.dp))
             .background(color = color)
             .zIndex(1f)
             .clickable(onClick = onClick)

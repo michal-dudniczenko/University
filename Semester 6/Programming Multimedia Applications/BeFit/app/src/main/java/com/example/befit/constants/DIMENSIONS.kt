@@ -1,8 +1,9 @@
 package com.example.befit.constants
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import kotlin.math.roundToInt
+import androidx.compose.ui.platform.LocalDensity
 
 
 object ScreenDimensions {
@@ -12,34 +13,42 @@ object ScreenDimensions {
 
 @Composable
 fun InitScreenDimensions() {
-    val displayMetrics = LocalContext.current.resources.displayMetrics
+    val context = LocalContext.current
+    val density = LocalDensity.current
 
-    val width = displayMetrics.widthPixels
-    val height = displayMetrics.heightPixels
+    val displayMetrics = context.resources.displayMetrics
+    val widthPx = displayMetrics.widthPixels
+    val heightPx = displayMetrics.heightPixels
 
-    ScreenDimensions.currentHeightRatio = height / developmentHeight.toFloat()
-    ScreenDimensions.currentWidthRatio = width / developmentWidth.toFloat()
+    // Konwersja px → dp
+    val widthDp = with(density) { widthPx.toDp() }
+    val heightDp = with(density) { heightPx.toDp() }
 
+    Log.i("test", "$widthDp, $heightDp")
+
+    // Obliczenie proporcji względem wymiarów projektowych
+    ScreenDimensions.currentWidthRatio = widthDp.value / developmentDpWidth
+    ScreenDimensions.currentHeightRatio = heightDp.value / developmentDpHeight
 }
 
-const val developmentHeight = 2337
-const val developmentWidth = 1080
+const val developmentDpHeight = 890f
+const val developmentDpWidth = 411f
 
 fun adaptiveHeight(height: Int): Int {
-    return (ScreenDimensions.currentHeightRatio * height).roundToInt()
+    return (ScreenDimensions.currentHeightRatio * height).toInt()
 }
 
 fun adaptiveWidth(width: Int): Int {
-    return (ScreenDimensions.currentWidthRatio * width).roundToInt()
+    return (ScreenDimensions.currentWidthRatio * width).toInt()
 }
 
 
 fun adaptiveHeight(height: Double): Int {
-    return (ScreenDimensions.currentHeightRatio * height).roundToInt()
+    return (ScreenDimensions.currentHeightRatio * height).toInt()
 }
 
 fun adaptiveWidth(width: Double): Int {
-    return (ScreenDimensions.currentWidthRatio * width).roundToInt()
+    return (ScreenDimensions.currentWidthRatio * width).toInt()
 }
 
 

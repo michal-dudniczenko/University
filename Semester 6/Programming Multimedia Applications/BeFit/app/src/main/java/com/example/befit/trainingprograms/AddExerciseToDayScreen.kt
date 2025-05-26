@@ -119,7 +119,7 @@ fun AddExerciseToDayScreen(
                     imageId = Themes.NUMBERS_ON_PRIMARY,
                     onValueChange = { selectedWeight = it }
                 )
-                Spacer(modifier = Modifier.height(adaptiveHeight(100).dp))
+                Spacer(modifier = Modifier.height(100.dp))
             }
         }
     }

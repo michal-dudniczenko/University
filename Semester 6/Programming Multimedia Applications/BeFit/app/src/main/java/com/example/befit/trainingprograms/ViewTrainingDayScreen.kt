@@ -162,7 +162,7 @@ fun ViewTrainingDayScreen(
                             navController = navController
                         )
                     }
-                    Spacer(modifier = Modifier.height(adaptiveHeight(300).dp))
+                    Spacer(modifier = Modifier.height(300.dp))
                 }
             }
         }

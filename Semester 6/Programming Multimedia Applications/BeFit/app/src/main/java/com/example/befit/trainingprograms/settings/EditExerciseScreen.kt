@@ -125,7 +125,7 @@ fun EditExerciseScreen(
                         modifier = Modifier.padding(adaptiveWidth(16).dp)
                     )
                 }
-                Spacer(modifier = Modifier.height(adaptiveHeight(200).dp))
+                Spacer(modifier = Modifier.height(200.dp))
             }
         }
     }

@@ -88,7 +88,7 @@ fun CustomIntPicker(
             Image(
                 painter = painterResource(id = imageId),
                 contentDescription = label,
-                modifier = Modifier.height(adaptiveWidth(24).dp)
+                modifier = Modifier.height(24.dp)
             )
         },
         keyboardOptions = KeyboardOptions.Default.copy(
@@ -145,7 +145,7 @@ fun CustomFloatPicker(
             Image(
                 painter = painterResource(id = imageId),
                 contentDescription = label,
-                modifier = Modifier.height(adaptiveWidth(24).dp)
+                modifier = Modifier.height(24.dp)
             )
         },
         keyboardOptions = KeyboardOptions.Default.copy(
@@ -194,7 +194,7 @@ fun CustomStringPicker(
             Image(
                 painter = painterResource(id = imageId),
                 contentDescription = "Select name",
-                modifier = Modifier.height(adaptiveWidth(24).dp)
+                modifier = Modifier.height(24.dp)
             )
         },
         keyboardOptions = KeyboardOptions.Default.copy(
@@ -230,7 +230,7 @@ fun CustomExercisePicker(
                 .clickable {
                     expanded = !expanded
                 }
-                .padding(adaptiveWidth(16).dp)
+                .padding(16.dp)
         ) {
             CustomText(
                 text = selectedText
@@ -289,7 +289,7 @@ fun CustomSexPicker(
                 .clickable {
                     expanded = !expanded
                 }
-                .padding(adaptiveWidth(16).dp)
+                .padding(16.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -360,7 +360,7 @@ fun CustomActivityLevelPicker(
                 .clickable {
                     expanded = !expanded
                 }
-                .padding(adaptiveWidth(16).dp)
+                .padding(16.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -432,7 +432,7 @@ fun CustomStringOptionPicker(
                 .clickable {
                     expanded = !expanded
                 }
-                .padding(adaptiveWidth(8).dp)
+                .padding(8.dp)
         ) {
             Row(
                 modifier = Modifier

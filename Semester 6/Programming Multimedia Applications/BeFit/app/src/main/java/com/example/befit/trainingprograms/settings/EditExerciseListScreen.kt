@@ -87,7 +87,7 @@ fun EditExerciseListScreen(
                         onClick = { navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE(exercise.id)) }
                     )
                 }
-                Spacer(Modifier.height(adaptiveHeight(200).dp))
+                Spacer(Modifier.height(200.dp))
             }
         }
     }

@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -80,6 +82,7 @@ fun CalorieCalculatorScreen(
                     .fillMaxWidth(0.7f)
                     .fillMaxHeight()
                     .padding(bottom = 107.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 CustomIntPicker(
                     selectedValue = selectedAge,

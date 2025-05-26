@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -91,6 +93,7 @@ fun EditWeightScreen(
                 modifier = modifier
                     .fillMaxWidth(0.95f)
                     .fillMaxHeight()
+                    .verticalScroll(rememberScrollState())
             ) {
                 CustomStringPicker(
                     selectedValue = selectedDate,
@@ -125,7 +128,7 @@ fun EditWeightScreen(
                         modifier = Modifier.padding(adaptiveWidth(16).dp)
                     )
                 }
-                Spacer(modifier = Modifier.height(adaptiveHeight(150).dp))
+                Spacer(modifier = Modifier.height(150.dp))
             }
         }
     }

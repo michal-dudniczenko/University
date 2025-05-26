@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.befit.common.CustomText
 import com.example.befit.constants.Strings
 import com.example.befit.constants.adaptiveWidth
 import java.util.Locale
@@ -67,11 +68,11 @@ fun BmiResult(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            CustomText(
                 text = Strings.YOUR_BMI_IS,
                 color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = adaptiveWidth(20).sp,
+                isBoldFont = true,
+                fontSize = 20,
             )
             Spacer(Modifier.width(8.dp))
             Text(
