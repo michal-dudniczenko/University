@@ -32,12 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.befit.R
-import com.example.befit.constants.Languages
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.bright
-import com.example.befit.constants.darkBackground
 import com.example.befit.constants.mediumFontSize
 import com.example.befit.constants.smallFontSize
 import com.example.befit.database.Exercise
@@ -50,7 +47,7 @@ fun CustomIntPicker(
     onValueChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
     selectedValue: Int? = null,
-    imageId: Int = R.drawable.numbers
+    imageId: Int = Themes.NUMBERS_ON_PRIMARY
 ) {
     var textValue by remember { mutableStateOf(
         if (selectedValue == 0 || selectedValue == null) "" else selectedValue.toString()
@@ -58,21 +55,21 @@ fun CustomIntPicker(
 
     OutlinedTextField(
         textStyle = TextStyle(
-            color = bright,
+            color = Themes.ON_PRIMARY,
             fontSize = adaptiveWidth(mediumFontSize).sp,
             fontWeight = FontWeight.Bold
         ),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = bright,
-            unfocusedBorderColor = bright,
-            focusedTextColor = bright,
-            unfocusedTextColor = bright,
-            focusedLabelColor = bright,
-            unfocusedLabelColor = bright,
-            focusedTrailingIconColor = bright,
-            unfocusedTrailingIconColor = bright,
-            focusedContainerColor = darkBackground,
-            unfocusedContainerColor = darkBackground,
+            focusedBorderColor = Themes.ON_PRIMARY,
+            unfocusedBorderColor = Themes.ON_PRIMARY,
+            focusedTextColor = Themes.ON_PRIMARY,
+            unfocusedTextColor = Themes.ON_PRIMARY,
+            focusedLabelColor = Themes.ON_PRIMARY,
+            unfocusedLabelColor = Themes.ON_PRIMARY,
+            focusedTrailingIconColor = Themes.ON_PRIMARY,
+            unfocusedTrailingIconColor = Themes.ON_PRIMARY,
+            focusedContainerColor = Themes.PRIMARY,
+            unfocusedContainerColor = Themes.PRIMARY,
         ),
         singleLine = true,
         value = textValue,
@@ -107,7 +104,7 @@ fun CustomFloatPicker(
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
     selectedValue: Float? = null,
-    imageId: Int = R.drawable.numbers,
+    imageId: Int = Themes.NUMBERS_ON_PRIMARY,
 ) {
     var textValue by remember { mutableStateOf(
         if (selectedValue == 0f || selectedValue == null) "" else floatToString(selectedValue)
@@ -115,21 +112,21 @@ fun CustomFloatPicker(
 
     OutlinedTextField(
         textStyle = TextStyle(
-            color = bright,
+            color = Themes.ON_PRIMARY,
             fontSize = adaptiveWidth(mediumFontSize).sp,
             fontWeight = FontWeight.Bold
         ),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = bright,
-            unfocusedBorderColor = bright,
-            focusedTextColor = bright,
-            unfocusedTextColor = bright,
-            focusedLabelColor = bright,
-            unfocusedLabelColor = bright,
-            focusedTrailingIconColor = bright,
-            unfocusedTrailingIconColor = bright,
-            focusedContainerColor = darkBackground,
-            unfocusedContainerColor = darkBackground,
+            focusedBorderColor = Themes.ON_PRIMARY,
+            unfocusedBorderColor = Themes.ON_PRIMARY,
+            focusedTextColor = Themes.ON_PRIMARY,
+            unfocusedTextColor = Themes.ON_PRIMARY,
+            focusedLabelColor = Themes.ON_PRIMARY,
+            unfocusedLabelColor = Themes.ON_PRIMARY,
+            focusedTrailingIconColor = Themes.ON_PRIMARY,
+            unfocusedTrailingIconColor = Themes.ON_PRIMARY,
+            focusedContainerColor = Themes.PRIMARY,
+            unfocusedContainerColor = Themes.PRIMARY,
         ),
         singleLine = true,
         value = textValue,
@@ -164,27 +161,27 @@ fun CustomStringPicker(
     label: String,
     modifier: Modifier = Modifier,
     selectedValue: String? = null,
-    imageId: Int = R.drawable.abc,
+    imageId: Int = Themes.ABC_ON_PRIMARY,
 ) {
     var textValue by remember { mutableStateOf(selectedValue ?: "") }
 
     OutlinedTextField(
         textStyle = TextStyle(
-            color = bright,
+            color = Themes.ON_PRIMARY,
             fontSize = adaptiveWidth(mediumFontSize).sp,
             fontWeight = FontWeight.Bold
         ),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = bright,
-            unfocusedBorderColor = bright,
-            focusedTextColor = bright,
-            unfocusedTextColor = bright,
-            focusedLabelColor = bright,
-            unfocusedLabelColor = bright,
-            focusedTrailingIconColor = bright,
-            unfocusedTrailingIconColor = bright,
-            focusedContainerColor = darkBackground,
-            unfocusedContainerColor = darkBackground,
+            focusedBorderColor = Themes.ON_PRIMARY,
+            unfocusedBorderColor = Themes.ON_PRIMARY,
+            focusedTextColor = Themes.ON_PRIMARY,
+            unfocusedTextColor = Themes.ON_PRIMARY,
+            focusedLabelColor = Themes.ON_PRIMARY,
+            unfocusedLabelColor = Themes.ON_PRIMARY,
+            focusedTrailingIconColor = Themes.ON_PRIMARY,
+            unfocusedTrailingIconColor = Themes.ON_PRIMARY,
+            focusedContainerColor = Themes.PRIMARY,
+            unfocusedContainerColor = Themes.PRIMARY,
         ),
         singleLine = true,
         value = textValue,
@@ -222,12 +219,12 @@ fun CustomExercisePicker(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = darkBackground,
+                    color = Themes.PRIMARY,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .border(
                     width = 1.dp,
-                    color = bright,
+                    color = Themes.ON_PRIMARY,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .clickable {
@@ -281,12 +278,12 @@ fun CustomSexPicker(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = darkBackground,
+                    color = Themes.PRIMARY,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .border(
                     width = 1.dp,
-                    color = bright,
+                    color = Themes.ON_PRIMARY,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .clickable {
@@ -352,12 +349,12 @@ fun CustomActivityLevelPicker(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = darkBackground,
+                    color = Themes.PRIMARY,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .border(
                     width = 1.dp,
-                    color = bright,
+                    color = Themes.ON_PRIMARY,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .clickable {
@@ -406,7 +403,8 @@ fun CustomActivityLevelPicker(
 
 
 @Composable
-fun CustomLanguagePicker(
+fun CustomStringOptionPicker(
+    optionsList: List<String>,
     onValueSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
     selectedValue: String
@@ -423,12 +421,12 @@ fun CustomLanguagePicker(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = darkBackground,
+                    color = Themes.PRIMARY,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .border(
                     width = 1.dp,
-                    color = bright,
+                    color = Themes.ON_PRIMARY,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .clickable {
@@ -454,7 +452,7 @@ fun CustomLanguagePicker(
             onDismissRequest = { expanded = false },
             modifier = Modifier.fillMaxWidth(0.8f * 0.7f)
         ) {
-            Languages.values.forEachIndexed { index, option ->
+            optionsList.forEachIndexed { index, option ->
                 DropdownMenuItem(
                     text = { Text(text = option) },
                     onClick = {
@@ -463,7 +461,7 @@ fun CustomLanguagePicker(
                         expanded = false
                     }
                 )
-                if (index < ActivityLevels.levels.lastIndex) {
+                if (index < optionsList.lastIndex) {
                     HorizontalDivider(
                         thickness = 2.dp
                     )

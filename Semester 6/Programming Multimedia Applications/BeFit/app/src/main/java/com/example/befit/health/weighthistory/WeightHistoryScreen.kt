@@ -16,12 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.HealthRoutes
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.WeightHistoryRoutes
 import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
@@ -41,7 +41,7 @@ fun WeightHistoryScreen(
             .fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = { topLevelNavController.navigate(HealthRoutes.TOOLS_LIST) },
             modifier = Modifier
@@ -49,7 +49,7 @@ fun WeightHistoryScreen(
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
         )
         CustomFloatingButton(
-            icon = R.drawable.add,
+            icon = Themes.ADD_ON_SECONDARY,
             description = "Add button",
             onClick = { navController.navigate(WeightHistoryRoutes.ADD) },
             modifier = Modifier
@@ -71,6 +71,7 @@ fun WeightHistoryScreen(
                 ) {
                     CustomText(
                         text = Strings.NOTHING_HERE_YET,
+                        color = Themes.ON_BACKGROUND,
                         fontSize = bigFontSize,
                         modifier = Modifier
                             .align(Alignment.Center)

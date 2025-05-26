@@ -2,11 +2,13 @@ package com.example.befit.settings
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.befit.constants.AppThemes
 import com.example.befit.constants.Languages
 import com.example.befit.constants.SettingsRoutes
+import com.example.befit.constants.Themes
 import com.example.befit.constants.appLanguage
 import com.example.befit.constants.appTheme
 import com.example.befit.database.AppSettings
@@ -26,6 +28,9 @@ class SettingsViewModel(
         }
     }
 
+    private val _appBackground = mutableStateOf(Themes.BACKGROUND)
+    val appBackground: State<Color> = _appBackground
+
     private val _appSettings = mutableStateOf<AppSettings?>(null)
     val appSettings: State<AppSettings?> = _appSettings
 
@@ -37,7 +42,7 @@ class SettingsViewModel(
             } else {
                 val newAppSettings = AppSettings(
                     language = Languages.DEFAULT,
-                    theme = AppThemes.DARK,
+                    theme = AppThemes.DEFAULT,
                     playVideosMuted = true
                 )
                 appSettingsDao.insert(newAppSettings)
@@ -79,6 +84,7 @@ class SettingsViewModel(
 
         if (oldAppSettings?.theme != appSettings.theme) {
             appTheme = appSettings.theme
+            _appBackground.value = Themes.BACKGROUND
         }
 
     }

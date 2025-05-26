@@ -26,7 +26,7 @@ class TrainingProgramsViewModel(
     private val programDao: ProgramDao,
     private val trainingDayDao: TrainingDayDao,
     private val trainingDayExerciseDao: TrainingDayExerciseDao,
-    private val trainingDayExerciseSetDao: TrainingDayExerciseSetDao
+    private val trainingDayExerciseSetDao: TrainingDayExerciseSetDao,
 ) : ViewModel() {
     private val _navigationEvent = MutableSharedFlow<String>()
     val navigationEvent = _navigationEvent.asSharedFlow()
@@ -136,10 +136,15 @@ class TrainingProgramsViewModel(
         }
     }
 
-    fun updateExercise(id: Int, name: String, notes: String) {
+    fun updateExercise(
+        id: Int,
+        name: String,
+        notes: String,
+        videoId: Int,
+    ) {
         if (name.isNotEmpty()) {
             viewModelScope.launch {
-                exerciseDao.update(Exercise(id = id, name = name, notes = notes))
+                exerciseDao.update(Exercise(id = id, name = name, notes = notes, videoId = videoId))
                 refreshExercises()
             }
         }

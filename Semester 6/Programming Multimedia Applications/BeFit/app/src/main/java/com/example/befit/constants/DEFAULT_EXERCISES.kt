@@ -1,25 +1,31 @@
 package com.example.befit.constants
 
+import com.example.befit.R
 import com.example.befit.database.Exercise
 
-// default exercises list
 val DEFAULT_EXERCISES = listOf(
     Exercise(
-        name = "Bench press"
+        name = "Bench press",
+        videoId = R.raw.bench_press
     ),
     Exercise(
-        name = "Deadlift"
+        name = "Deadlift",
+        videoId = R.raw.deadlift
     ),
     Exercise(
-        name = "Squat"
+        name = "Squat",
+        videoId = R.raw.squat
     ),
     Exercise(
-        name = "Overhead press"
+        name = "Overhead press",
+        videoId = R.raw.overhead_press
     ),
     Exercise(
-        name = "Pull-ups"
+        name = "Pull-up",
+        videoId = R.raw.pull_up
     ),
     Exercise(
-        name = "Push-ups"
+        name = "Incline dumbbell curl",
+        videoId = R.raw.incline_dumbbell_curl
     )
 )

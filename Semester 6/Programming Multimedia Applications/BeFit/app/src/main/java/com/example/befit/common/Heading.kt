@@ -1,7 +1,6 @@
 package com.example.befit.common
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,35 +12,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.constants.bigFontSize
-import com.example.befit.constants.bright
-import com.example.befit.constants.darkBackground
-import com.example.befit.constants.editColor
 
 @Composable
 fun Heading(
     text: String,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
-    isEditMode: Boolean = false,
+    modifier: Modifier = Modifier
 ) {
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-            .background(color = if (isEditMode) editColor else bright)
-            .clickable(
-                onClick = onClick,
-                enabled = isEditMode
-            )
+            .background(Themes.SECONDARY)
             .padding(adaptiveWidth(16).dp)
     ) {
         CustomText(
             text = text,
             fontSize = bigFontSize,
-            color = if (isEditMode) bright else darkBackground
+            color = Themes.ON_SECONDARY
         )
     }
     Spacer(modifier = Modifier.height(adaptiveWidth(32).dp))

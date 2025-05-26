@@ -22,21 +22,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.bright
-import com.example.befit.constants.lightGreen
-import com.example.befit.constants.lightRed
 import com.example.befit.trainingprograms.TrainingProgramsViewModel
 
 @Composable
@@ -55,13 +51,13 @@ fun EditExerciseScreen(
         modifier = modifier.fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.check,
+            icon = Themes.CHECK_ON_ADD_CONFIRM,
             description = "Confirm button",
-            color = lightGreen,
+            color = Themes.ADD_CONFIRM_COLOR,
             onClick = {
                 if (selectedName.isNotEmpty()) {
                     if (exercise != null) {
-                        viewModel.updateExercise(id = exerciseId, name = selectedName, notes = exercise.notes)
+                        viewModel.updateExercise(id = exerciseId, name = selectedName, notes = exercise.notes, videoId = exercise.videoId)
                     }
                     navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE_LIST)
                 }
@@ -71,7 +67,7 @@ fun EditExerciseScreen(
                 .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
         )
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = { navController.navigate(TrainingProgramsRoutes.EDIT_EXERCISE_LIST) },
             modifier = Modifier
@@ -83,7 +79,7 @@ fun EditExerciseScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 CircularProgressIndicator(
-                    color = bright,
+                    color = Themes.ON_BACKGROUND,
                     modifier = Modifier.align(Alignment.Center)
                 )
                 return
@@ -115,7 +111,7 @@ fun EditExerciseScreen(
                     modifier = modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-                        .background(color = lightRed)
+                        .background(color = Themes.DELETE_CANCEL_COLOR)
                         .clickable(
                             onClick = {
                                 viewModel.deleteExercise(id = exerciseId)
@@ -125,7 +121,7 @@ fun EditExerciseScreen(
                 ) {
                     CustomText(
                         text = Strings.DELETE_EXERCISE,
-                        color = Color.White,
+                        color = Themes.ON_DELETE_CANCEL,
                         modifier = Modifier.padding(adaptiveWidth(16).dp)
                     )
                 }

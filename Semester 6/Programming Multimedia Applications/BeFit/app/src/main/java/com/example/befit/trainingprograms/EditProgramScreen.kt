@@ -19,15 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.bright
 
 @Composable
 fun EditProgramScreen(
@@ -46,7 +45,7 @@ fun EditProgramScreen(
         modifier = modifier.fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = {
                 if (selectedName.isNotEmpty()) {
@@ -63,7 +62,7 @@ fun EditProgramScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 CircularProgressIndicator(
-                    color = bright,
+                    color = Themes.ON_BACKGROUND,
                     modifier = Modifier.align(Alignment.Center)
                 )
                 return

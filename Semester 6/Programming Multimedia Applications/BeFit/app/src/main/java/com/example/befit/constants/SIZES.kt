@@ -9,4 +9,3 @@ const val STOPWATCH_FONT_SIZE = 64
 const val mediumFontSize = 24
 const val bigFontSize = 28
 const val smallFontSize = 20
-

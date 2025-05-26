@@ -17,7 +17,9 @@ data class Exercise(
 
     val name: String = "",
 
-    val notes: String = ""
+    val notes: String = "",
+
+    val videoId: Int = -1
 
 )
 

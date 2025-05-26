@@ -12,11 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
+import com.example.befit.constants.AppThemes
+import com.example.befit.constants.Languages
 import com.example.befit.constants.Strings
-import com.example.befit.constants.bright
+import com.example.befit.constants.Themes
 
 @Composable
 fun SettingsListScreen(
@@ -42,7 +42,7 @@ fun SettingsListScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     CircularProgressIndicator(
-                        color = bright,
+                        color = Themes.ON_BACKGROUND,
                         modifier = Modifier.align(Alignment.Center)
                     )
                     return
@@ -55,9 +55,17 @@ fun SettingsListScreen(
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
             ) {
-                LanguageSelector(
-                    currentLanguage = appSettings!!.language,
-                    viewModel = viewModel
+                OptionSelector(
+                    currentValue = appSettings!!.language,
+                    label = Strings.LANGUAGE,
+                    optionsList = Languages.values,
+                    onValueSelected = { viewModel.updateAppSettings(language = it) }
+                )
+                OptionSelector(
+                    currentValue = appSettings!!.theme,
+                    label = Strings.THEME,
+                    optionsList = AppThemes.values,
+                    onValueSelected = { viewModel.updateAppSettings(theme = it) }
                 )
             }
         }

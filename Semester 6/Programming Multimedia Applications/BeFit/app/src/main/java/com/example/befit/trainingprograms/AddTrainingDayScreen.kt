@@ -18,16 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.lightGreen
-import com.example.befit.constants.lightRed
 
 @Composable
 fun AddTrainingDayScreen(
@@ -42,9 +40,9 @@ fun AddTrainingDayScreen(
         modifier = modifier.fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.check,
+            icon = Themes.CHECK_ON_ADD_CONFIRM,
             description = "Confirm button",
-            color = lightGreen,
+            color = Themes.ADD_CONFIRM_COLOR,
             onClick = {
                 if (selectedName.isNotEmpty()) {
                     viewModel.addTrainingDay(programId = programId, name = selectedName)
@@ -56,9 +54,9 @@ fun AddTrainingDayScreen(
                 .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
         )
         CustomFloatingButton(
-            icon = R.drawable.cancel,
+            icon = Themes.CANCEL_ON_DELETE_CANCEL,
             description = "Cancel button",
-            color = lightRed,
+            color = Themes.DELETE_CANCEL_COLOR,
             onClick = { navController.navigate(TrainingProgramsRoutes.TRAINING_DAYS_LIST(programId)) },
             modifier = Modifier
                 .align(Alignment.BottomStart)

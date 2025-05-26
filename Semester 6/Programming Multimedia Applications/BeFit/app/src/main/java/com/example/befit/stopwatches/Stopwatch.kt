@@ -22,23 +22,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomText
+import com.example.befit.common.formatTime
 import com.example.befit.constants.STOPWATCH_BUTTON_SIZE
 import com.example.befit.constants.STOPWATCH_FONT_SIZE
 import com.example.befit.constants.StopwatchesRoutes
+import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.bright
-import com.example.befit.constants.darkBackground
-import com.example.befit.constants.editColor
-import com.example.befit.common.formatTime
-import com.example.befit.constants.Strings
-import com.example.befit.constants.lightRed
 import com.example.befit.constants.smallFontSize
 
 @Composable
@@ -63,7 +58,7 @@ fun Stopwatch(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .clip(RoundedCornerShape(adaptiveWidth(10).dp))
-                    .background(color = if (isEditMode) editColor else bright)
+                    .background(color = if (isEditMode) Themes.EDIT_COLOR else Themes.SECONDARY)
                     .padding(horizontal = adaptiveWidth(12).dp, vertical = adaptiveWidth(8).dp)
                     .clickable(
                         enabled = isEditMode,
@@ -73,7 +68,7 @@ fun Stopwatch(
                 CustomText(
                     text = stopwatchState.name,
                     fontSize = smallFontSize,
-                    color = if (isEditMode) bright else darkBackground
+                    color = if (isEditMode) Themes.ON_EDIT else Themes.ON_SECONDARY
                 )
             }
             if (isEditMode) {
@@ -81,7 +76,7 @@ fun Stopwatch(
                     contentAlignment = Alignment.Center,
                     modifier = modifier
                         .clip(RoundedCornerShape(adaptiveWidth(10).dp))
-                        .background(color = lightRed)
+                        .background(color = Themes.DELETE_CANCEL_COLOR)
                         .clickable(
                             onClick = {
                                 if (viewModel.stopwatches.value.size == 1) {
@@ -95,7 +90,7 @@ fun Stopwatch(
                     CustomText(
                         text = Strings.DELETE,
                         fontSize = smallFontSize,
-                        color = Color.White,
+                        color = Themes.ON_DELETE_CANCEL,
                     )
                 }
             }
@@ -107,7 +102,7 @@ fun Stopwatch(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(adaptiveWidth(24).dp))
-                .background(darkBackground)
+                .background(Themes.PRIMARY)
                 .padding(adaptiveWidth(16).dp)
 
         ) {
@@ -122,11 +117,11 @@ fun Stopwatch(
                     modifier = Modifier
                         .size(adaptiveWidth(STOPWATCH_BUTTON_SIZE).dp)
                         .clip(CircleShape)
-                        .background(bright)
+                        .background(Themes.ON_PRIMARY)
                         .clickable { stopwatchState.startPause() }
                 ) {
                     Image(
-                        painter = painterResource(id = if (isRunning) R.drawable.pause else R.drawable.play),
+                        painter = painterResource(id = if (isRunning) Themes.PAUSE_ON_SECONDARY else Themes.PLAY_ON_SECONDARY),
                         contentDescription = if (isRunning) "Pause stopwatch" else "Start stopwatch",
                         modifier = Modifier
                             .fillMaxHeight(0.4f)
@@ -139,11 +134,11 @@ fun Stopwatch(
                     modifier = Modifier
                         .size(adaptiveWidth(STOPWATCH_BUTTON_SIZE).dp)
                         .clip(CircleShape)
-                        .background(bright)
+                        .background(Themes.ON_PRIMARY)
                         .clickable { stopwatchState.reset() }
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.reset),
+                        painter = painterResource(id = Themes.RESET_ON_SECONDARY),
                         contentDescription = "Reset stopwatch",
                         modifier = Modifier
                             .fillMaxHeight(0.45f)

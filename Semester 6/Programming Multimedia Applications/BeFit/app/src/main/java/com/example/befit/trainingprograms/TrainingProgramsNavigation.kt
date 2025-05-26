@@ -213,5 +213,25 @@ fun TrainingProgramsNavigation(
                 )
             }
         }
+        composable(
+            route = TrainingProgramsRoutes.EXERCISE_VIDEO,
+            arguments = listOf(
+                navArgument("exerciseId") { type = NavType.IntType },
+                navArgument("trainingDayExerciseId") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val exerciseId = backStackEntry.arguments?.getInt("exerciseId")
+            val trainingDayExerciseId = backStackEntry.arguments?.getInt("trainingDayExerciseId")
+
+            if (exerciseId != null && trainingDayExerciseId != null) {
+                viewModel.updateCurrentRoute(TrainingProgramsRoutes.EXERCISE_VIDEO(exerciseId, trainingDayExerciseId))
+
+                ExerciseVideoScreen(
+                    exerciseId = exerciseId,
+                    viewModel = viewModel,
+                    onBack = { navController.navigate(TrainingProgramsRoutes.VIEW_EXERCISE_FROM_DAY(trainingDayExerciseId)) }
+                )
+            }
+        }
     }
 }

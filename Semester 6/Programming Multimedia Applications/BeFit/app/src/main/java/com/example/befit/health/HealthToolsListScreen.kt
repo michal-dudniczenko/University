@@ -40,11 +40,12 @@ fun HealthToolsListScreen(
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
             ) {
-                for (i in 1 until HealthRoutes.screens.size) {
+                val screens = HealthRoutes.getScreens()
+                for (i in 1 until screens.size) {
                     FunctionalityRow(
-                        text = HealthRoutes.screens[i],
+                        text = screens[i].name,
                         onClick = {
-                            navController.navigate(HealthRoutes.screens[i])
+                            navController.navigate(screens[i].route)
                         }
                     )
                 }

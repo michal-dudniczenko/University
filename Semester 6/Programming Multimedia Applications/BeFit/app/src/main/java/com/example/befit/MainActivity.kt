@@ -9,11 +9,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.example.befit.constants.InitScreenDimensions
-import com.example.befit.constants.appBackground
+import com.example.befit.constants.Themes
 import com.example.befit.database.AppDatabase
 import com.example.befit.health.HealthViewModel
 import com.example.befit.health.caloriecalculator.CalorieCalculatorViewModel
@@ -25,8 +27,8 @@ import com.example.befit.trainingprograms.TrainingProgramsViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(appBackground.toArgb()),
             navigationBarStyle = SystemBarStyle.dark(Color.Black.toArgb())
         )
 
@@ -50,6 +52,8 @@ class MainActivity : ComponentActivity() {
         )
         val settingsViewModel = SettingsViewModel(database.appSettingDao())
 
+
+
         setContent {
             InitScreenDimensions()
 
@@ -67,7 +71,7 @@ class MainActivity : ComponentActivity() {
                     settingsViewModel = settingsViewModel,
                     modifier = Modifier
                         .padding(innerPadding)
-                        .background(appBackground)
+                        .background(Themes.BACKGROUND)
                 )
             }
         }

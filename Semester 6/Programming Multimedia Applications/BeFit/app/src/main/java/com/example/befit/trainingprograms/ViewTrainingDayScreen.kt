@@ -22,18 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.constants.bigFontSize
-import com.example.befit.constants.bright
-import com.example.befit.constants.editColor
-import com.example.befit.constants.mediumGreen
 
 @Composable
 fun ViewTrainingDayScreen(
@@ -60,7 +57,7 @@ fun ViewTrainingDayScreen(
             .fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = {
                 if (trainingDay == null) {
@@ -77,7 +74,7 @@ fun ViewTrainingDayScreen(
         )
         if (exercises.isEmpty()) {
             CustomFloatingButton(
-                icon = R.drawable.add,
+                icon = Themes.ADD_ON_SECONDARY,
                 description = "Add button",
                 onClick = { navController.navigate(TrainingProgramsRoutes.ADD_EXERCISE_TO_DAY(trainingDayId)) },
                 modifier = Modifier
@@ -86,8 +83,8 @@ fun ViewTrainingDayScreen(
             )
         } else {
             CustomFloatingButton(
-                icon = if (isEditMode) R.drawable.edit_white else R.drawable.edit,
-                color = if (isEditMode) editColor else bright,
+                icon = if (isEditMode) Themes.EDIT_ON_EDIT else Themes.EDIT_ON_SECONDARY,
+                color = if (isEditMode) Themes.EDIT_COLOR else Themes.SECONDARY,
                 description = "Edit button",
                 onClick = { isEditMode = !isEditMode },
                 modifier = Modifier
@@ -100,7 +97,7 @@ fun ViewTrainingDayScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 CircularProgressIndicator(
-                    color = bright,
+                    color = Themes.ON_BACKGROUND,
                     modifier = Modifier.align(Alignment.Center)
                 )
                 return
@@ -123,6 +120,7 @@ fun ViewTrainingDayScreen(
                 ) {
                     CustomText(
                         text = Strings.NOTHING_HERE_YET,
+                        color = Themes.ON_BACKGROUND,
                         fontSize = bigFontSize,
                         modifier = Modifier
                             .align(Alignment.Center)
@@ -143,13 +141,14 @@ fun ViewTrainingDayScreen(
                             modifier = modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-                                .background(color = mediumGreen)
+                                .background(color = Themes.ADD_CONFIRM_COLOR)
                                 .clickable {
                                     navController.navigate(TrainingProgramsRoutes.ADD_EXERCISE_TO_DAY(trainingDayId))
                                 }
                         ) {
                             CustomText(
                                 text = Strings.ADD_EXERCISE,
+                                color = Themes.ON_ADD_CONFIRM,
                                 modifier = Modifier.padding(adaptiveWidth(16).dp)
                             )
                         }

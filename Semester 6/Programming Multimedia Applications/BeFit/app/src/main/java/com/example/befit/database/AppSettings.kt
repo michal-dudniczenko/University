@@ -16,7 +16,7 @@ data class AppSettings(
     @PrimaryKey(autoGenerate = false)
     val id: Int = 1,
 
-    val language: String = Languages.ENGLISH,
+    val language: String = Languages.DEFAULT,
     val theme: String = AppThemes.DARK,
     val playVideosMuted: Boolean = true
 )

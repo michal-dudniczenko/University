@@ -15,8 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.befit.R
-import com.example.befit.constants.lightRed
+import com.example.befit.constants.Themes
 
 @Composable
 fun DeleteButton(
@@ -30,11 +29,11 @@ fun DeleteButton(
             .fillMaxHeight(0.95f)
             .aspectRatio(1f)
             .clip(CircleShape)
-            .background(color = lightRed)
+            .background(color = Themes.DELETE_CANCEL_COLOR)
             .clickable(onClick = onClick)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.trash),
+            painter = painterResource(id = Themes.TRASH_ON_DELETE_CANCEL),
             contentDescription = "Delete icon",
             modifier = Modifier.fillMaxHeight(0.5f)
         )

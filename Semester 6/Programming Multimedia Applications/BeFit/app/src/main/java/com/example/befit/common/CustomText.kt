@@ -6,14 +6,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.bright
 import com.example.befit.constants.mediumFontSize
 
 @Composable
 fun CustomText(
     text: String,
-    color: Color = bright,
+    color: Color = Themes.ON_PRIMARY,
     fontSize: Int = mediumFontSize,
     isBoldFont: Boolean = true,
     modifier: Modifier = Modifier

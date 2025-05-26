@@ -19,7 +19,7 @@ var appLanguage by mutableStateOf(Languages.ENGLISH)
 
 object Strings {
     private val currentSet: LanguageSet
-        get() = LanguageSets.allLanguages[appLanguage] ?: LanguageSets.allLanguages[Languages.ENGLISH]!!
+        get() = LanguageSets.allLanguages[appLanguage] ?: LanguageSets.allLanguages[Languages.DEFAULT]!!
 
     val NOTHING_HERE_YET get() = currentSet.NOTHING_HERE_YET
     val DELETE get() = currentSet.DELETE
@@ -63,7 +63,6 @@ object Strings {
     val DELETE_WEIGHT get() = currentSet.DELETE_WEIGHT
     val AGE get() = currentSet.AGE
     val HEIGHT get() = currentSet.HEIGHT
-    val SEX get() = currentSet.SEX
     val SELECT_SEX get() = currentSet.SELECT_SEX
     val ACTIVITY_LEVEL get() = currentSet.ACTIVITY_LEVEL
     val CALCULATE get() = currentSet.CALCULATE
@@ -102,9 +101,9 @@ object Strings {
     val MODERATE_UNDERWEIGHT get() = currentSet.MODERATE_UNDERWEIGHT
     val SEVERE_UNDERWEIGHT get() = currentSet.SEVERE_UNDERWEIGHT
 
+    val LANGUAGE get() = currentSet.LANGUAGE
+    val THEME get() = currentSet.THEME
 }
-
-
 
 data class LanguageSet(
     val NOTHING_HERE_YET: String,
@@ -149,7 +148,6 @@ data class LanguageSet(
     val DELETE_WEIGHT: String,
     val AGE: String,
     val HEIGHT: String,
-    val SEX: String,
     val SELECT_SEX: String,
     val ACTIVITY_LEVEL: String,
     val CALCULATE: String,
@@ -187,6 +185,9 @@ data class LanguageSet(
     val MILD_UNDERWEIGHT: String,
     val MODERATE_UNDERWEIGHT: String,
     val SEVERE_UNDERWEIGHT: String,
+    
+    val LANGUAGE: String,
+    val THEME: String
 )
 
 object LanguageSets {
@@ -231,7 +232,6 @@ object LanguageSets {
             DELETE_WEIGHT = "Delete weight",
             AGE = "Age",
             HEIGHT = "Height",
-            SEX = "Sex",
             SELECT_SEX = "Select sex",
             ACTIVITY_LEVEL = "Activity level",
             CALCULATE = "Calculate",
@@ -264,7 +264,9 @@ object LanguageSets {
             OBESE_CLASS_III = "Obese class III",
             MILD_UNDERWEIGHT = "Mild underweight",
             MODERATE_UNDERWEIGHT = "Moderate underweight",
-            SEVERE_UNDERWEIGHT = "Severe underweight"
+            SEVERE_UNDERWEIGHT = "Severe underweight",
+            LANGUAGE = "Language",
+            THEME = "Theme"
         ),
         Languages.POLISH to LanguageSet(
             NOTHING_HERE_YET = "Jeszcze nic tu nie ma!",
@@ -306,7 +308,6 @@ object LanguageSets {
             DELETE_WEIGHT = "Usuń wagę",
             AGE = "Wiek",
             HEIGHT = "Wzrost",
-            SEX = "Płeć",
             SELECT_SEX = "Wybierz płeć",
             ACTIVITY_LEVEL = "Poziom aktywności",
             CALCULATE = "Oblicz",
@@ -340,6 +341,8 @@ object LanguageSets {
             MILD_UNDERWEIGHT = "Lekka niedowaga",
             MODERATE_UNDERWEIGHT = "Niedowaga",
             SEVERE_UNDERWEIGHT = "Poważna niedowaga",
+            LANGUAGE = "Język",
+            THEME = "Motyw"
         ),
         Languages.SPANISH to LanguageSet(
             NOTHING_HERE_YET = "¡Aún no hay nada!",
@@ -381,7 +384,6 @@ object LanguageSets {
             DELETE_WEIGHT = "Eliminar peso",
             AGE = "Edad",
             HEIGHT = "Altura",
-            SEX = "Sexo",
             SELECT_SEX = "Seleccionar sexo",
             ACTIVITY_LEVEL = "Nivel de actividad",
             CALCULATE = "Calcular",
@@ -414,7 +416,9 @@ object LanguageSets {
             OBESE_CLASS_III = "Obesidad clase III",
             MILD_UNDERWEIGHT = "Delgadez leve",
             MODERATE_UNDERWEIGHT = "Delgadez moderada",
-            SEVERE_UNDERWEIGHT = "Delgadez severa"
+            SEVERE_UNDERWEIGHT = "Delgadez severa",
+            LANGUAGE = "Idioma",
+            THEME = "Tema"
         )
     )
 }

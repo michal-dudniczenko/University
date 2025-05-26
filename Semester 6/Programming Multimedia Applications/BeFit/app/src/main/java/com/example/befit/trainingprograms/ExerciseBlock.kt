@@ -33,13 +33,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.befit.common.CustomText
+import com.example.befit.common.floatToString
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.appBackground
-import com.example.befit.constants.bright
-import com.example.befit.constants.darkBackground
-import com.example.befit.constants.editColor
-import com.example.befit.common.floatToString
 import com.example.befit.constants.mediumFontSize
 import com.example.befit.constants.smallFontSize
 import com.example.befit.database.TrainingDayExercise
@@ -94,7 +91,7 @@ fun ExerciseBlock(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-            .background(color = darkBackground)
+            .background(color = Themes.PRIMARY)
             .padding(adaptiveWidth(16).dp)
     ) {
         // first line - exercise name
@@ -102,7 +99,7 @@ fun ExerciseBlock(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(adaptiveWidth(10).dp))
-                .background(color = if (isEditMode) editColor else bright)
+                .background(color = if (isEditMode) Themes.EDIT_COLOR else Themes.ON_PRIMARY)
                 .clickable(
                     onClick = {
                         if (isEditMode) {
@@ -116,7 +113,7 @@ fun ExerciseBlock(
         ) {
             CustomText(
                 text = "$exerciseNumber.  " + exercise?.name,
-                color = if (isEditMode) bright else darkBackground
+                color = if (isEditMode) Themes.ON_EDIT else Themes.PRIMARY
             )
         }
         Spacer(modifier = Modifier.height(adaptiveWidth(24).dp))
@@ -181,12 +178,12 @@ fun EditableItem(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .clip(RoundedCornerShape(5.dp))
-            .background(color = bright)
+            .background(color = Themes.ON_PRIMARY)
             .padding(5.dp)
     ) {
         CustomText(
             text = text,
-            color = darkBackground
+            color = Themes.PRIMARY
         )
     }
 }
@@ -221,23 +218,23 @@ fun EditWeightPopup(
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(16.dp))
-                .background(color = appBackground)
+                .background(color = Themes.BACKGROUND)
                 .fillMaxWidth(0.5f)
         ) {
             OutlinedTextField(
                 textStyle = TextStyle(
-                    color = bright,
+                    color = Themes.ON_PRIMARY,
                     fontSize = adaptiveWidth(mediumFontSize).sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 ),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = bright,
-                    unfocusedBorderColor = bright,
-                    focusedTextColor = bright,
-                    unfocusedTextColor = bright,
-                    focusedContainerColor = darkBackground,
-                    unfocusedContainerColor = darkBackground,
+                    focusedBorderColor = Themes.ON_PRIMARY,
+                    unfocusedBorderColor = Themes.ON_PRIMARY,
+                    focusedTextColor = Themes.ON_PRIMARY,
+                    unfocusedTextColor = Themes.ON_PRIMARY,
+                    focusedContainerColor = Themes.PRIMARY,
+                    unfocusedContainerColor = Themes.PRIMARY,
                 ),
                 singleLine = true,
                 value = text,
@@ -275,23 +272,23 @@ fun EditSetPopup(
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(16.dp))
-                .background(color = appBackground)
+                .background(color = Themes.BACKGROUND)
                 .fillMaxWidth(0.5f)
         ) {
             OutlinedTextField(
                 textStyle = TextStyle(
-                    color = bright,
+                    color = Themes.ON_PRIMARY,
                     fontSize = adaptiveWidth(mediumFontSize).sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 ),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = bright,
-                    unfocusedBorderColor = bright,
-                    focusedTextColor = bright,
-                    unfocusedTextColor = bright,
-                    focusedContainerColor = darkBackground,
-                    unfocusedContainerColor = darkBackground,
+                    focusedBorderColor = Themes.ON_PRIMARY,
+                    unfocusedBorderColor = Themes.ON_PRIMARY,
+                    focusedTextColor = Themes.ON_PRIMARY,
+                    unfocusedTextColor = Themes.ON_PRIMARY,
+                    focusedContainerColor = Themes.PRIMARY,
+                    unfocusedContainerColor = Themes.PRIMARY,
                 ),
                 singleLine = true,
                 value = text,

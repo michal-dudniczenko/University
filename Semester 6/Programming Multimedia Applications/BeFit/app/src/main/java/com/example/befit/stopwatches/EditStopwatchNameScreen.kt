@@ -17,12 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
 import com.example.befit.constants.StopwatchesRoutes
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
 
 @Composable
@@ -38,7 +38,7 @@ fun EditStopwatchNameScreen(
         modifier = modifier.fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = {
                 if (selectedName.isNotEmpty()) {

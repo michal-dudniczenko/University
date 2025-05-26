@@ -23,10 +23,9 @@ import androidx.navigation.NavHostController
 import com.example.befit.common.CustomText
 import com.example.befit.common.DeleteButton
 import com.example.befit.constants.ROW_HEIGHT
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.darkBackground
-import com.example.befit.constants.editColor
 import com.example.befit.constants.mediumFontSize
 
 @Composable
@@ -53,7 +52,7 @@ fun ProgramRow(
                 .weight(1f)
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-                .background(color = if (isEditMode) editColor else darkBackground)
+                .background(color = if (isEditMode) Themes.EDIT_COLOR else Themes.PRIMARY)
                 .clickable {
                     if (isEditMode) {
                         navController.navigate(TrainingProgramsRoutes.EDIT_PROGRAM(programId))
@@ -70,6 +69,7 @@ fun ProgramRow(
             ) {
                 CustomText(
                     text = programName,
+                    color = if (isEditMode) Themes.ON_EDIT else Themes.ON_PRIMARY,
                     fontSize = mediumFontSize,
                 )
             }

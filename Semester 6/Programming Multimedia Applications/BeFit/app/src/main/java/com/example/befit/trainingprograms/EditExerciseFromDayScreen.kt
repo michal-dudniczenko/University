@@ -23,10 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomExercisePicker
 import com.example.befit.common.CustomFloatPicker
 import com.example.befit.common.CustomFloatingButton
@@ -35,11 +33,10 @@ import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.lightGreen
-import com.example.befit.constants.lightRed
 
 @Composable
 fun EditExerciseFromDayScreen(
@@ -67,9 +64,9 @@ fun EditExerciseFromDayScreen(
         modifier = modifier.fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.check,
+            icon = Themes.CHECK_ON_ADD_CONFIRM,
             description = "Confirm button",
-            color = lightGreen,
+            color = Themes.ADD_CONFIRM_COLOR,
             onClick = {
                 if (selectedExercise != null) {
                     val wasExerciseChanged = selectedExercise?.id != initialExerciseId
@@ -92,9 +89,9 @@ fun EditExerciseFromDayScreen(
                 .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
         )
         CustomFloatingButton(
-            icon = R.drawable.cancel,
+            icon = Themes.CANCEL_ON_DELETE_CANCEL,
             description = "Cancel button",
-            color = lightRed,
+            color = Themes.DELETE_CANCEL_COLOR,
             onClick = { navController.navigate(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId)) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -124,21 +121,21 @@ fun EditExerciseFromDayScreen(
                 CustomStringPicker(
                     selectedValue = selectedRestTime,
                     label = Strings.REST_TIME,
-                    imageId = R.drawable.clock,
+                    imageId = Themes.CLOCK_ON_PRIMARY,
                     onValueChange = { selectedRestTime = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(30).dp))
                 CustomIntPicker(
                     selectedValue = selectedSetsNumber,
                     label = Strings.HOW_MANY_SETS,
-                    imageId = R.drawable.numbers,
+                    imageId = Themes.NUMBERS_ON_PRIMARY,
                     onValueChange = { selectedSetsNumber = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(30).dp))
                 CustomFloatPicker(
                     selectedValue = selectedWeight,
                     label = Strings.WEIGHT_GYM,
-                    imageId = R.drawable.numbers,
+                    imageId = Themes.NUMBERS_ON_PRIMARY,
                     onValueChange = { selectedWeight = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(40).dp))
@@ -147,7 +144,7 @@ fun EditExerciseFromDayScreen(
                     modifier = modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-                        .background(color = lightRed)
+                        .background(color = Themes.DELETE_CANCEL_COLOR)
                         .clickable(
                             onClick = {
                                 viewModel.deleteTrainingDayExercise(id = trainingDayExerciseId)
@@ -157,7 +154,7 @@ fun EditExerciseFromDayScreen(
                 ) {
                     CustomText(
                         text = Strings.DELETE_EXERCISE,
-                        color = Color.White,
+                        color = Themes.ON_DELETE_CANCEL,
                         modifier = Modifier.padding(adaptiveWidth(16).dp)
                     )
                 }

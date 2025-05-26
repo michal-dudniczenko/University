@@ -24,15 +24,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.darkBackground
 import com.example.befit.trainingprograms.TrainingProgramsViewModel
 
 @Composable
@@ -48,7 +47,7 @@ fun EditExerciseListScreen(
             .fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.add,
+            icon = Themes.ADD_ON_SECONDARY,
             description = "Add new exercise",
             onClick = {
                 navController.navigate(TrainingProgramsRoutes.ADD_EXERCISE)
@@ -58,7 +57,7 @@ fun EditExerciseListScreen(
                 .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
         )
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = {
                 navController.navigate(TrainingProgramsRoutes.SETTINGS)
@@ -105,7 +104,7 @@ fun SettingsExerciseItem(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-            .background(color = darkBackground)
+            .background(color = Themes.PRIMARY)
             .clickable(onClick = onClick)
             .padding(adaptiveWidth(16).dp)
     ) {

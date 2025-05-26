@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.darkBackground
 import com.example.befit.constants.mediumFontSize
 
 @Composable
@@ -30,7 +30,7 @@ fun FunctionalityRow(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-            .background(color = darkBackground)
+            .background(color = Themes.PRIMARY)
             .clickable(onClick = onClick)
             .padding(adaptiveWidth(16).dp)
     ) {

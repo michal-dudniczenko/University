@@ -14,14 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
-import com.example.befit.constants.CalorieCalculatorRoutes
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.Heading
+import com.example.befit.constants.CalorieCalculatorRoutes
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.bright
-import com.example.befit.constants.darkBackground
 
 @Composable
 fun CalorieCalculatorResultScreen(
@@ -36,7 +34,7 @@ fun CalorieCalculatorResultScreen(
             .fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = {
                 navController.navigate(CalorieCalculatorRoutes.CALCULATOR)
@@ -63,8 +61,8 @@ fun CalorieCalculatorResultScreen(
                 ResultRow(
                     text = Strings.YOUR_BMR_IS,
                     kcal = result?.bmr,
-                    backgroundColor = darkBackground,
-                    fontColor = bright
+                    backgroundColor = Themes.PRIMARY,
+                    fontColor = Themes.ON_PRIMARY
                 )
                 ResultRow(
                     text = Strings.MAINTAIN_WEIGHT,

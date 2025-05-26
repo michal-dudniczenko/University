@@ -19,19 +19,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatPicker
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
-import com.example.befit.constants.WeightHistoryRoutes
-import com.example.befit.constants.adaptiveHeight
-import com.example.befit.constants.adaptiveWidth
 import com.example.befit.common.formatDateFromLong
 import com.example.befit.common.isValidDate
 import com.example.befit.constants.Strings
-import com.example.befit.constants.lightGreen
-import com.example.befit.constants.lightRed
+import com.example.befit.constants.Themes
+import com.example.befit.constants.WeightHistoryRoutes
+import com.example.befit.constants.adaptiveHeight
+import com.example.befit.constants.adaptiveWidth
 
 @Composable
 fun AddWeightScreen(
@@ -46,9 +44,9 @@ fun AddWeightScreen(
         modifier = modifier.fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.check,
+            icon = Themes.CHECK_ON_ADD_CONFIRM,
             description = "Confirm button",
-            color = lightGreen,
+            color = Themes.ADD_CONFIRM_COLOR,
             onClick = {
                 if (selectedWeight != 0f) {
                     val date = isValidDate(selectedDate)
@@ -63,9 +61,9 @@ fun AddWeightScreen(
                 .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
         )
         CustomFloatingButton(
-            icon = R.drawable.cancel,
+            icon = Themes.CANCEL_ON_DELETE_CANCEL,
             description = "Cancel button",
-            color = lightRed,
+            color = Themes.DELETE_CANCEL_COLOR,
             onClick = { navController.navigate(WeightHistoryRoutes.HISTORY) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -90,12 +88,12 @@ fun AddWeightScreen(
                     selectedValue = selectedDate,
                     onValueChange = { selectedDate = it },
                     label = Strings.DATE,
-                    imageId = R.drawable.calendar,
+                    imageId = Themes.CALENDAR_ON_PRIMARY,
                 )
                 Spacer(modifier = Modifier.height(adaptiveHeight(40).dp))
                 CustomFloatPicker(
                     label = Strings.WEIGHT_BODY,
-                    imageId = R.drawable.scale_white,
+                    imageId = Themes.NUMBERS_ON_PRIMARY,
                     onValueChange = { selectedWeight = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveHeight(200).dp))

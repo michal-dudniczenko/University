@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomExercisePicker
 import com.example.befit.common.CustomFloatPicker
 import com.example.befit.common.CustomFloatingButton
@@ -27,11 +26,10 @@ import com.example.befit.common.CustomIntPicker
 import com.example.befit.common.CustomStringPicker
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveHeight
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.lightGreen
-import com.example.befit.constants.lightRed
 import com.example.befit.database.Exercise
 
 @Composable
@@ -53,9 +51,9 @@ fun AddExerciseToDayScreen(
         modifier = modifier.fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.check,
+            icon = Themes.CHECK_ON_ADD_CONFIRM,
             description = "Confirm button",
-            color = lightGreen,
+            color = Themes.ADD_CONFIRM_COLOR,
             onClick = {
                 if (selectedExercise != null) {
                     // nie mozna miec dwa razy tego samego cwiczenia w tym samym dniu treningowym
@@ -76,9 +74,9 @@ fun AddExerciseToDayScreen(
                 .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
         )
         CustomFloatingButton(
-            icon = R.drawable.cancel,
+            icon = Themes.CANCEL_ON_DELETE_CANCEL,
             description = "Cancel button",
-            color = lightRed,
+            color = Themes.DELETE_CANCEL_COLOR,
             onClick = { navController.navigate(TrainingProgramsRoutes.VIEW_TRAINING_DAY(trainingDayId)) },
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -106,19 +104,19 @@ fun AddExerciseToDayScreen(
                 Spacer(modifier = Modifier.height(adaptiveWidth(30).dp))
                 CustomStringPicker(
                     label = Strings.REST_TIME,
-                    imageId = R.drawable.clock,
+                    imageId = Themes.CLOCK_ON_PRIMARY,
                     onValueChange = { selectedRestTime = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(30).dp))
                 CustomIntPicker(
                     label = Strings.HOW_MANY_SETS,
-                    imageId = R.drawable.numbers,
+                    imageId = Themes.NUMBERS_ON_PRIMARY,
                     onValueChange = { selectedSetsNumber = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveWidth(30).dp))
                 CustomFloatPicker(
                     label = Strings.WEIGHT_GYM,
-                    imageId = R.drawable.numbers,
+                    imageId = Themes.NUMBERS_ON_PRIMARY,
                     onValueChange = { selectedWeight = it }
                 )
                 Spacer(modifier = Modifier.height(adaptiveHeight(100).dp))

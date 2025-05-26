@@ -22,14 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.darkBackground
 
 @Composable
 fun SettingsScreen(
@@ -40,7 +39,7 @@ fun SettingsScreen(
         modifier = modifier.fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = {
                 navController.navigate(TrainingProgramsRoutes.PROGRAMS_LIST)
@@ -83,7 +82,7 @@ fun SettingsItem(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-            .background(color = darkBackground)
+            .background(color = Themes.PRIMARY)
             .clickable(onClick = onClick)
             .padding(adaptiveWidth(20).dp)
     ) {

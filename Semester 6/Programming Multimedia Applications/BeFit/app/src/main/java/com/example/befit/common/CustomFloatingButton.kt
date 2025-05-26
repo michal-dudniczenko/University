@@ -16,14 +16,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.befit.constants.FLOATING_BUTTON_SIZE
+import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.bright
 
 @Composable
 fun CustomFloatingButton(
     icon: Int,
     description: String,
-    color: Color = bright,
+    color: Color = Themes.SECONDARY,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {

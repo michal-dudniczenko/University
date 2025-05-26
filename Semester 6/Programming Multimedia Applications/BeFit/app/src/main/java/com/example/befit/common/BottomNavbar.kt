@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.befit.constants.AppRoutes
 import com.example.befit.constants.NAVBAR_HEIGHT
-import com.example.befit.constants.bright
-import com.example.befit.constants.darkBackground
+import com.example.befit.constants.Themes
 import com.example.befit.health.HealthViewModel
 import com.example.befit.stopwatches.StopwatchesViewModel
 import com.example.befit.trainingprograms.TrainingProgramsViewModel
@@ -39,11 +38,12 @@ fun BottomNavbar(
             .fillMaxWidth()
             .height(NAVBAR_HEIGHT.dp)
     ) {
-        for (screen in AppRoutes.screens) {
+        val screens = AppRoutes.getScreens()
+        for (screen in screens) {
             val isSelected = currentRoute == screen.route
             BottomNavbarIcon(
                 isSelected = isSelected,
-                iconId = if (isSelected) screen.iconBlack else screen.iconWhite,
+                iconId = if (isSelected) screen.iconPrimary else screen.iconOnPrimary,
                 onClick = {
                     if (currentRoute == AppRoutes.TRAINING_PROGRAMS) {
                         trainingProgramsViewModel.navigateToStart()
@@ -75,7 +75,7 @@ fun BottomNavbarIcon(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxSize()
-            .background(if (isSelected) bright else darkBackground)
+            .background(if (isSelected) Themes.ON_PRIMARY else Themes.PRIMARY)
             .clickable(onClick = onClick)
     ) {
         Box(

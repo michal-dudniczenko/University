@@ -30,16 +30,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.TrainingProgramsRoutes
 import com.example.befit.constants.adaptiveWidth
 import com.example.befit.constants.bigFontSize
-import com.example.befit.constants.bright
-import com.example.befit.constants.darkBackground
 import com.example.befit.constants.mediumFontSize
 
 @Composable
@@ -67,14 +65,15 @@ fun ViewExerciseFromDayScreen(
         modifier = modifier.fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = {
-                if (exercise != null) {
+                if (exercise != null && exercise.notes != notes) {
                     viewModel.updateExercise(
                         id = exercise.id,
                         name = exercise.name,
-                        notes = notes
+                        notes = notes,
+                        videoId = exercise.videoId
                     )
                 }
                 viewModelNotes = ""
@@ -88,16 +87,29 @@ fun ViewExerciseFromDayScreen(
                 .align(Alignment.BottomStart)
                 .offset(x = adaptiveWidth(32).dp, y = adaptiveWidth(-32).dp)
         )
+
         if (trainingDayExercise == null || exercise == null) {
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
                 CircularProgressIndicator(
-                    color = bright,
+                    color = Themes.ON_BACKGROUND,
                     modifier = Modifier.align(Alignment.Center)
                 )
                 return
             }
+        }
+        if (exercise!!.videoId > 0) {
+            CustomFloatingButton(
+                icon = Themes.VIDEO_ON_SECONDARY,
+                description = "Exercise video",
+                onClick = {
+                    navController.navigate(TrainingProgramsRoutes.EXERCISE_VIDEO(exercise.id, trainingDayExerciseId))
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(x = adaptiveWidth(-32).dp, y = adaptiveWidth(-32).dp)
+            )
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -113,7 +125,7 @@ fun ViewExerciseFromDayScreen(
                     .fillMaxWidth(0.95f)
                     .fillMaxHeight(0.85f)
                     .clip(RoundedCornerShape(adaptiveWidth(16).dp))
-                    .background(color = darkBackground)
+                    .background(color = Themes.PRIMARY)
             ) {
                 Spacer(Modifier.height(adaptiveWidth(16).dp))
                 Row(
@@ -121,12 +133,12 @@ fun ViewExerciseFromDayScreen(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
                         .clip(RoundedCornerShape(adaptiveWidth(10).dp))
-                        .background(color = bright)
+                        .background(color = Themes.ON_PRIMARY)
                         .padding(8.dp)
                 ) {
                     CustomText(
-                        text = exercise?.name ?: "",
-                        color = darkBackground,
+                        text = exercise.name,
+                        color = Themes.PRIMARY,
                         fontSize = bigFontSize,
                     )
                 }
@@ -142,19 +154,19 @@ fun ViewExerciseFromDayScreen(
                 Spacer(Modifier.height(adaptiveWidth(16).dp))
                 OutlinedTextField(
                     textStyle = TextStyle(
-                        color = bright,
+                        color = Themes.ON_PRIMARY,
                         fontSize = adaptiveWidth(mediumFontSize).sp,
                         fontWeight = FontWeight.Bold
                     ),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = bright,
-                        unfocusedBorderColor = bright,
-                        focusedTextColor = bright,
-                        unfocusedTextColor = bright,
-                        focusedLabelColor = bright,
-                        unfocusedLabelColor = bright,
-                        focusedContainerColor = darkBackground,
-                        unfocusedContainerColor = darkBackground,
+                        focusedBorderColor = Themes.ON_PRIMARY,
+                        unfocusedBorderColor = Themes.ON_PRIMARY,
+                        focusedTextColor = Themes.ON_PRIMARY,
+                        unfocusedTextColor = Themes.ON_PRIMARY,
+                        focusedLabelColor = Themes.ON_PRIMARY,
+                        unfocusedLabelColor = Themes.ON_PRIMARY,
+                        focusedContainerColor = Themes.PRIMARY,
+                        unfocusedContainerColor = Themes.PRIMARY,
                     ),
                     value = notes,
                     onValueChange = { input: String ->

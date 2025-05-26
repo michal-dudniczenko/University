@@ -1,11 +1,14 @@
 package com.example.befit.constants
 
-import com.example.befit.R
-
 data class ScreenInfo(
     val route: String,
-    val iconWhite: Int,
-    val iconBlack: Int,
+    val iconPrimary: Int,
+    val iconOnPrimary: Int,
+)
+
+data class ScreenNameRoute(
+    val route: String,
+    val name: String
 )
 
 object AppRoutes {
@@ -15,12 +18,14 @@ object AppRoutes {
     const val SETTINGS = "settings"
     const val START = TRAINING_PROGRAMS
 
-    val screens = listOf(
-        ScreenInfo(TRAINING_PROGRAMS, R.drawable.dumbbell_white, R.drawable.dumbbell_black),
-        ScreenInfo(STOPWATCHES, R.drawable.stopwatch_white, R.drawable.stopwatch_black),
-        ScreenInfo(HEALTH, R.drawable.health_white, R.drawable.health_black),
-        ScreenInfo(SETTINGS, R.drawable.settings_white, R.drawable.settings_black),
-    )
+    fun getScreens(): List<ScreenInfo> {
+        return listOf(
+            ScreenInfo(TRAINING_PROGRAMS, Themes.DUMBBELL_PRIMARY, Themes.DUMBBELL_ON_PRIMARY),
+            ScreenInfo(STOPWATCHES, Themes.STOPWATCH_PRIMARY, Themes.STOPWATCH_ON_PRIMARY),
+            ScreenInfo(HEALTH, Themes.HEALTH_PRIMARY, Themes.HEALTH_ON_PRIMARY),
+            ScreenInfo(SETTINGS, Themes.SETTINGS_PRIMARY, Themes.SETTINGS_ON_PRIMARY),
+        )
+    }
 }
 
 object TrainingProgramsRoutes {
@@ -65,6 +70,10 @@ object TrainingProgramsRoutes {
     fun EDIT_EXERCISE(id: Int): String {
         return "edit exercise/${id}"
     }
+    const val EXERCISE_VIDEO = "exercise video/{exerciseId}/{trainingDayExerciseId}"
+    fun EXERCISE_VIDEO(exerciseId: Int, trainingDayExerciseId: Int): String {
+        return "exercise video/${exerciseId}/${trainingDayExerciseId}"
+    }
     const val START = PROGRAMS_LIST
 }
 
@@ -78,22 +87,24 @@ object StopwatchesRoutes {
 }
 
 object HealthRoutes {
-    val TOOLS_LIST = "Tools List"
-    val DIET_PLANS = Strings.DIET_PLANS
-    val WEIGHT_HISTORY = Strings.WEIGHT_HISTORY
-    val CALORIE_CALCULATOR = Strings.CALORIE_CALCULATOR
-    val BMI_CALCULATOR = Strings.BMI_CALCULATOR
-    val WATER_INTAKE_CALCULATOR = Strings.WATER_INTAKE_CALCULATOR
-    val START = TOOLS_LIST
+    const val TOOLS_LIST = "Tools List"
+    const val DIET_PLANS = "Diet Plans"
+    const val WEIGHT_HISTORY = "Weight History"
+    const val CALORIE_CALCULATOR = "Calorie Calculator"
+    const val BMI_CALCULATOR = "BMI Calculator"
+    const val WATER_INTAKE_CALCULATOR = "Water Intake Calculator"
+    const val START = TOOLS_LIST
 
-    val screens = listOf(
-        TOOLS_LIST,
-        DIET_PLANS,
-        WEIGHT_HISTORY,
-        CALORIE_CALCULATOR,
-        BMI_CALCULATOR,
-        WATER_INTAKE_CALCULATOR
-    )
+    fun getScreens(): List<ScreenNameRoute> {
+        return listOf(
+            ScreenNameRoute(route = TOOLS_LIST, name = TOOLS_LIST),
+            ScreenNameRoute(route = DIET_PLANS, name = Strings.DIET_PLANS),
+            ScreenNameRoute(route = WEIGHT_HISTORY, name = Strings.WEIGHT_HISTORY),
+            ScreenNameRoute(route = CALORIE_CALCULATOR, name = Strings.CALORIE_CALCULATOR),
+            ScreenNameRoute(route = BMI_CALCULATOR, name = Strings.BMI_CALCULATOR),
+            ScreenNameRoute(route = WATER_INTAKE_CALCULATOR, name = Strings.WATER_INTAKE_CALCULATOR)
+        )
+    }
 }
 
 object WeightHistoryRoutes {

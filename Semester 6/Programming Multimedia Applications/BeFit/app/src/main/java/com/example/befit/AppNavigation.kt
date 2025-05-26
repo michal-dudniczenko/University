@@ -1,18 +1,23 @@
 package com.example.befit
 
+import android.app.Activity
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.befit.constants.AppRoutes
 import com.example.befit.common.BottomNavbar
+import com.example.befit.constants.Themes
 import com.example.befit.health.HealthNavigation
 import com.example.befit.health.HealthViewModel
 import com.example.befit.health.caloriecalculator.CalorieCalculatorViewModel
@@ -37,6 +42,16 @@ fun AppNavigation(
 ) {
     val navController = rememberNavController()
     val currentRoute by viewModel.currentRoute
+
+    val backgroundColor by settingsViewModel.appBackground
+
+    val context = LocalContext.current
+    val window = (context as? Activity)?.window
+
+    SideEffect {
+        window?.statusBarColor = backgroundColor.toArgb()
+        window?.navigationBarColor = Themes.PRIMARY.toArgb()
+    }
 
     Column(
         modifier = modifier

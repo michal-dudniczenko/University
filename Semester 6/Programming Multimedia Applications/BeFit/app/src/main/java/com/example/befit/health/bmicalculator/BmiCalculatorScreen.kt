@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.befit.R
 import com.example.befit.common.CustomFloatPicker
 import com.example.befit.common.CustomFloatingButton
 import com.example.befit.common.CustomIntPicker
@@ -31,9 +30,8 @@ import com.example.befit.common.CustomText
 import com.example.befit.common.Heading
 import com.example.befit.constants.HealthRoutes
 import com.example.befit.constants.Strings
+import com.example.befit.constants.Themes
 import com.example.befit.constants.adaptiveWidth
-import com.example.befit.constants.appBackground
-import com.example.befit.constants.bright
 import com.example.befit.health.HealthViewModel
 
 @Composable
@@ -54,7 +52,7 @@ fun BmiCalculatorScreen(
             .fillMaxSize()
     ) {
         CustomFloatingButton(
-            icon = R.drawable.back,
+            icon = Themes.BACK_ON_SECONDARY,
             description = "Back button",
             onClick = { navController.navigate(HealthRoutes.TOOLS_LIST) },
             modifier = Modifier
@@ -91,7 +89,7 @@ fun BmiCalculatorScreen(
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
                         .clip(RoundedCornerShape(adaptiveWidth(32).dp))
-                        .background(color = bright)
+                        .background(color = Themes.SECONDARY)
                         .clickable {
                             if (selectedWeight > 0
                                 && selectedHeight > 0
@@ -106,7 +104,7 @@ fun BmiCalculatorScreen(
                 ) {
                     CustomText(
                         text = Strings.CALCULATE,
-                        color = appBackground,
+                        color = Themes.ON_SECONDARY,
                         modifier = Modifier
                             .align(Alignment.Center)
                     )
