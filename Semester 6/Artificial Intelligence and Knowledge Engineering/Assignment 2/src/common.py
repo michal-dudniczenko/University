@@ -1,0 +1,3 @@
+PLAYER1 = 'B'
+PLAYER2 = 'W'
+EMPTY = '_'
