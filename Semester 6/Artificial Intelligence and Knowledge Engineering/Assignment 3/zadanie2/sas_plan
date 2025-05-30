@@ -1,0 +1,7 @@
+(clean robo pokoj1)
+(move robo pokoj1 pokoj2)
+(clean robo pokoj2)
+(move robo pokoj2 pokoj1)
+(move robo pokoj1 pokoj3)
+(clean robo pokoj3)
+; cost = 6 (unit cost)
