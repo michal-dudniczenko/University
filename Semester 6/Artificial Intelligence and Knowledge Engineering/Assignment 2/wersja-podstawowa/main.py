@@ -4,7 +4,7 @@ import argparse
 
 from board_utils import generate_board, print_board, read_board
 from common import PLAYER1, PLAYER2
-from game_utils import apply_move, is_game_over
+from game_utils import apply_move, get_num_of_possible_moves, is_game_over
 from heuristic_functions import heuristics
 from algorithms import minimax, minimax_alpha_beta
 
