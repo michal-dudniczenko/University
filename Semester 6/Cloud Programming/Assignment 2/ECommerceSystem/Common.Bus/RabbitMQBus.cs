@@ -21,7 +21,7 @@ public sealed class RabbitMQBus : IEventBus
     public async Task Publish<T>(T @event) where T : Event
     {
         var factory = new ConnectionFactory() { 
-            HostName = Domain.Constants.EC2_INSTANCE_IP,
+            HostName = Domain.Constants.RABBITMQ_IP,
             UserName = Domain.Constants.RABBITMQ_USERNAME,
             Password = Domain.Constants.RABBITMQ_PASSWORD,
             VirtualHost = Domain.Constants.RABBITMQ_VIRTUAL_HOST,
@@ -52,7 +52,7 @@ public sealed class RabbitMQBus : IEventBus
     {
         var factory = new ConnectionFactory()
         {
-            HostName = Domain.Constants.EC2_INSTANCE_IP,
+            HostName = Domain.Constants.RABBITMQ_IP,
             UserName = Domain.Constants.RABBITMQ_USERNAME,
             Password = Domain.Constants.RABBITMQ_PASSWORD,
             VirtualHost = Domain.Constants.RABBITMQ_VIRTUAL_HOST,

@@ -5,6 +5,7 @@ using MediatR;
 using NotificationService.Domain.Commands;
 using Microsoft.Extensions.Logging;
 using Common.Domain.DTO;
+using Common.Domain;
 
 
 namespace NotificationService.Infrastracture.EventHandlers;
@@ -26,7 +27,7 @@ public class OrderCreatedEventHandler : IEventHandler<OrderCreatedEvent>
     {
         _logger.LogWarning("OrderCreatedEventHandler");
 
-        var response = await _httpClient.GetAsync($"http://userservice-app:5001/get-user-email/{@event.UserId}");
+        var response = await _httpClient.GetAsync($"{Constants.USER_SERVICE_ADDRESS}/get-user-email/{@event.UserId}");
         
         if (!response.IsSuccessStatusCode)
         {
