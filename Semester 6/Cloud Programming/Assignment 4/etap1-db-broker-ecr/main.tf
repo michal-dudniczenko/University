@@ -143,6 +143,7 @@ resource "aws_db_instance" "mssqlDb" {
 resource "aws_ecr_repository" "user-service" {
   name                 = "user-service"
   image_tag_mutability = "MUTABLE"
+  force_delete = true
 
   image_scanning_configuration {
     scan_on_push = true
@@ -156,6 +157,7 @@ resource "aws_ecr_repository" "user-service" {
 resource "aws_ecr_repository" "product-service" {
   name                 = "product-service"
   image_tag_mutability = "MUTABLE"
+  force_delete = true
 
   image_scanning_configuration {
     scan_on_push = true
@@ -169,6 +171,7 @@ resource "aws_ecr_repository" "product-service" {
 resource "aws_ecr_repository" "cart-service" {
   name                 = "cart-service"
   image_tag_mutability = "MUTABLE"
+  force_delete = true
 
   image_scanning_configuration {
     scan_on_push = true
@@ -182,6 +185,7 @@ resource "aws_ecr_repository" "cart-service" {
 resource "aws_ecr_repository" "order-service" {
   name                 = "order-service"
   image_tag_mutability = "MUTABLE"
+  force_delete = true
 
   image_scanning_configuration {
     scan_on_push = true
@@ -195,6 +199,7 @@ resource "aws_ecr_repository" "order-service" {
 resource "aws_ecr_repository" "notification-service" {
   name                 = "notification-service"
   image_tag_mutability = "MUTABLE"
+  force_delete = true
 
   image_scanning_configuration {
     scan_on_push = true
