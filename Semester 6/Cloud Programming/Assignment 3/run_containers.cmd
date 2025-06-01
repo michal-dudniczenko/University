@@ -1,10 +1,4 @@
-chdir C:\Users\Michal\Documents\Studia\Semester 6\Cloud Programming\Assignment 2\ECommerceSystem
-
-docker build -f Dockerfile_UserService -t user-service .
-docker build -f Dockerfile_ProductService -t product-service .
-docker build -f Dockerfile_CartService -t cart-service .
-docker build -f Dockerfile_OrderService -t order-service .
-docker build -f Dockerfile_NotificationService -t notification-service .
+docker network create ecommerce-network
 
 docker run -d -p 5001:5001 --network ecommerce-network --name user-service user-service
 docker run -d -p 5002:5002 --network ecommerce-network --name product-service product-service
