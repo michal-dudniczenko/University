@@ -1,0 +1,87 @@
+services:
+    user-service-1:
+        image: user-service
+        ports:
+            - "5101:5001"
+        networks:
+            - ecommerce-network
+    
+    user-service-2:
+        image: user-service
+        ports:
+            - "5102:5001"
+        networks:
+            - ecommerce-network
+
+    product-service-1:
+        image: product-service
+        ports:
+            - "5201:5002"
+        networks:
+            - ecommerce-network
+    
+    product-service-2:
+        image: product-service
+        ports:
+            - "5202:5002"
+        networks:
+            - ecommerce-network
+    
+    product-service-3:
+        image: product-service
+        ports:
+            - "5203:5002"
+        networks:
+            - ecommerce-network
+
+    cart-service-1:
+        image: cart-service
+        ports:
+            - "5301:5003"
+        networks:
+            - ecommerce-network
+    
+    cart-service-2:
+        image: cart-service
+        ports:
+            - "5302:5003"
+        networks:
+            - ecommerce-network
+    
+    cart-service-3:
+        image: cart-service
+        ports:
+            - "5303:5003"
+        networks:
+            - ecommerce-network
+
+    order-service-1:
+        image: order-service
+        ports:
+            - "5401:5004"
+        networks:
+            - ecommerce-network
+    
+    order-service-2:
+        image: order-service
+        ports:
+            - "5402:5004"
+        networks:
+            - ecommerce-network
+
+    notification-service-1:
+        image: notification-service
+        ports:
+            - "5501:5005"
+        networks:
+            - ecommerce-network
+
+    notification-service-2:
+        image: notification-service
+        ports:
+            - "5502:5005"
+        networks:
+            - ecommerce-network
+
+networks:
+    ecommerce-network: {}

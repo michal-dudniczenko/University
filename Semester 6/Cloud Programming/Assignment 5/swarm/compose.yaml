@@ -1,0 +1,53 @@
+services:
+    user-service:
+        image: user-service
+        deploy:
+            mode: replicated
+            replicas: 2
+        ports:
+            - "5001:5001"
+        networks:
+            - ecommerce-network
+
+    product-service:
+        image: product-service
+        deploy:
+            mode: replicated
+            replicas: 4
+        ports:
+            - "5002:5002"
+        networks:
+            - ecommerce-network
+
+    cart-service:
+        image: cart-service
+        deploy:
+            mode: replicated
+            replicas: 3
+        ports:
+            - "5003:5003"
+        networks:
+            - ecommerce-network
+
+    order-service:
+        image: order-service
+        deploy:
+            mode: replicated
+            replicas: 4
+        ports:
+            - "5004:5004"
+        networks:
+            - ecommerce-network
+
+    notification-service:
+        image: notification-service
+        deploy:
+            mode: replicated
+            replicas: 3
+        ports:
+            - "5005:5005"
+        networks:
+            - ecommerce-network
+
+networks:
+    ecommerce-network: {}

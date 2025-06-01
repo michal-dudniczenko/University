@@ -1,0 +1,4 @@
+docker swarm init
+docker stack deploy -c compose.yaml ecommerce
+docker service scale ecommerce_user-service=5
+docker stack rm ecommerce
