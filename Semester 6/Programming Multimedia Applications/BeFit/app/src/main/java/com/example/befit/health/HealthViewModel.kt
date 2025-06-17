@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class HealthViewModel(
+
+
+open class HealthViewModel(
     val userDataDao: UserDataDao
 ) : ViewModel() {
     private val _navigationEvent = MutableSharedFlow<String>()
@@ -36,6 +38,10 @@ class HealthViewModel(
     val userData: State<UserData?> = _userData
 
     init {
+        initialize()
+    }
+
+    protected open fun initialize() {
         viewModelScope.launch {
             val data = userDataDao.getAll()
             if (!data.isEmpty()) {
@@ -66,7 +72,7 @@ class HealthViewModel(
 
     }
 
-    fun updateUserData(
+    open fun updateUserData(
         userData: UserData
     ) {
         viewModelScope.launch {
@@ -83,6 +89,10 @@ class HealthViewModel(
         height: Int,
         weight: Float
     ): Float {
+        if (height <= 0 || weight <= 0) {
+            return 0f
+        }
+
         val newUserData = UserData(
             id = 1,
             isMale = userData.value?.isMale ?: true,
@@ -99,6 +109,10 @@ class HealthViewModel(
     fun calculateWaterIntake(
         weight: Float
     ): Float {
+        if (weight <= 0) {
+            return 0f
+        }
+
         val newUserData = UserData(
             id = 1,
             isMale = userData.value?.isMale ?: true,

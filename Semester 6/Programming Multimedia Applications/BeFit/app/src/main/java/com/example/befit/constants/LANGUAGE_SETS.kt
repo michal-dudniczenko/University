@@ -244,7 +244,7 @@ object LanguageSets {
             WEIGHT_LOSS = "Weight loss:",
             FAST_WEIGHT_LOSS = "Fast weight loss:",
             WEEK = "week",
-            YOUR_BMR_IS = "Your BMI is:",
+            YOUR_BMR_IS = "Your BMR is:",
             YOU_SHOULD_DRINK = "You should drink",
             AT_LEAST = "at least",
             LITERS = "liters",
