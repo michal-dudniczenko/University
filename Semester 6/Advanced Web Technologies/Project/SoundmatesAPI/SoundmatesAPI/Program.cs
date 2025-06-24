@@ -8,6 +8,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
+builder.Services.AddSingleton<ISecretKeyProvider>(provider =>
+{
+    using var scope = provider.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    return new SecretKeyProvider(context);
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -26,6 +33,10 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Soundmates API");
+    });
 }
 
 app.UseAuthorization();

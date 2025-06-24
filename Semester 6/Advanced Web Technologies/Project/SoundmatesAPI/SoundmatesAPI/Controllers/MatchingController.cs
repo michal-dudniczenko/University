@@ -4,37 +4,31 @@ using SoundmatesAPI.Database;
 using SoundmatesAPI.DTOs;
 using SoundmatesAPI.Models;
 using SoundmatesAPI.Security;
+using System.ComponentModel.DataAnnotations;
 
 [Route("matching")]
 [ApiController]
 public class MatchingController : ControllerBase
 {
     const int MaxLimit = 100;
-    private readonly string _secretKey;
+    private string SecretKey => _secretKeyProvider.GetSecretKey();
 
     private readonly AppDbContext _context;
+    private readonly ISecretKeyProvider _secretKeyProvider;
 
-    public MatchingController(AppDbContext context)
+    public MatchingController(AppDbContext context, ISecretKeyProvider secretKeyProvider)
     {
         _context = context;
-        var secret = _context.Secrets.OrderBy(s => s.SecretKey).FirstOrDefault();
-        if (secret == null || string.IsNullOrEmpty(secret.SecretKey))
-        {
-            throw new InvalidOperationException("Secret key not found in the database.");
-        }
-        _secretKey = secret.SecretKey;
-
+        _secretKeyProvider = secretKeyProvider;
     }
 
     // POST /matching/like
     [HttpPost("like")]
-    public async Task<IActionResult> CreateLike([FromBody] SwipeDto swipeDto)
+    public async Task<IActionResult> CreateLike(
+        [FromHeader(Name = "Access-Token")] string token,
+        [FromBody] SwipeDto swipeDto)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null || authorizedUserId != swipeDto.GiverId)
             return Unauthorized(new { message = "Invalid access token" });
@@ -80,13 +74,11 @@ public class MatchingController : ControllerBase
 
     // POST /matching/dislike
     [HttpPost("dislike")]
-    public async Task<IActionResult> CreateDislike([FromBody] SwipeDto swipeDto)
+    public async Task<IActionResult> CreateDislike(
+        [FromHeader(Name = "Access-Token")] string token,
+        [FromBody] SwipeDto swipeDto)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null || authorizedUserId != swipeDto.GiverId)
             return Unauthorized(new { message = "Invalid access token" });
@@ -114,14 +106,11 @@ public class MatchingController : ControllerBase
     // GET /matching/matches?limit=20&offset=0
     [HttpGet("matches")]
     public async Task<IActionResult> GetMatches(
+        [FromHeader(Name = "Access-Token")] string token,
         [FromQuery] int limit = 20,
         [FromQuery] int offset = 0)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });

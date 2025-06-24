@@ -41,7 +41,7 @@ public static class SecurityUtils
     {
         Guid userId;
 
-        var parts = token.Split('.');
+        var parts = token.Trim().Split('.');
         if (parts.Length != 3)
             return null;
 

@@ -12,32 +12,25 @@ namespace SoundmatesAPI.Controllers;
 public class MessagesController : ControllerBase
 {
     const int MaxLimit = 100;
-    private readonly string _secretKey;
+    private string SecretKey => _secretKeyProvider.GetSecretKey();
 
     private readonly AppDbContext _context;
+    private readonly ISecretKeyProvider _secretKeyProvider;
 
-    public MessagesController(AppDbContext context)
+    public MessagesController(AppDbContext context, ISecretKeyProvider secretKeyProvider)
     {
         _context = context;
-        var secret = _context.Secrets.OrderBy(s => s.SecretKey).FirstOrDefault();
-        if (secret == null || string.IsNullOrEmpty(secret.SecretKey))
-        {
-            throw new InvalidOperationException("Secret key not found in the database.");
-        }
-        _secretKey = secret.SecretKey;
+        _secretKeyProvider = secretKeyProvider;
     }
 
     // GET /messages/preview?limit=20&offset=0
     [HttpGet("preview")]
     public async Task<IActionResult> GetMessagesPreview(
+        [FromHeader(Name = "Access-Token")] string token,
         [FromQuery] int limit = 20,
         [FromQuery] int offset = 0)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });
@@ -93,14 +86,11 @@ public class MessagesController : ControllerBase
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetMessages(
         Guid userId,
+        [FromHeader(Name = "Access-Token")] string token,
         [FromQuery] int limit = 20,
         [FromQuery] int offset = 0)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });
@@ -136,13 +126,11 @@ public class MessagesController : ControllerBase
 
     // POST /messages
     [HttpPost]
-    public async Task<IActionResult> SendMessage([FromBody] SendMessageDto sendMessageDto)
+    public async Task<IActionResult> SendMessage(
+        [FromHeader(Name = "Access-Token")] string token,
+        [FromBody] SendMessageDto sendMessageDto)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });

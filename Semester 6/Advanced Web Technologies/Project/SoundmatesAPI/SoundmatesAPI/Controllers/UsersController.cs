@@ -5,6 +5,7 @@ using SoundmatesAPI.Database;
 using SoundmatesAPI.DTOs;
 using SoundmatesAPI.Models;
 using SoundmatesAPI.Security;
+using System.ComponentModel.DataAnnotations;
 
 namespace SoundmatesAPI.Controllers;
 
@@ -14,31 +15,25 @@ public class UsersController : ControllerBase
 {
     const int MaxLimit = 100;
     private readonly PasswordHasher<User> _hasher = new PasswordHasher<User>();
-    private readonly string _secretKey;
+    private string SecretKey => _secretKeyProvider.GetSecretKey();
 
     private readonly AppDbContext _context;
+    private readonly ISecretKeyProvider _secretKeyProvider;
 
-    public UsersController(AppDbContext context)
+    public UsersController(AppDbContext context, ISecretKeyProvider secretKeyProvider)
     {
         _context = context;
-        var secret = _context.Secrets.OrderBy(s => s.SecretKey).FirstOrDefault();
-        if (secret == null || string.IsNullOrEmpty(secret.SecretKey))
-        {
-            throw new InvalidOperationException("Secret key not found in the database.");
-        }
-        _secretKey = secret.SecretKey;
-
+        _secretKeyProvider = secretKeyProvider;
     }
 
     // GET /users/{id}
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetUser(Guid id)
+    public async Task<ActionResult> GetUser(
+        Guid id,
+        [FromHeader(Name = "Access-Token")] string token
+        )
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });
@@ -78,14 +73,11 @@ public class UsersController : ControllerBase
     // GET /users?limit=20&offset=0
     [HttpGet]
     public async Task<IActionResult> GetUsers(
+        [FromHeader(Name = "Access-Token")] string token,
         [FromQuery] int limit = 20,
         [FromQuery] int offset = 0)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });
@@ -125,7 +117,8 @@ public class UsersController : ControllerBase
 
     // POST /users/register
     [HttpPost("register")]
-    public async Task<IActionResult> CreateUser([FromBody] RegisterDto registerUserDto)
+    public async Task<IActionResult> CreateUser(
+        [FromBody] RegisterDto registerUserDto)
     {
         var existingUser = await _context.Users
             .FirstOrDefaultAsync(u => u.Email == registerUserDto.Email);
@@ -152,13 +145,11 @@ public class UsersController : ControllerBase
 
     // PUT /users
     [HttpPut]
-    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
+    public async Task<IActionResult> UpdateUser(
+        [FromHeader(Name = "Access-Token")] string token,
+        [FromBody] UpdateUserDto updateUserDto)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });
@@ -189,13 +180,15 @@ public class UsersController : ControllerBase
 
     // POST /users/login
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+    public async Task<IActionResult> Login(
+        [FromBody] LoginDto loginDto)
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
         if (user == null)
         {
+            Console.WriteLine("test123");
             return Unauthorized(new { message = "Invalid email or password." });
         }
 
@@ -234,20 +227,17 @@ public class UsersController : ControllerBase
         }
         await _context.SaveChangesAsync();
 
-        var accessToken = SecurityUtils.GenerateAccessToken(user.Id, _secretKey);
+        var accessToken = SecurityUtils.GenerateAccessToken(user.Id, SecretKey);
 
         return Ok(new { refreshToken = refreshToken, accessToken = accessToken });
     }
 
     // POST /users/logout
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout()
+    public async Task<IActionResult> Logout(
+        [FromHeader(Name = "Access-Token")] string token)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });
@@ -266,7 +256,8 @@ public class UsersController : ControllerBase
 
     // POST /users/refresh
     [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh([FromBody] RefreshTokenDto refreshTokenDto)
+    public async Task<IActionResult> Refresh(
+        [FromBody] RefreshTokenDto refreshTokenDto)
     {
         var refreshToken = await _context.RefreshTokens
             .FirstOrDefaultAsync(rt => rt.Token == refreshTokenDto.Token);
@@ -276,20 +267,19 @@ public class UsersController : ControllerBase
             return Unauthorized(new { message = "Invalid or expired refresh token." });
         }
 
-        var accessToken = SecurityUtils.GenerateAccessToken(refreshToken.UserId, _secretKey);
+        var accessToken = SecurityUtils.GenerateAccessToken(refreshToken.UserId, SecretKey);
 
         return Ok(new { accessToken = accessToken });
     }
 
     // DELETE /users
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeactivateUserAccount(Guid id)
+    public async Task<IActionResult> DeactivateUserAccount(
+        Guid id,
+        [FromHeader(Name = "Access-Token")] string token
+        )
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });
@@ -320,13 +310,11 @@ public class UsersController : ControllerBase
 
     // POST /users/change-password
     [HttpPost("change-password")]
-    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+    public async Task<IActionResult> ChangePassword(
+        [FromHeader(Name = "Access-Token")] string token,
+        [FromBody] ChangePasswordDto changePasswordDto)
     {
-        var token = Request.Headers["Access-Token"].FirstOrDefault();
-        if (string.IsNullOrEmpty(token))
-            return Unauthorized(new { message = "Missing access token" });
-
-        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, _secretKey);
+        var authorizedUserId = SecurityUtils.VerifyAccessToken(token, SecretKey);
 
         if (authorizedUserId == null)
             return Unauthorized(new { message = "Invalid access token" });
