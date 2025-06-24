@@ -4,7 +4,6 @@ using SoundmatesAPI.Database;
 using SoundmatesAPI.DTOs;
 using SoundmatesAPI.Models;
 using SoundmatesAPI.Security;
-using System.ComponentModel.DataAnnotations;
 
 [Route("matching")]
 [ApiController]

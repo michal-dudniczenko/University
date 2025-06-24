@@ -188,7 +188,6 @@ public class UsersController : ControllerBase
 
         if (user == null)
         {
-            Console.WriteLine("test123");
             return Unauthorized(new { message = "Invalid email or password." });
         }
 
