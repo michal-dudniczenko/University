@@ -1,47 +1,54 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import type { ErrorResponse } from "../../types/ErrorRespose";
-import type { LoginRegisterDto } from "../../types/LoginRegisterDto";
 import { useUtils } from "../../utils/UtilsContextType";
-import type { AccessTokenDto } from "../../types/AccessTokenDto";
+import type { LoginRegisterDto } from "../../types/LoginRegisterDto";
 
-function RegisterForm() {
+function DeactivateAccount() {
     const navigate = useNavigate();
-    const { updateAccessToken } = useUtils();
+
+    const { getAccessToken, refreshAccessToken, logout } = useUtils();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [message, setMessage] = useState("");
+    const [formMessage, setFormMessage] = useState("");
 
-    const navigateToLogin = () => {
-        navigate("/login");
+    const handleBack = () => {
+        navigate("/settings");
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        setMessage("");
+        setFormMessage("");
 
-        if (password !== confirmPassword) {
-            setMessage("Confirm password is different than password.");
-            return;
-        }
-
-        const url = "http://localhost:5000/users/register";
+        const url = "http://localhost:5000/users";
 
         const dto: LoginRegisterDto = {
             email: email,
             password: password,
         };
 
-        const response = await fetch(url, {
-            method: "POST",
+        const request = new Request(url, {
+            method: "DELETE",
+            credentials: "include",
             headers: {
+                "Access-Token": getAccessToken(),
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(dto),
         });
+
+        let response = await fetch(request);
+
+        if (response.status === 401) {
+            const refreshed = await refreshAccessToken();
+            if (!refreshed) {
+                setFormMessage("Something went wrong...");
+                return;
+            }
+            response = await fetch(request);
+        }
 
         if (!response.ok) {
             let errorMessage = "Something went wrong...";
@@ -58,20 +65,21 @@ function RegisterForm() {
                 }
             }
 
-            setMessage(errorMessage);
+            setFormMessage(errorMessage);
             return;
         }
 
-        const data = (await response.json()) as AccessTokenDto;
-        updateAccessToken(data.accessToken);
-
-        navigate("/");
+        await logout();
+        navigate("/login");
     };
 
     return (
         <div>
-            <h3>Register new account</h3>
-            <form onSubmit={handleSubmit}>
+            <button onClick={handleBack}>Back</button>
+            <h3>Deactivate your account</h3>
+            <form
+                onSubmit={handleSubmit}
+                autoComplete="off">
                 <div>
                     <label>Email address:</label>
                     <input
@@ -79,6 +87,7 @@ function RegisterForm() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        autoComplete="off"
                     />
                 </div>
                 <div>
@@ -88,23 +97,14 @@ function RegisterForm() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        autoComplete="new-password"
                     />
                 </div>
-                <div>
-                    <label>Confirm password:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Register</button>
-                {message && <h3>{message}</h3>}
+                <button type="submit">Deactivate</button>
+                {formMessage && <h3>{formMessage}</h3>}
             </form>
-            <button onClick={navigateToLogin}>Login instead</button>
         </div>
     );
 }
 
-export default RegisterForm;
+export default DeactivateAccount;

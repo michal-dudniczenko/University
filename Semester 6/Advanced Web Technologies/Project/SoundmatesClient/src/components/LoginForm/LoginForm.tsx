@@ -1,21 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import type { ErrorResponse } from "../../types/ErrorRespose";
 import type { LoginRegisterDto } from "../../types/LoginRegisterDto";
-import { useUtils } from "../../utils/UtilsContextType";
 import type { AccessTokenDto } from "../../types/AccessTokenDto";
+import { useUtils } from "../../utils/UtilsContextType";
 
-function RegisterForm() {
+function LoginForm() {
     const navigate = useNavigate();
     const { updateAccessToken } = useUtils();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [message, setMessage] = useState("");
 
-    const navigateToLogin = () => {
-        navigate("/login");
+    const navigateToRegistration = () => {
+        navigate("/register");
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -23,20 +22,16 @@ function RegisterForm() {
 
         setMessage("");
 
-        if (password !== confirmPassword) {
-            setMessage("Confirm password is different than password.");
-            return;
-        }
-
-        const url = "http://localhost:5000/users/register";
+        const url = "http://localhost:5000/users/login";
 
         const dto: LoginRegisterDto = {
             email: email,
-            password: password,
-        };
+            password: password
+        }
 
         const response = await fetch(url, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -70,7 +65,7 @@ function RegisterForm() {
 
     return (
         <div>
-            <h3>Register new account</h3>
+            <h3>Log in to your account</h3>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Email address:</label>
@@ -90,21 +85,12 @@ function RegisterForm() {
                         required
                     />
                 </div>
-                <div>
-                    <label>Confirm password:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Register</button>
+                <button type="submit">Log in</button>
                 {message && <h3>{message}</h3>}
             </form>
-            <button onClick={navigateToLogin}>Login instead</button>
+            <button onClick={navigateToRegistration}>Create a new account</button>
         </div>
     );
 }
 
-export default RegisterForm;
+export default LoginForm;
