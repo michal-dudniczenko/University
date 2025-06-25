@@ -27,5 +27,6 @@ public class User
     [MaxLength(100)]
     public string Country { get; set; } = "";
 
-    public bool IsActive { get; set; } = false;
+    public bool IsActive { get; set; } = true;
+    public bool IsFirstLogin { get; set; } = true;
 }

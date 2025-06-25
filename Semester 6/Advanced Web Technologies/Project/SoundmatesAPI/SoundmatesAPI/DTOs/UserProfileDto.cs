@@ -9,4 +9,5 @@ public class UserProfileDto
     public required int BirthYear { get; set; }
     public required string City { get; set; }
     public required string Country { get; set; }
+    public required bool IsFirstLogin { get; set; }
 }

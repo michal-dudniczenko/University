@@ -10,8 +10,4 @@ public class ChangePasswordDto
     [Required]
     [Password]
     public required string NewPassword { get; set; }
-
-    [Required]
-    [Password]
-    public required string ConfirmNewPassword { get; set; }
 }
