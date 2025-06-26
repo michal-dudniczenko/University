@@ -71,7 +71,7 @@ public class UsersController : ControllerBase
             return Unauthorized(new { message = "Invalid access token" });
 
         var user = await _context.Users.FindAsync(id);
-        if (user == null || !user.IsActive)
+        if (user == null || !user.IsActive || user.IsFirstLogin)
         {
             return NotFound(new { message = "No user with specified id." });
         }
@@ -127,11 +127,11 @@ public class UsersController : ControllerBase
         }
 
         var users = await _context.Users
-            .Where(u => u.Id != authorizedUserId)
-            .Where(u => u.IsActive == true)
+            .Where(u => u.Id != authorizedUserId && u.IsActive == true && u.IsFirstLogin == false)
             .Where(u =>
                 !_context.Likes.Any(l => l.GiverId == authorizedUserId && l.ReceiverId == u.Id) &&
                 !_context.Dislikes.Any(d => d.GiverId == authorizedUserId && d.ReceiverId == u.Id))
+            .OrderBy(u => u.Id)
             .Skip(offset)
             .Take(limit)
             .Select(u => new OtherUserProfileDto

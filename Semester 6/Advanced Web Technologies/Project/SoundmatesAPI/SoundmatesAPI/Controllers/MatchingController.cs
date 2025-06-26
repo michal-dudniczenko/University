@@ -124,8 +124,8 @@ public class MatchingController : ControllerBase
             return BadRequest(new { message = $"Limit cannot be greater than {MaxLimit}." });
         }
 
-        var matches = await _context.Matches
-            .Where(m => (m.User1Id == authorizedUserId || m.User2Id == authorizedUserId))
+        var matchedUserIds = await _context.Matches
+            .Where(m => m.User1Id == authorizedUserId || m.User2Id == authorizedUserId)
             .Where(m =>
                 (m.User1Id == authorizedUserId && _context.Users.Any(u => u.Id == m.User2Id && u.IsActive)) ||
                 (m.User2Id == authorizedUserId && _context.Users.Any(u => u.Id == m.User1Id && u.IsActive))
@@ -133,12 +133,22 @@ public class MatchingController : ControllerBase
             .OrderByDescending(m => m.Timestamp)
             .Skip(offset)
             .Take(limit)
-            .Select(m => new MatchDto
+            .Select(m => m.User1Id == authorizedUserId ? m.User2Id : m.User1Id)
+            .ToListAsync();
+
+        var matchedUsers = await _context.Users
+            .Where(u => matchedUserIds.Contains(u.Id) && u.IsActive)
+            .Select(u => new OtherUserProfileDto
             {
-                UserId = m.User1Id == authorizedUserId ? m.User2Id : m.User1Id
+                Id = u.Id,
+                Name = u.Name,
+                Description = u.Description,
+                BirthYear = u.BirthYear,
+                City = u.City,
+                Country = u.Country
             })
             .ToListAsync();
 
-        return Ok(matches);
+        return Ok(matchedUsers);
     }
 }

@@ -69,40 +69,47 @@ function RegisterForm() {
     };
 
     return (
-        <div>
-            <h3>Register new account</h3>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email address:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Confirm password:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Register</button>
+        <div className="m-3 d-flex flex-column">
+            <h1>Register new account</h1>
+            <form
+                onSubmit={handleSubmit}
+                className="d-flex flex-column justify-content-center">
+                <label>Email address:</label>
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <label>Password:</label>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="new-password"
+                    required
+                />
+                <label>Confirm password:</label>
+                <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    autoComplete="new-password"
+                    required
+                />
+                <button
+                    type="submit"
+                    className="btn btn-primary mt-3 mb-3">
+                    Register
+                </button>
                 {message && <h3>{message}</h3>}
             </form>
-            <button onClick={navigateToLogin}>Login instead</button>
+            Already have an account?{" "}
+            <button
+                onClick={navigateToLogin}
+                className="btn btn-dark">
+                Log in
+            </button>
         </div>
     );
 }

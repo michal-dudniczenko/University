@@ -73,7 +73,7 @@ function RegisterForm() {
             setFormMessage(errorMessage);
             return;
         }
-        
+
         setFormMessage("Password changed.");
     };
 

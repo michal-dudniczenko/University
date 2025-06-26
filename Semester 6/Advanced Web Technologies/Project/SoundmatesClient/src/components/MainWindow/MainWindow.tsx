@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useUtils } from "../../utils/UtilsContextType";
+import MatchingSection from "../MatchingSection/MatchingSection";
 
 function MainWindow() {
     const navigate = useNavigate();
@@ -18,6 +19,10 @@ function MainWindow() {
         }
         navigate("/login");
     };
+
+    const openMatches = () => {
+        navigate("/matches");
+    }
 
     const openSettings = () => {
         navigate("/settings");
@@ -47,18 +52,38 @@ function MainWindow() {
         };
 
         checkAndNavigate();
-    }, [getUserProfile, updateUserProfileData, navigate, logout]);
+    }, [getUserProfile, updateUserProfileData, navigate]);
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div>
-            <button onClick={openSettings}>Settings</button>
-            <button onClick={handleLogout}>Sign out</button>
+        <div className="m-3">
+            <div className="d-flex justify-content-between">
+                <h1>Hi, {getUserProfile()?.name}!</h1>
+                <div>
+                    <button
+                        onClick={openMatches}
+                        className="btn btn-success me-3">
+                        Matches
+                    </button>
+                    <button
+                        onClick={openSettings}
+                        className="btn btn-primary me-3">
+                        Settings
+                    </button>
+                    <button
+                        onClick={handleLogout}
+                        className="btn btn-danger">
+                        Sign out
+                    </button>
+                </div>
+            </div>
+
             {logoutMessage && <h3>{logoutMessage}</h3>}
-            <h1>hello, main app Soundmates</h1>
+
+            <MatchingSection />
         </div>
     );
 }

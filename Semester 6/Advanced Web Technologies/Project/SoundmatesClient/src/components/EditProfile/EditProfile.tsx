@@ -43,7 +43,7 @@ function EditProfile() {
         let response = await fetch(request);
 
         if (response.status === 401) {
-            const refreshed = refreshAccessToken();
+            const refreshed = await refreshAccessToken();
             if (!refreshed) {
                 setFormMessage("Something went wrong...");
                 return;
@@ -103,7 +103,7 @@ function EditProfile() {
                 birthYear: userProfile.birthYear,
                 city: userProfile.city,
                 country: userProfile.country,
-            })
+            });
 
             setLoading(false);
         };

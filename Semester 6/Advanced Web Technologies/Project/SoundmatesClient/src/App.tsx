@@ -12,6 +12,7 @@ import SettingsScreen from "./components/SettingsScreen/SettingsScreen";
 import EditProfile from "./components/EditProfile/EditProfile";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import DeactivateAccount from "./components/DeactivateAccount/DeactivateAccount";
+import MatchesList from "./components/MatchesList/MatchesList";
 
 function App() {
     const [accessToken, setAccessToken] = useState("");
@@ -21,7 +22,7 @@ function App() {
 
     const updateAccessToken = (token: string) => {
         setAccessToken(token);
-    }
+    };
 
     const refreshAccessToken = async (): Promise<boolean> => {
         const url = "http://localhost:5000/users/refresh";
@@ -145,6 +146,10 @@ function App() {
                     <Route
                         path="deactivate"
                         element={<DeactivateAccount />}
+                    />
+                    <Route
+                        path="matches"
+                        element={<MatchesList />}
                     />
                 </Routes>
             </BrowserRouter>

@@ -3,6 +3,8 @@ using SoundmatesAPI.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
@@ -17,11 +19,13 @@ builder.Services.AddSingleton<ISecretKeyProvider>(provider =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:5001")
-            .AllowCredentials()
-            .AllowAnyHeader()
-            .AllowAnyMethod());
+    options.AddPolicy("AllowClient", policy =>
+    {
+        policy.WithOrigins("http://soundmates-client:5001", "http://localhost:5001", "http://host.docker.internal")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
 });
 
 // Add services to the container.
@@ -32,7 +36,7 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-app.UseCors("AllowFrontend");
+app.UseCors("AllowClient");
 
 using (var scope = app.Services.CreateScope())
 {

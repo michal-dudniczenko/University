@@ -26,8 +26,8 @@ function LoginForm() {
 
         const dto: LoginRegisterDto = {
             email: email,
-            password: password
-        }
+            password: password,
+        };
 
         const response = await fetch(url, {
             method: "POST",
@@ -64,31 +64,38 @@ function LoginForm() {
     };
 
     return (
-        <div>
-            <h3>Log in to your account</h3>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email address:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Log in</button>
+        <div className="m-3 d-flex flex-column">
+            <h1>Log in to your account</h1>
+            <form
+                onSubmit={handleSubmit}
+                className="d-flex flex-column justify-content-center">
+                <label>Email address:</label>
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <label>Password:</label>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <button
+                    type="submit"
+                    className="btn btn-primary mt-3 mb-3">
+                    Log in
+                </button>
                 {message && <h3>{message}</h3>}
             </form>
-            <button onClick={navigateToRegistration}>Create a new account</button>
+            Don't have an account?{" "}
+            <button
+                onClick={navigateToRegistration}
+                className="btn btn-dark">
+                Sign up
+            </button>
         </div>
     );
 }

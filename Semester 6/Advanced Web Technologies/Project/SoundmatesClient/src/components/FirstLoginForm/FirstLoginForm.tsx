@@ -77,8 +77,7 @@ function FirstLoginForm() {
             return;
         }
 
-        updateUserProfileData();
-
+        await updateUserProfileData();
         navigate("/");
     };
 
@@ -125,13 +124,18 @@ function FirstLoginForm() {
     }
 
     return (
-        <div>
-            <button onClick={handleLogout}>Sign out</button>
+        <div className="m-3 d-flex flex-column">
+            <button
+                onClick={handleLogout}
+                className="btn btn-danger mt-3 mb-3 w-25">
+                Sign out
+            </button>
             {logoutMessage && <h3>{logoutMessage}</h3>}
             <h1>Set up your profile</h1>
-            <form onSubmit={handleSubmit}>
+            <form
+                onSubmit={handleSubmit}
+                className="d-flex flex-column justify-content-center">
                 <label htmlFor="name">Name:</label>
-                <br />
                 <input
                     type="text"
                     id="name"
@@ -141,11 +145,8 @@ function FirstLoginForm() {
                     maxLength={50}
                     required
                 />
-                <br />
-                <br />
 
                 <label htmlFor="description">Description:</label>
-                <br />
                 <textarea
                     id="description"
                     name="description"
@@ -154,11 +155,8 @@ function FirstLoginForm() {
                     maxLength={500}
                     required
                 />
-                <br />
-                <br />
 
                 <label htmlFor="birthYear">Birth Year:</label>
-                <br />
                 <input
                     type="number"
                     id="birthYear"
@@ -169,11 +167,8 @@ function FirstLoginForm() {
                     max={2100}
                     required
                 />
-                <br />
-                <br />
 
                 <label htmlFor="city">City:</label>
-                <br />
                 <input
                     type="text"
                     id="city"
@@ -183,11 +178,8 @@ function FirstLoginForm() {
                     maxLength={100}
                     required
                 />
-                <br />
-                <br />
 
                 <label htmlFor="country">Country:</label>
-                <br />
                 <input
                     type="text"
                     id="country"
@@ -197,9 +189,11 @@ function FirstLoginForm() {
                     maxLength={100}
                     required
                 />
-                <br />
-                <br />
-                <button type="submit">Submit</button>
+                <button
+                    type="submit"
+                    className="btn btn-dark mt-3 mb-3">
+                    Save
+                </button>
                 {formMessage && <h3>{formMessage}</h3>}
             </form>
         </div>
