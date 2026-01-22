@@ -5,7 +5,10 @@ Each directory in the repository corresponds to a specific course or project and
 
 ---
 
-### 📘 Some of the Courses and Technologies Used<sup>\*</sup>
+## 📘 Some of the Courses and Technologies Used<sup>\*</sup>
+
+- [Team Project](<Semester 7/Team Project>)  
+    → **C#, ASP.NET Core, EF Core, SignalR, xUnit, Moq, Docker, Docker Compose, PostgreSQL**  
 
 - [Advanced Web Technologies](<Semester 6/Advanced Web Technologies>)  
     → **HTML, CSS, JavaScript, PHP, SASS, Bootstrap, Java, Spring Boot, Vue.js, Node.js, GraphQL, PostgreSQL**  
