@@ -1,0 +1,41 @@
+﻿using MediatR;
+using Soundmates.Application.Common;
+using Soundmates.Domain.Entities;
+using Soundmates.Domain.Interfaces.Repositories;
+using Soundmates.Domain.Interfaces.Services.Auth;
+
+namespace Soundmates.Application.Users.Commands.UpdateUserProfile.UpdateUserProfileArtist;
+
+public class UpdateUserProfileArtistCommandHandler(
+    IArtistRepository _artistRepository,
+    IAuthService _authService
+) : IRequestHandler<UpdateUserProfileArtistCommand, Result>
+{
+    public async Task<Result> Handle(UpdateUserProfileArtistCommand request, CancellationToken cancellationToken)
+    {
+        var authorizedUser = await _authService.GetAuthorizedUserAsync(subClaim: request.SubClaim, checkForFirstLogin: false);
+
+        if (authorizedUser is null)
+        {
+            return Result.Failure(
+                errorType: ErrorType.Unauthorized,
+                errorMessage: "Invalid access token.");
+        }
+
+        authorizedUser.Name = request.Name;
+        authorizedUser.Description = request.Description;
+        authorizedUser.CountryId = request.CountryId;
+        authorizedUser.CityId = request.CityId;
+
+        var artist = new Artist { 
+            BirthDate = request.BirthDate,
+            GenderId = request.GenderId,
+            UserId = authorizedUser.Id,
+            User = authorizedUser
+        };
+
+        await _artistRepository.UpdateAddAsync(artist, request.TagsIds, request.MusicSamplesOrder, request.ProfilePicturesOrder);
+
+        return Result.Success();
+    }
+}

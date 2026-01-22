@@ -1,0 +1,230 @@
+[
+    {
+        "name": "Rock",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Pop",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Hip-Hop / Rap",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Electronic",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Jazz",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Blues",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "R&B",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Soul",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Funk",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Country",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Folk",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Metal",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Punk",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Alternative Rock",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Indie Rock",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Classic Rock",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Progressive Rock",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Psychedelic Rock",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Techno",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "House",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "EDM",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Ambient",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Synth-Pop",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Trap",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Reggae",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Latin",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Classical",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Orchestral",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Singer-Songwriter",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Americana",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Bluegrass",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Experimental",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "World Music",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Gospel",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Pop Punk",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Shoegaze",
+        "categoryName": "Genres"
+    },
+    {
+        "name": "Actively Gigging",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "Studio Recording",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "Writing New Material",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "Seeking Record Label",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "Looking for Gigs",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "Looking for Management",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "On Hiatus",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "Just Formed",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "Hobby Project",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "Planning a Tour",
+        "categoryName": "Band Status"
+    },
+    {
+        "name": "Music Video Production",
+        "categoryName": "Activity"
+    },
+    {
+        "name": "Booking / Management",
+        "categoryName": "Activity"
+    },
+    {
+        "name": "Session Musician",
+        "categoryName": "Activity"
+    },
+    {
+        "name": "Music Teacher",
+        "categoryName": "Activity"
+    },
+    {
+        "name": "VJ (Visual Jockey)",
+        "categoryName": "Activity"
+    },
+    {
+        "name": "Looking for a band",
+        "categoryName": "Collaboration type"
+    },
+    {
+        "name": "Looking for band members",
+        "categoryName": "Collaboration type"
+    },
+    {
+        "name": "Jamming",
+        "categoryName": "Collaboration type"
+    },
+    {
+        "name": "Song collaboration",
+        "categoryName": "Collaboration type"
+    },
+    {
+        "name": "Touring",
+        "categoryName": "Collaboration type"
+    },
+    {
+        "name": "Studio session work",
+        "categoryName": "Collaboration type"
+    }
+]
