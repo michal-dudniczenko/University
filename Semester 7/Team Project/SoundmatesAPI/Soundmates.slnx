@@ -1,0 +1,17 @@
+<Solution>
+
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="compose.yaml" />
+    <File Path="Dockerfile" />
+  </Folder>
+
+  <Folder Name="/src/">
+    <Project Path="src/Soundmates.Api/Soundmates.Api.csproj" />
+    <Project Path="src/Soundmates.Application/Soundmates.Application.csproj" />
+    <Project Path="src/Soundmates.Domain/Soundmates.Domain.csproj" />
+    <Project Path="src/Soundmates.Infrastructure/Soundmates.Infrastructure.csproj" />
+  </Folder>
+
+</Solution>
