@@ -35,10 +35,5 @@ services:
       start_period: 1s
       timeout: 3s
 
-  adminer:
-    image: adminer
-    ports:
-        - "8080:8080"
-
 volumes:
   pgdata:

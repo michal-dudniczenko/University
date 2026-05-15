@@ -1,5 +1,45 @@
 root = true
 
+# Exclude automatically generated migrations code
+[src/**/Migrations/**.cs]
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none
+
+# Custom rules and suppressions
+[*.cs]
+
+# Avoid potentially expensive logging
+dotnet_diagnostic.CA1873.severity = none
+
+# Use conditional expression for return
+dotnet_diagnostic.IDE0046.severity = none
+
+# Use collection expression for fluent
+dotnet_diagnostic.IDE0305.severity = none
+
+# Use expression body for lambdas
+dotnet_diagnostic.IDE0053.severity = none
+
+# Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = none
+
+# Remove unnecessary using directives
+dotnet_diagnostic.IDE0005.severity = warning
+
+# Member is explicitly initialized to its default value
+dotnet_diagnostic.CA1805.severity = none
+
+# For improved performance, use the LoggerMessage delegates
+dotnet_diagnostic.CA1848.severity = none
+
+# Avoid uninstantiated internal classes
+dotnet_diagnostic.CA1812.severity = none
+
+# Do not catch general exception types
+dotnet_diagnostic.CA1031.severity = none
+
+# =================================================================================
+
 # All files
 [*]
 indent_style = space
@@ -29,14 +69,14 @@ indent_size = 4
 tab_width = 4
 
 # New line preferences
-insert_final_newline = false
+insert_final_newline = true
 
 #### .NET Coding Conventions ####
 [*.{cs,vb}]
 
 # Organize usings
-dotnet_separate_import_directive_groups = true
-dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+dotnet_sort_system_directives_first = false
 file_header_template = unset
 
 # this. and Me. preferences
@@ -52,7 +92,7 @@ dotnet_style_predefined_type_for_member_access = true:silent
 # Parentheses preferences
 dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:silent
 dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:silent
-dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:warning
 dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:silent
 
 # Modifier preferences
@@ -62,7 +102,7 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members:silent
 dotnet_style_coalesce_expression = true:suggestion
 dotnet_style_collection_initializer = true:suggestion
 dotnet_style_explicit_tuple_names = true:suggestion
-dotnet_style_namespace_match_folder = true:suggestion
+dotnet_style_namespace_match_folder = true:warning
 dotnet_style_null_propagation = true:suggestion
 dotnet_style_object_initializer = true:suggestion
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
@@ -126,7 +166,7 @@ csharp_style_prefer_readonly_struct_member = true:suggestion
 # Code-block preferences
 csharp_prefer_braces = true:silent
 csharp_prefer_simple_using_statement = true:suggestion
-csharp_style_namespace_declarations = file_scoped:suggestion
+csharp_style_namespace_declarations = file_scoped:warning
 csharp_style_prefer_method_group_conversion = true:silent
 csharp_style_prefer_primary_constructors = true:suggestion
 csharp_style_prefer_top_level_statements = true:silent
@@ -147,7 +187,7 @@ csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 csharp_style_unused_value_expression_statement_preference = discard_variable:silent
 
 # 'using' directive preferences
-csharp_using_directive_placement = outside_namespace:silent
+csharp_using_directive_placement = outside_namespace:warning
 
 #### C# Formatting Rules ####
 
@@ -386,4 +426,3 @@ dotnet_naming_style.s_camelcase.required_prefix = s_
 dotnet_naming_style.s_camelcase.required_suffix = 
 dotnet_naming_style.s_camelcase.word_separator = 
 dotnet_naming_style.s_camelcase.capitalization = camel_case
-

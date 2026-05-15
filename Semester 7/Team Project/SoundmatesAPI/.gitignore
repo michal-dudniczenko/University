@@ -6,4 +6,6 @@ obj/
 
 *.user
 
+*.csproj.lscache
+
 src/Soundmates.Api/wwwroot/images
