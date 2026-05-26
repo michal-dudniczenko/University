@@ -8,6 +8,12 @@ dotnet_analyzer_diagnostic.severity = none
 # Custom rules and suppressions
 [*.cs]
 
+# Remove unnecessary using directives
+dotnet_diagnostic.IDE0005.severity = warning
+
+# Name can be simplified
+dotnet_diagnostic.IDE0001.severity = warning
+
 # Avoid potentially expensive logging
 dotnet_diagnostic.CA1873.severity = none
 
@@ -23,9 +29,6 @@ dotnet_diagnostic.IDE0053.severity = none
 # Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2007.severity = none
 
-# Remove unnecessary using directives
-dotnet_diagnostic.IDE0005.severity = warning
-
 # Member is explicitly initialized to its default value
 dotnet_diagnostic.CA1805.severity = none
 
@@ -37,6 +40,21 @@ dotnet_diagnostic.CA1812.severity = none
 
 # Do not catch general exception types
 dotnet_diagnostic.CA1031.severity = none
+
+# Refactor your code not to use hardcoded absolute paths or URIs
+dotnet_diagnostic.S1075.severity = none
+
+# Normalize strings to uppercase
+dotnet_diagnostic.CA1308.severity = none
+
+# Either log this exception and handle it, or rethrow it with some contextual information
+dotnet_diagnostic.S2139.severity = none
+
+# Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes)
+dotnet_diagnostic.CS8765.severity = none
+
+# Extract this nested ternary operation into an independent statement.
+dotnet_diagnostic.S3358.severity = none
 
 # =================================================================================
 

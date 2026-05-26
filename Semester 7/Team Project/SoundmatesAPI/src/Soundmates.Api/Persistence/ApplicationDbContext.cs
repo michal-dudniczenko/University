@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Soundmates.Api.Common.Constants;
 using Soundmates.Api.Common.Entities;
 
 namespace Soundmates.Api.Persistence;
 
-internal sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+internal sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    : IdentityDbContext<User, IdentityRole<Guid>, Guid>(options)
 {
-    public DbSet<User> Users => Set<User>();
     public DbSet<Artist> Artists => Set<Artist>();
     public DbSet<Band> Bands => Set<Band>();
     public DbSet<BandMember> BandMembers => Set<BandMember>();
@@ -23,10 +26,14 @@ internal sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext
     public DbSet<City> Cities => Set<City>();
     public DbSet<Gender> Genders => Set<Gender>();
     public DbSet<UserMatchPreference> UserMatchPreferences => Set<UserMatchPreference>();
+    public DbSet<PendingRegistration> PendingRegistrations => Set<PendingRegistration>();
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        builder.UseCollation(ApplicationConstants.DefaultDbCollation_CI_AS_SC);
+
+        base.OnModelCreating(builder);
+        builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 }

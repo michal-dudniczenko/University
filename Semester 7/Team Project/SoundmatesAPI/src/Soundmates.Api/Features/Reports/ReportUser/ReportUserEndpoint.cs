@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Soundmates.Api.Authentication;
+using Soundmates.Api.Common.Filters;
 using Soundmates.Api.Common.Services;
-using Soundmates.Api.Common.Validation;
 using System.Security.Claims;
 
 namespace Soundmates.Api.Features.Reports.ReportUser;
@@ -14,24 +13,24 @@ internal static class ReportUserEndpoint
             .WithName("ReportUser")
             .WithSummary("Report a user")
             .WithDescription("Submits a user report that is sent via email to the moderation team.")
+            .WithTags("Reports")
             .Produces(StatusCodes.Status200OK)
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
-            .WithTags("Reports")
-            .RequireAuthorization()
-            .AddEndpointFilter<ValidationFilter<ReportUserRequest>>();
+            .AddEndpointFilter<ValidationFilter<ReportUserRequest>>()
+            .AddEndpointFilter<ValidateCsrfTokenFilter>();
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromBody] ReportUserRequest request,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         [FromServices] IEmailService emailService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: false, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 
@@ -46,7 +45,7 @@ internal static class ReportUserEndpoint
             <p><strong>Description:</strong> {request.Description}</p>
             """;
 
-        await emailService.SendEmailAsync("soundmatesmoderation@gmail.com", subject, body);
+        await emailService.SendEmailAsync("soundmatesmoderation@gmail.com", subject, body, cancellationToken);
 
         return TypedResults.Ok();
     }

@@ -1,8 +1,7 @@
 namespace Soundmates.Api.Common.Entities;
 
-internal abstract class UserMedia
+internal abstract class UserMedia : EntityBase
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
     public required string FileName { get; set; }
     public required int DisplayOrder { get; set; }
 

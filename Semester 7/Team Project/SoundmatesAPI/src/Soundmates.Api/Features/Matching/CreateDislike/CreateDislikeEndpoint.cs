@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
 using Soundmates.Api.Common.Entities;
-using Soundmates.Api.Common.Validation;
+using Soundmates.Api.Common.Filters;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
 
@@ -21,20 +21,20 @@ internal static class CreateDislikeEndpoint
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound)
-            .RequireAuthorization()
-            .AddEndpointFilter<ValidationFilter<CreateDislikeRequest>>();
+            .AddEndpointFilter<ValidationFilter<CreateDislikeRequest>>()
+            .AddEndpointFilter<ValidateCsrfTokenFilter>();
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromBody] CreateDislikeRequest request,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 
@@ -44,7 +44,7 @@ internal static class CreateDislikeEndpoint
             return TypedResults.Problem(detail: "You cannot dislike your own profile.", statusCode: 400);
 
         var receiverExists = await db.Users.AnyAsync(
-            u => u.Id == receiverId && u.IsActive && u.IsEmailConfirmed && !u.IsFirstLogin,
+            u => u.Id == receiverId && u.IsActive && u.EmailConfirmed && !u.IsFirstLogin,
             cancellationToken);
 
         if (!receiverExists)

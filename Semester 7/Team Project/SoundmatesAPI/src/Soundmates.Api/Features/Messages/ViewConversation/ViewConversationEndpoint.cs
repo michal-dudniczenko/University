@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
+using Soundmates.Api.Common.Filters;
 using Soundmates.Api.Common.Hubs;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
@@ -17,20 +18,20 @@ internal static class ViewConversationEndpoint
             .WithName("ViewConversation")
             .WithSummary("Mark conversation as seen")
             .WithDescription("Marks all messages from the other user as seen and notifies them via SignalR.")
+            .WithTags("Messages")
             .Produces(StatusCodes.Status200OK)
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound)
-            .WithTags("Messages")
-            .RequireAuthorization();
+            .AddEndpointFilter<ValidateCsrfTokenFilter>();
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromRoute] string otherUserId,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         [FromServices] IHubContext<EventHub> hubContext,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
@@ -39,17 +40,17 @@ internal static class ViewConversationEndpoint
         if (errors is not null)
             return TypedResults.UnprocessableEntity(new ValidationProblemDetails(errors));
 
-        var otherUserGuid = Guid.Parse(otherUserId);
-
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
+
+        var otherUserGuid = Guid.Parse(otherUserId);
 
         if (otherUserGuid == user.Id)
             return TypedResults.Problem(detail: "You cannot read your own conversation.", statusCode: 400);
 
         var otherUserExists = await db.Users.AnyAsync(
-            u => u.Id == otherUserGuid && u.IsActive && u.IsEmailConfirmed,
+            u => u.Id == otherUserGuid && u.IsActive && u.EmailConfirmed,
             cancellationToken);
 
         if (!otherUserExists)

@@ -8,4 +8,7 @@ obj/
 
 *.csproj.lscache
 
-src/Soundmates.Api/wwwroot/images
+src/Soundmates.Api/wwwroot/images/*
+!src/Soundmates.Api/wwwroot/images/.gitkeep
+src/Soundmates.Api/wwwroot/samples/*
+!src/Soundmates.Api/wwwroot/samples/.gitkeep

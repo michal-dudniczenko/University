@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
@@ -21,18 +21,17 @@ internal static class GetConversationEndpoint
             .Produces<List<MessageResponse>>(StatusCodes.Status200OK)
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status404NotFound)
-            .RequireAuthorization();
+            .Produces(StatusCodes.Status404NotFound);
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromRoute] string otherUserId,
         [FromQuery] int limit,
         [FromQuery] int offset,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
@@ -40,31 +39,28 @@ internal static class GetConversationEndpoint
         if (guidErrors is not null)
             return TypedResults.UnprocessableEntity(new ValidationProblemDetails(guidErrors));
 
-        var otherUserGuid = Guid.Parse(otherUserId);
-
         var paginationErrors = PaginationValidator.ValidateLimitOffset(limit, offset, MaxLimit);
         if (paginationErrors is not null)
             return TypedResults.UnprocessableEntity(new ValidationProblemDetails(paginationErrors));
 
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 
-        var otherUser = await db.Users
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == otherUserGuid, cancellationToken);
+        var otherUserGuid = Guid.Parse(otherUserId);
 
-        if (otherUser is null || otherUser.IsFirstLogin)
+        if (!await db.Users.AnyAsync(u => u.Id == otherUserGuid && !u.IsFirstLogin, cancellationToken))
             return TypedResults.Problem(detail: $"User with id {otherUserId} not found.", statusCode: 404);
 
         var messages = await db.Messages
             .AsNoTracking()
             .Where(m => (m.SenderId == user.Id && m.ReceiverId == otherUserGuid)
                      || (m.SenderId == otherUserGuid && m.ReceiverId == user.Id))
-            .OrderBy(m => m.Timestamp)
+            .OrderByDescending(m => m.CreatedAt)
+                .ThenBy(m => m.Id)
             .Skip(offset)
             .Take(limit)
-            .Select(m => new MessageResponse(m.Content, m.Timestamp, m.SenderId, m.ReceiverId, m.IsSeen))
+            .Select(m => new MessageResponse(m.Content, m.CreatedAt, m.SenderId, m.ReceiverId, m.IsSeen))
             .ToListAsync(cancellationToken);
 
         return TypedResults.Ok(messages);

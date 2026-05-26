@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
@@ -18,16 +18,15 @@ internal static class MatchExistsEndpoint
             .Produces<bool>(StatusCodes.Status200OK)
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
-            .WithTags("Matching")
-            .RequireAuthorization();
+            .WithTags("Matching");
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromRoute] string userId,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
@@ -35,11 +34,11 @@ internal static class MatchExistsEndpoint
         if (errors is not null)
             return TypedResults.UnprocessableEntity(new ValidationProblemDetails(errors));
 
-        var userGuid = Guid.Parse(userId);
-
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
+
+        var userGuid = Guid.Parse(userId);
 
         if (user.Id == userGuid)
             return TypedResults.Problem(detail: "User can't have matched yourself.", statusCode: 400);

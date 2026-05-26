@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
+using Soundmates.Api.Common.Filters;
 using Soundmates.Api.Common.Helpers;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
@@ -16,20 +17,20 @@ internal static class DeleteMusicSampleEndpoint
             .WithName("DeleteMusicSample")
             .WithSummary("Delete a music sample")
             .WithDescription("Deletes the specified music sample belonging to the current user.")
+            .WithTags("MusicSamples")
             .Produces(StatusCodes.Status200OK)
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound)
-            .WithTags("MusicSamples")
-            .RequireAuthorization();
+            .AddEndpointFilter<ValidateCsrfTokenFilter>();
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromRoute] string musicSampleId,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         [FromServices] ILoggerFactory loggerFactory,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
@@ -40,7 +41,7 @@ internal static class DeleteMusicSampleEndpoint
 
         var musicSampleGuid = Guid.Parse(musicSampleId);
 
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 

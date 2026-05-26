@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
 using Soundmates.Api.Common.Helpers;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Features.Users.Common;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
@@ -17,32 +17,31 @@ internal static class GetSelfProfileEndpoint
             .WithSummary("Get the authenticated user's full profile")
             .WithDescription("Returns the full profile of the authenticated user (artist or band).")
             .WithTags("Users")
-            .Produces<SelfUserProfileResponse>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .RequireAuthorization();
+            .Produces<GetSelfUserProfileResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized);
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: false, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal, checkForFirstLogin: false);
         if (user is null)
             return TypedResults.Unauthorized();
 
         if (user.IsBand is null)
         {
-            return TypedResults.Ok<SelfUserProfileResponse>(new SelfUserProfileResponse
+            return TypedResults.Ok(new GetSelfUserProfileResponse
             {
                 Id = user.Id,
                 IsBand = user.IsBand,
                 Email = user.Email,
                 Name = user.Name,
-                Description = user.Description,
+                ProfileDescription = user.ProfileDescription,
                 CountryId = user.CountryId,
                 CityId = user.CityId,
                 IsFirstLogin = user.IsFirstLogin,
@@ -57,21 +56,24 @@ internal static class GetSelfProfileEndpoint
             var band = await db.Bands
                 .AsNoTracking()
                 .Include(b => b.Members)
-                .Include(b => b.User).ThenInclude(u => u.Tags)
-                .Include(b => b.User).ThenInclude(u => u.MusicSamples)
-                .Include(b => b.User).ThenInclude(u => u.ProfilePictures)
+                .Include(b => b.User)
+                    .ThenInclude(u => u.Tags)
+                .Include(b => b.User)
+                    .ThenInclude(u => u.MusicSamples)
+                .Include(b => b.User)
+                    .ThenInclude(u => u.ProfilePictures)
                 .FirstOrDefaultAsync(b => b.UserId == user.Id, cancellationToken);
 
             if (band is null)
                 return TypedResults.Problem(detail: $"Band with userId = {user.Id} not found.", statusCode: 404);
 
-            return TypedResults.Ok<SelfUserProfileResponse>(new SelfUserProfileBandResponse
+            return TypedResults.Ok<GetSelfUserProfileResponse>(new SelfUserProfileBandResponse
             {
                 Id = band.User.Id,
                 IsBand = band.User.IsBand,
                 Email = band.User.Email,
                 Name = band.User.Name,
-                Description = band.User.Description,
+                ProfileDescription = band.User.ProfileDescription,
                 CountryId = band.User.CountryId,
                 CityId = band.User.CityId,
                 IsFirstLogin = band.User.IsFirstLogin,
@@ -96,13 +98,13 @@ internal static class GetSelfProfileEndpoint
             if (artist is null)
                 return TypedResults.Problem(detail: $"Artist with userId = {user.Id} not found.", statusCode: 404);
 
-            return TypedResults.Ok<SelfUserProfileResponse>(new SelfUserProfileArtistResponse
+            return TypedResults.Ok<GetSelfUserProfileResponse>(new SelfUserProfileArtistResponse
             {
                 Id = artist.User.Id,
                 IsBand = artist.User.IsBand,
                 Email = artist.User.Email,
                 Name = artist.User.Name,
-                Description = artist.User.Description,
+                ProfileDescription = artist.User.ProfileDescription,
                 CountryId = artist.User.CountryId,
                 CityId = artist.User.CityId,
                 IsFirstLogin = artist.User.IsFirstLogin,

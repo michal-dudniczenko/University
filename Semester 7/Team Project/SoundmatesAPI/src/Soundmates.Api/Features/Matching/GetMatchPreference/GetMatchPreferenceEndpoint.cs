@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
 
@@ -16,19 +16,18 @@ internal static class GetMatchPreferenceEndpoint
             .WithDescription("Returns the current match preference settings for the authenticated user.")
             .Produces<MatchPreferenceResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
-            .WithTags("Matching")
-            .RequireAuthorization();
+            .WithTags("Matching");
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 

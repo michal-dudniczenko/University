@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
-using Soundmates.Api.Common.Validation;
-using Soundmates.Api.Persistence;
+using Soundmates.Api.Common.Constants;
+using Soundmates.Api.Common.Filters;
+using Soundmates.Api.Common.Services;
 
 namespace Soundmates.Api.Features.Auth.Refresh;
 
@@ -18,30 +17,26 @@ internal static class RefreshEndpoint
             .Produces<RefreshResponse>(StatusCodes.Status200OK)
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
-            .AllowAnonymous()
-            .AddEndpointFilter<ValidationFilter<RefreshRequest>>();
+            .RequireRateLimiting(SecurityConstants.RateLimitingAuthPolicyName)
+            .AddEndpointFilter<ValidationFilter<RefreshRequest>>()
+            .AddEndpointFilter<ValidateCsrfTokenFilter>()
+            .AllowAnonymous();
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromBody] RefreshRequest request,
-        [FromServices] ApplicationDbContext db,
         [FromServices] IAuthService authService,
         CancellationToken cancellationToken)
     {
-        var refreshTokenHash = authService.GetRefreshTokenHash(request.RefreshToken);
+        var result = await authService.RefreshTokenAsync(request.RefreshToken, cancellationToken);
 
-        var refreshToken = await db.RefreshTokens
-            .AsNoTracking()
-            .Where(rt => rt.RefreshTokenHash == refreshTokenHash && rt.RefreshTokenExpiresAt > DateTime.UtcNow)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (refreshToken is null)
+        if (result is null)
             return TypedResults.Unauthorized();
 
-        var accessToken = authService.GenerateAccessToken(refreshToken.UserId);
+        var (accessToken, refreshToken) = result.Value;
 
-        return TypedResults.Ok(new RefreshResponse(accessToken));
+        return TypedResults.Ok(new RefreshResponse(AccessToken: accessToken, RefreshToken: refreshToken));
     }
 }

@@ -1,7 +1,7 @@
 # 🎵 Soundmates API
 
-![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white)
+![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?logo=microsoftsqlserver&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
 
 A social matching platform backend API designed for musicians and bands to connect. Find your next bandmate or discover bands looking for artists with similar musical interests.
@@ -10,15 +10,21 @@ A social matching platform backend API designed for musicians and bands to conne
 
 ## 📋 Table of Contents
 
-- [Introduction](#-introduction)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Key Features](#-key-features)
-- [Prerequisites](#prerequisites)
-- [Configuration](#configuration)
-- [Running the App](#running-the-app)
-- [API Documentation](#-api-documentation)
-- [API Tutorial](#-api-tutorial)
+- [🎵 Soundmates API](#-soundmates-api)
+  - [📋 Table of Contents](#-table-of-contents)
+  - [🎯 Introduction](#-introduction)
+  - [🛠 Tech Stack](#-tech-stack)
+  - [🏗 Architecture](#-architecture)
+  - [✨ Key Features](#-key-features)
+  - [⚙️ Configuration](#️-configuration)
+  - [🤓 Prerequisites](#-prerequisites)
+  - [🚀 Running the App](#-running-the-app)
+  - [📚 API Documentation](#-api-documentation)
+  - [📖 API Tutorial](#-api-tutorial)
+    - [Authentication Flow](#authentication-flow)
+    - [Profile Setup](#profile-setup)
+    - [Matching Workflow](#matching-workflow)
+    - [Validation Rules](#validation-rules)
 
 ---
 
@@ -34,94 +40,83 @@ The platform solves the common problem musicians face: finding like-minded colla
 
 | Category | Technology |
 |----------|------------|
-| **Language** | C# |
-| **Framework** | ASP.NET Core |
-| **Database** | PostgreSQL |
+| **Language** | C# on .NET 10 |
+| **Framework** | ASP.NET Core (Minimal APIs) |
+| **Database** | SQL Server |
 | **ORM** | Entity Framework Core |
-| **Authentication** | JWT Bearer Tokens |
+| **Identity** | ASP.NET Core Identity |
+| **Authentication** | JWT Bearer + Cookie (dual policy scheme) |
+| **Security** | CSRF protection (antiforgery), rate limiting |
 | **Real-Time Communication** | SignalR |
-| **CQRS Pattern** | MediatR |
-| **API Documentation** | Swagger / OpenAPI |
+| **API Documentation** | OpenAPI + Scalar UI (dev only) |
 | **Email Service** | MailKit |
 | **Containerization** | Docker & Docker Compose |
-| **Testing** | xUnit, Moq |
 
 ---
 
 ## 🏗 Architecture
 
-This project follows **Clean Architecture** principles with a **CQRS (Command Query Responsibility Segregation)** pattern powered by MediatR.
+This project follows **Vertical Slice Architecture** — all code for a feature lives together in `Features/<Domain>/<Feature>/`. There is a single consolidated project with no layer separation.
 
 ```
-Soundmates/
+SoundmatesAPI/
 ├── src/
-│   ├── Soundmates.Api/           # Presentation Layer
-│   ├── Soundmates.Application/   # Application Layer (Use Cases)
-│   ├── Soundmates.Domain/        # Domain Layer (Core Business Logic)
-│   └── Soundmates.Infrastructure/# Infrastructure Layer (Data Access, External Services)
+│   └── Soundmates.Api/           # Single project — all layers consolidated
+│       ├── Common/               # Shared entities, filters, helpers, options, services
+│       ├── Extensions/           # DI registrations and endpoint mapping
+│       ├── Features/             # Vertical slices (Auth, Matching, Messages, Users, ...)
+│       ├── Middleware/           # Request logging
+│       ├── OpenApiTransformers/  # Dev-only OpenAPI security configuration
+│       └── Persistence/          # EF Core DbContext, configurations, migrations, seeding
 └── tests/
-    └── Soundmates.Tests/         # Automated tests
 ```
 
-### Layer Responsibilities
-
-| Layer | Responsibility |
-|-------|----------------|
-| **Domain** | Contains domain entities (`User`, `Artist`, `Band`, `Match`, `Message`, etc.), interfaces, and business constants. No external dependencies. |
-| **Application** | Implements use cases using CQRS pattern. Contains commands, queries, handlers, validators, and DTOs. Orchestrates business logic. |
-| **Infrastructure** | Implements repository interfaces, database context (EF Core), external services (email, authentication), SignalR hub, and data seeding. |
-| **API** | Entry point with controllers, middleware, request/response mappings, and API configuration (Swagger, JWT, CORS). |
+Each feature slice contains a `*Endpoint.cs` (Minimal API handler) and, where applicable, `*Request.cs`, `*Response.cs`, and `*Validator.cs` (FluentValidation).
 
 ---
 
 ## ✨ Key Features
 
-- **🔐 JWT Authentication** - Secure token-based auth with access tokens (30 min) and refresh tokens (30 days)
+- **🔐 Authentication** - JWT bearer + cookie auth, access tokens (15 min) and refresh tokens (7 days), token rotation and revocation
+- **📧 Email Confirmation** - Account activation via email link; password reset via email
+- **🛡 Security** - CSRF protection, rate limiting on auth endpoints, account lockout after failed attempts
 - **👥 User Profiles** - Support for both individual artists and bands
-- **💘 Smart Matching** - Like/Dislike system with configurable preferences (location, age, genre tags)
+- **💘 Smart Matching** - Like/Dislike system with configurable preferences (location, age, gender, band size, tags)
 - **💬 Real-Time Messaging** - SignalR-powered chat between matched users
-- **🎵 Music Samples** - Upload and manage audio samples (MP3/MP4, up to 100MB)
-- **📸 Profile Pictures** - Image upload support (JPEG, up to 5MB)
+- **🎵 Music Samples** - Upload and manage audio samples (MP3/MP4, up to 100 MB)
+- **📸 Profile Pictures** - Image upload support (JPEG, up to 5 MB)
 - **🔍 Advanced Filtering** - Filter potential matches by distance, gender, band size, and tags
 - **📧 Email Notifications** - SMTP integration via MailKit
-- **🚨 User Reporting** - Report inappropriate profiles
+- **🚨 Reporting & Moderation** - Users report inappropriate profiles; admins block (deactivate) accounts
 - **📖 Data Dictionaries** - Centralized lookups for countries, cities, genders, and tags
+- **🏥 Health Checks** - Database health endpoint at `/health`
 
 ---
 
-### Prerequisites
+## ⚙️ Configuration
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (recommended)
-- [.NET SDK 9.0](https://dotnet.microsoft.com/download/dotnet/9.0) (for local development)
-
-### Configuration
-
-The application requires the following configuration. When running with Docker Compose, environment variables are pre-configured. For local development, update `appsettings.Development.json`:
-
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5432;Database=Soundmates;Username=Soundmates;Password=Soundmates"
-  },
-  "SecretKey": "your_super_secret_key_that_is_at_least_32_characters_long",
-  "EmailSettings": {
-    "SmtpServer": "smtp.gmail.com",
-    "Port": 587,
-    "SenderEmail": "your-email@gmail.com",
-    "Password": "your-app-password"
-  }
-}
-```
+Application configuration lives inside [`appsettings.Development.json`](src/Soundmates.Api/appsettings.Development.json) file as well as [`ApplicationConstants.cs`](src/Soundmates.Api/Common/Constants/ApplicationConstants.cs) and [`SecurityConstants.cs`](src/Soundmates.Api/Common/Constants/SecurityConstants.cs).
 
 | Setting | Description |
 |---------|-------------|
-| `ConnectionStrings:DefaultConnection` | PostgreSQL connection string |
-| `SecretKey` | JWT signing key (min 32 characters) |
-| `EmailSettings` | SMTP configuration for email notifications |
+| `ConnectionStrings:DefaultConnection` | SQL Server connection string |
+| `EmailSender` | SMTP configuration for email notifications; set `UseStubEmailSender: true` to skip actual sending (logs to console instead) |
+| `AdminUser` | Credentials for the seeded admin account |
+| `Jwt` | JWT issuer, audience, access-token expiration, refresh-token lifetime, and signing key (min 32 chars) |
+| `Cors:AllowedOrigins` | Allowed origins for CORS requests |
 
-### Running the App
+> **Note:** The base URLs for client redirect links (email confirmation and password reset) are defined as constants in [`SecurityConstants.cs`](src/Soundmates.Api/Common/Constants/SecurityConstants.cs) (`ConfirmEmailEndpointClientPath`, `ResetPasswordEndpointClientPath`), separate from the CORS configuration.
 
-#### 🐳 Docker (Recommended)
+---
+
+## 🤓 Prerequisites
+- [Docker](https://www.docker.com)
+
+---
+
+## 🚀 Running the App
+
+The app auto-applies pending migrations and seeds the admin user on startup (development only for migrations).
 
 ```bash
 # Build and start all services
@@ -129,31 +124,28 @@ docker compose up --build -d
 
 # Stop the application
 docker compose down
+
+or
+
+# Stop the application and also remove created docker volumes
+docker compose down -v
 ```
+
+**By default the API is accessible at `https://localhost:8443`**
 
 ---
 
 ## 📚 API Documentation
 
-Once the application is running, interactive API documentation is available:
+Interactive API documentation is available in development mode:
 
 | Resource | URL |
 |----------|-----|
-| **Swagger UI** | [http://localhost:5000/swagger](http://localhost:5000/swagger) |
-| **OpenAPI JSON** | [http://localhost:5000/openapi/soundmates.json](http://localhost:5000/openapi/soundmates.json) |
+| **Scalar UI** | `https://localhost:<port>/scalar/v1` |
+| **OpenAPI JSON** | `https://localhost:<port>/openapi/v1.json` |
+| **Health Check** | `https://localhost:<port>/health` |
 
-### Database Management
-
-**Adminer** is included for database administration:
-
-| Setting | Value |
-|---------|-------|
-| **URL** | [http://localhost:8080](http://localhost:8080) |
-| **System** | PostgreSQL |
-| **Server** | `db` |
-| **Username** | `Soundmates` |
-| **Password** | `Soundmates` |
-| **Database** | `Soundmates` |
+**The default <port> is 8443 for https scheme or 8080 for http (automatically redirects to https).**
 
 ---
 
@@ -162,14 +154,19 @@ Once the application is running, interactive API documentation is available:
 ### Authentication Flow
 
 1. **Register** - `POST /auth/register` with email and password
-2. **Login** - `POST /auth/login` to receive access token (30 min) and refresh token (30 days)
-3. **Access protected endpoints** - Include `Authorization: Bearer <access_token>` header
-4. **Refresh tokens** - `POST /auth/refresh` when access token expires
-5. **Logout** - `POST /auth/logout` to invalidate refresh token
+2. **Confirm email** - click the link sent to the registered address (`POST /auth/confirm-email`)
+3. **Login** - `POST /auth/login` — returns access token (15 min) and sets refresh token cookie (7 days)
+4. **Access protected endpoints** - include `Authorization: Bearer <access_token>` header, or rely on the auth cookie
+5. **Refresh tokens** - `POST /auth/refresh` when access token expires (rotates refresh token)
+6. **Logout** - `POST /auth/logout` to revoke the current refresh token
+
+> **Important** When using cookie auth, every state-mutating endpoint (so basically every POST/PUT/DELETE) is protected against CSRF. You need to first get a CSRF token by calling the `GET /auth/csrf-token` endpoint. This endpoint sets required `XSRF-TOKEN` cookie and returns a token in the response body that needs to be included in a `X-CSRF-TOKEN` header.
+
+> **Note** By default in development, the email stub service is used — rather than sending actual emails, it logs them to the console. This behavior is configurable as described in [Configuration](#️-configuration)
 
 ### Profile Setup
 
-After registration, the profile is **inactive**. Complete profile setup via `PUT /users/profile` to unlock full functionality.
+After email confirmation, the profile is **incomplete** (`IsFirstLogin = true`). Complete profile setup via `PUT /users/profile` to unlock full functionality.
 
 ### Matching Workflow
 
@@ -182,7 +179,7 @@ After registration, the profile is **inactive**. Complete profile setup via `PUT
 
 ### Validation Rules
 
-All constraints are defined in [`AppConstants.cs`](./api/Soundmates/src/Soundmates.Domain/Constants/AppConstants.cs):
+All constraints are defined in [`Common/Constants/ApplicationConstants.cs`](src/Soundmates.Api/Common/Constants/ApplicationConstants.cs) and [`Common/Constants/SecurityConstants.cs`](src/Soundmates.Api/Common/Constants/SecurityConstants.cs) so that they are easily configurable:
 
 | Rule | Value |
 |------|-------|
@@ -193,7 +190,7 @@ All constraints are defined in [`AppConstants.cs`](./api/Soundmates/src/Soundmat
 | Max image size | 5 MB |
 | Message length | Up to 4000 characters |
 
-**Password requirements:**
+**Additional password requirements:**
 - Lowercase letter
 - Uppercase letter
 - Digit

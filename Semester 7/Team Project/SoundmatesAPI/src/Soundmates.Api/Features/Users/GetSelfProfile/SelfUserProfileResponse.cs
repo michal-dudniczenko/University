@@ -6,13 +6,13 @@ namespace Soundmates.Api.Features.Users.GetSelfProfile;
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "userType")]
 [JsonDerivedType(typeof(SelfUserProfileArtistResponse), "artist")]
 [JsonDerivedType(typeof(SelfUserProfileBandResponse), "band")]
-internal class SelfUserProfileResponse
+internal class GetSelfUserProfileResponse
 {
     public required Guid Id { get; set; }
     public required bool? IsBand { get; set; }
     public required string Email { get; set; }
     public required string? Name { get; set; }
-    public required string? Description { get; set; }
+    public required string? ProfileDescription { get; set; }
     public required Guid? CountryId { get; set; }
     public required Guid? CityId { get; set; }
     public required bool IsFirstLogin { get; set; }
@@ -21,13 +21,13 @@ internal class SelfUserProfileResponse
     public required IList<ProfilePictureDto> ProfilePictures { get; set; }
 }
 
-internal sealed class SelfUserProfileArtistResponse : SelfUserProfileResponse
+internal sealed class SelfUserProfileArtistResponse : GetSelfUserProfileResponse
 {
     public required DateOnly BirthDate { get; set; }
     public required Guid GenderId { get; set; }
 }
 
-internal sealed class SelfUserProfileBandResponse : SelfUserProfileResponse
+internal sealed class SelfUserProfileBandResponse : GetSelfUserProfileResponse
 {
     public required IList<BandMemberDto> BandMembers { get; set; }
 }

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
 using Soundmates.Api.Common.Helpers;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
 using Soundmates.Api.Features.Users.Common;
-using Soundmates.Api.Features.Users.GetOtherProfile;
+using Soundmates.Api.Features.Users.GetOtherUserProfile;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
 
@@ -20,107 +20,119 @@ internal static class GetMatchesEndpoint
             .WithName("GetMatches")
             .WithSummary("Get all matches")
             .WithDescription("Returns a paginated list of all users the authenticated user has matched with.")
-            .Produces<List<OtherUserProfileResponse>>(StatusCodes.Status200OK)
+            .Produces<List<GetOtherUserProfileResponse>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
-            .WithTags("Matching")
-            .RequireAuthorization();
+            .WithTags("Matching");
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromQuery] int limit,
         [FromQuery] int offset,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
         var errors = PaginationValidator.ValidateLimitOffset(limit, offset, MaxLimit);
         if (errors is not null)
-        {
             return TypedResults.UnprocessableEntity(new ValidationProblemDetails(errors));
-        }
 
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 
-        var matches = await db.Matches
+        var rows = await db.Matches
             .AsNoTracking()
-            .Include(m => m.User1)
-            .Include(m => m.User2)
-            .Where(m => m.User1Id == user.Id || m.User2Id == user.Id)
+            .Where(m =>
+                (m.User2Id == user.Id && m.User1.IsActive && !m.User1.IsFirstLogin && m.User1.EmailConfirmed && m.User1.IsBand != null)
+                || (m.User1Id == user.Id && m.User2.IsActive && !m.User2.IsFirstLogin && m.User2.EmailConfirmed && m.User2.IsBand != null))
             .OrderBy(m => m.Id)
             .Skip(offset)
             .Take(limit)
+            .Select(m => m.User1Id == user.Id ? m.User2 : m.User1)
+            .Select(u => new
+            {
+                u.Id,
+                u.IsBand,
+                u.Name,
+                u.ProfileDescription,
+                u.CountryId,
+                u.CityId,
+                TagsIds = u.Tags
+                    .Select(t => t.Id)
+                    .ToList(),
+                MusicSamples = u.MusicSamples
+                    .OrderBy(ms => ms.DisplayOrder)
+                    .Select(ms => new { ms.Id, ms.FileName })
+                    .ToList(),
+                ProfilePictures = u.ProfilePictures
+                    .OrderBy(pp => pp.DisplayOrder)
+                    .Select(pp => new { pp.Id, pp.FileName })
+                    .ToList(),
+                BirthDate = u.IsBand == false
+                    ? db.Artists
+                        .Where(a => a.UserId == u.Id)
+                        .Select(a => (DateOnly?)a.BirthDate)
+                        .FirstOrDefault()
+                    : null,
+                BandMembers = u.IsBand == true
+                    ? db.Bands
+                        .Where(b => b.UserId == u.Id)
+                        .SelectMany(b => b.Members.OrderBy(mem => mem.DisplayOrder))
+                        .Select(mem => new BandMemberDto(mem.Name, mem.Age, mem.BandRoleId))
+                        .ToList()
+                    : new List<BandMemberDto>(),
+            })
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
 
-        var userProfiles = new List<OtherUserProfileResponse>();
-
-        foreach (var match in matches)
-        {
-            var otherUser = match.User1Id == user.Id ? match.User2 : match.User1;
-            if (otherUser is null || !otherUser.IsActive || otherUser.IsFirstLogin || !otherUser.IsEmailConfirmed || otherUser.IsBand is null)
-                continue;
-
-            if ((bool)otherUser.IsBand)
+        var userProfiles = rows.Select(r => r.IsBand == true
+            ? (GetOtherUserProfileResponse)new OtherUserProfileBandResponse
             {
-                var band = await db.Bands
-                    .AsNoTracking()
-                    .Include(b => b.Members)
-                    .Include(b => b.User).ThenInclude(u => u.Tags)
-                    .Include(b => b.User).ThenInclude(u => u.MusicSamples)
-                    .Include(b => b.User).ThenInclude(u => u.ProfilePictures)
-                    .FirstOrDefaultAsync(b => b.UserId == otherUser.Id, cancellationToken);
-
-                if (band is null) continue;
-
-                userProfiles.Add(new OtherUserProfileBandResponse
-                {
-                    Id = band.User.Id,
-                    IsBand = band.User.IsBand,
-                    Name = band.User.Name!,
-                    Description = band.User.Description,
-                    CountryId = (Guid)band.User.CountryId!,
-                    CityId = (Guid)band.User.CityId!,
-                    TagsIds = band.User.Tags.Select(t => t.Id).ToList(),
-                    MusicSamples = band.User.MusicSamples.OrderBy(ms => ms.DisplayOrder)
-                        .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName))).ToList(),
-                    ProfilePictures = band.User.ProfilePictures.OrderBy(pp => pp.DisplayOrder)
-                        .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName))).ToList(),
-                    BandMembers = band.Members.OrderBy(m => m.DisplayOrder)
-                        .Select(bm => new BandMemberDto(bm.Name, bm.Age, bm.BandRoleId)).ToList()
-                });
+                Id = r.Id,
+                IsBand = r.IsBand,
+                Name = r.Name
+                    ?? throw new InvalidOperationException($"Active user should NOT have Name = NULL. User id: {r.Id}"),
+                ProfileDescription = r.ProfileDescription,
+                CountryId = r.CountryId is not null
+                    ? (Guid)r.CountryId
+                    : throw new InvalidOperationException($"Active user should NOT have CountryId = NULL. User id: {r.Id}"),
+                CityId = r.CityId is not null
+                    ? (Guid)r.CityId
+                    : throw new InvalidOperationException($"Active user should NOT have CityId = NULL. User id: {r.Id}"),
+                TagsIds = r.TagsIds,
+                MusicSamples = r.MusicSamples
+                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName)))
+                    .ToList(),
+                ProfilePictures = r.ProfilePictures
+                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName)))
+                    .ToList(),
+                BandMembers = r.BandMembers,
             }
-            else
+            : new OtherUserProfileArtistResponse
             {
-                var artist = await db.Artists
-                    .AsNoTracking()
-                    .Include(a => a.User).ThenInclude(u => u.Tags)
-                    .Include(a => a.User).ThenInclude(u => u.MusicSamples)
-                    .Include(a => a.User).ThenInclude(u => u.ProfilePictures)
-                    .FirstOrDefaultAsync(a => a.UserId == otherUser.Id, cancellationToken);
-
-                if (artist is null) continue;
-
-                userProfiles.Add(new OtherUserProfileArtistResponse
-                {
-                    Id = artist.User.Id,
-                    IsBand = artist.User.IsBand,
-                    Name = artist.User.Name!,
-                    Description = artist.User.Description,
-                    CountryId = (Guid)artist.User.CountryId!,
-                    CityId = (Guid)artist.User.CityId!,
-                    TagsIds = artist.User.Tags.Select(t => t.Id).ToList(),
-                    MusicSamples = artist.User.MusicSamples.OrderBy(ms => ms.DisplayOrder)
-                        .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName))).ToList(),
-                    ProfilePictures = artist.User.ProfilePictures.OrderBy(pp => pp.DisplayOrder)
-                        .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName))).ToList(),
-                    BirthDate = artist.BirthDate
-                });
-            }
-        }
+                Id = r.Id,
+                IsBand = r.IsBand,
+                Name = r.Name
+                    ?? throw new InvalidOperationException($"Active user should NOT have Name = NULL. User id: {r.Id}"),
+                ProfileDescription = r.ProfileDescription,
+                CountryId = r.CountryId is not null
+                    ? (Guid)r.CountryId
+                    : throw new InvalidOperationException($"Active user should NOT have CountryId = NULL. User id: {r.Id}"),
+                CityId = r.CityId is not null
+                    ? (Guid)r.CityId
+                    : throw new InvalidOperationException($"Active user should NOT have CityId = NULL. User id: {r.Id}"),
+                TagsIds = r.TagsIds,
+                MusicSamples = r.MusicSamples
+                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName)))
+                    .ToList(),
+                ProfilePictures = r.ProfilePictures
+                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName)))
+                    .ToList(),
+                BirthDate = r.BirthDate,
+            }).ToList();
 
         return TypedResults.Ok(userProfiles);
     }

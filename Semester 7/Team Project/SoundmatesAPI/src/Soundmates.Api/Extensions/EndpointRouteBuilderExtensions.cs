@@ -1,7 +1,16 @@
-using Soundmates.Api.Features.Auth.LogIn;
-using Soundmates.Api.Features.Auth.LogOut;
+using Soundmates.Api.Features.Auth.ChangePassword;
+using Soundmates.Api.Features.Auth.ConfirmEmail;
+using Soundmates.Api.Features.Auth.CsrfToken;
+using Soundmates.Api.Features.Auth.DeactivateAccount;
+using Soundmates.Api.Features.Auth.ForgotPassword;
+using Soundmates.Api.Features.Auth.Login;
+using Soundmates.Api.Features.Auth.Logout;
 using Soundmates.Api.Features.Auth.Refresh;
 using Soundmates.Api.Features.Auth.Register;
+using Soundmates.Api.Features.Auth.ResendEmailConfirmation;
+using Soundmates.Api.Features.Auth.ResetPassword;
+using Soundmates.Api.Features.Auth.RevokeAllTokens;
+using Soundmates.Api.Features.Auth.RevokeToken;
 using Soundmates.Api.Features.Dictionaries.GetBandRoles;
 using Soundmates.Api.Features.Dictionaries.GetCities;
 using Soundmates.Api.Features.Dictionaries.GetCountries;
@@ -25,10 +34,9 @@ using Soundmates.Api.Features.MusicSamples.DeleteMusicSample;
 using Soundmates.Api.Features.MusicSamples.UploadMusicSample;
 using Soundmates.Api.Features.ProfilePictures.DeleteProfilePicture;
 using Soundmates.Api.Features.ProfilePictures.UploadProfilePicture;
+using Soundmates.Api.Features.Reports.BlockUser;
 using Soundmates.Api.Features.Reports.ReportUser;
-using Soundmates.Api.Features.Users.ChangePassword;
-using Soundmates.Api.Features.Users.DeactivateAccount;
-using Soundmates.Api.Features.Users.GetOtherProfile;
+using Soundmates.Api.Features.Users.GetOtherUserProfile;
 using Soundmates.Api.Features.Users.GetSelfProfile;
 using Soundmates.Api.Features.Users.UpdateProfile;
 
@@ -39,53 +47,61 @@ internal static class EndpointRouteBuilderExtensions
     public static IEndpointRouteBuilder MapFeatureEndpoints(this IEndpointRouteBuilder app)
     {
         // Auth
-        app.MapRegister();
+        app.MapChangePassword();
+        app.MapConfirmEmail();
+        app.MapCsrfToken();
+        app.MapDeactivateAccount();
+        app.MapForgotPassword();
         app.MapLogIn();
-        app.MapRefresh();
         app.MapLogOut();
+        app.MapRefresh();
+        app.MapRegister();
+        app.MapRevokeToken();
+        app.MapRevokeAllTokens();
+        app.MapResendEmailConfirmation();
+        app.MapResetPassword();
 
         // Dictionaries
-        app.MapGetCountries();
-        app.MapGetCities();
-        app.MapGetGenders();
-        app.MapGetTags();
-        app.MapGetTagCategories();
         app.MapGetBandRoles();
+        app.MapGetCities();
+        app.MapGetCountries();
+        app.MapGetGenders();
+        app.MapGetTagCategories();
+        app.MapGetTags();
 
         // Matching
+        app.MapCreateDislike();
+        app.MapCreateLike();
+        app.MapGetMatches();
+        app.MapGetMatchPreference();
         app.MapGetPotentialMatchesArtists();
         app.MapGetPotentialMatchesBands();
-        app.MapGetMatchPreference();
-        app.MapUpdateMatchPreference();
-        app.MapGetMatches();
-        app.MapCreateLike();
-        app.MapCreateDislike();
         app.MapMatchExists();
+        app.MapUpdateMatchPreference();
         app.MapUnmatch();
 
         // Messages
-        app.MapGetConversationsPreview();
         app.MapGetConversation();
+        app.MapGetConversationsPreview();
         app.MapSendMessage();
         app.MapViewConversation();
 
         // MusicSamples
-        app.MapUploadMusicSample();
         app.MapDeleteMusicSample();
+        app.MapUploadMusicSample();
 
         // ProfilePictures
-        app.MapUploadProfilePicture();
         app.MapDeleteProfilePicture();
+        app.MapUploadProfilePicture();
 
         // Reports
+        app.MapBlockUser();
         app.MapReportUser();
 
         // Users
+        app.MapGetOtherUserProfile();
         app.MapGetSelfProfile();
         app.MapUpdateProfile();
-        app.MapGetOtherProfile();
-        app.MapDeactivateAccount();
-        app.MapChangePassword();
 
         return app;
     }

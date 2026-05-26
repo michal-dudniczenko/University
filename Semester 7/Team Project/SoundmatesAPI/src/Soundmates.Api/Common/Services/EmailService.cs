@@ -1,54 +1,87 @@
 using MailKit.Net.Smtp;
+using Microsoft.Extensions.Options;
 using MimeKit;
-using System.Globalization;
+using Soundmates.Api.Common.Options;
 
 namespace Soundmates.Api.Common.Services;
 
 internal interface IEmailService
 {
-    Task SendEmailAsync(string to, string subject, string body);
+    Task SendRegistrationConfirmationLinkAsync(string email, string link, CancellationToken cancellationToken = default);
+    Task SendPasswordResetLinkAsync(string email, string link, CancellationToken cancellationToken = default);
+    Task SendEmailAsync(string email, string subject, string body, CancellationToken cancellationToken = default);
 }
 
-internal sealed class EmailService(IConfiguration configuration, ILogger<EmailService> logger) : IEmailService
+internal sealed class EmailService(
+    IOptions<EmailSenderOptions> emailSenderOptions,
+    ILogger<EmailService> logger) : IEmailService
 {
-    public async Task SendEmailAsync(string to, string subject, string body)
+    public async Task SendEmailAsync(
+        string email,
+        string subject,
+        string body,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            var emailSettings = configuration.GetSection("EmailSettings");
-            var smtpServer = emailSettings["SmtpServer"];
-            var port = emailSettings["Port"];
-            var senderEmail = emailSettings["SenderEmail"]
-                ?? throw new InvalidOperationException("EmailSettings::SenderEmail is not configured.");
-            var password = emailSettings["Password"]
-                ?? throw new InvalidOperationException("EmailSettings::Password is not configured.");
-            var displayName = emailSettings["DisplayName"] ?? "Soundmates";
+            var emailSettings = emailSenderOptions.Value;
 
-            if (string.IsNullOrEmpty(smtpServer) || smtpServer == "smtp.example.com")
-            {
-                logger.LogWarning("Email settings are not configured. Email to {To} with subject '{Subject}' was not sent.", to, subject);
-                logger.LogInformation("Email body (not sent): {Body}", body);
-                return;
-            }
-
-            using var email = new MimeMessage();
-            email.From.Add(new MailboxAddress(displayName, senderEmail));
-            email.To.Add(MailboxAddress.Parse(to));
-            email.Subject = subject;
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = body };
+            using var mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(new MailboxAddress(emailSettings.DisplayName, emailSettings.SenderEmail));
+            mimeMessage.To.Add(MailboxAddress.Parse(email));
+            mimeMessage.Subject = subject;
+            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = body };
 
             using var smtp = new SmtpClient();
-            await smtp.ConnectAsync(smtpServer, int.Parse(port ?? "587", CultureInfo.InvariantCulture), MailKit.Security.SecureSocketOptions.StartTls);
-            await smtp.AuthenticateAsync(senderEmail, password);
-            await smtp.SendAsync(email);
-            await smtp.DisconnectAsync(true);
+            await smtp.ConnectAsync(
+                emailSettings.SmtpServer,
+                emailSettings.Port,
+                MailKit.Security.SecureSocketOptions.StartTls,
+                cancellationToken);
+            await smtp.AuthenticateAsync(emailSettings.SenderEmail, emailSettings.Password, cancellationToken);
+            await smtp.SendAsync(mimeMessage, cancellationToken);
+            await smtp.DisconnectAsync(true, cancellationToken);
 
-            logger.LogInformation("Email sent successfully to {To} with subject '{Subject}'", to, subject);
+            logger.LogInformation("Email sent successfully. Subject: '{Subject}'", subject);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to send email to {To} with subject '{Subject}'", to, subject);
-            logger.LogInformation("Email body (failed to send): {Body}", body);
+            logger.LogError(ex, "Failed to send email. Subject: '{Subject}'", subject);
+            throw;
         }
+    }
+
+    public Task SendPasswordResetLinkAsync(
+        string email,
+        string link,
+        CancellationToken cancellationToken = default)
+    {
+        const string subject = "Reset your Soundmates password";
+        var body = $"""
+            <h1>Password Reset</h1>
+            <p>You requested a password reset for your Soundmates account.</p>
+            <p>Click the link below to set a new password:</p>
+            <p><a href="{link}">Reset Password</a></p>
+            <p>If you did not request this, you can safely ignore this email.</p>
+            <p>This link will expire shortly for your security.</p>
+            """;
+
+        return SendEmailAsync(email, subject, body, cancellationToken);
+    }
+
+    public Task SendRegistrationConfirmationLinkAsync(
+        string email,
+        string link,
+        CancellationToken cancellationToken = default)
+    {
+        const string subject = "Confirm your Soundmates account";
+        var body = $"""
+            <h1>Welcome to Soundmates!</h1>
+            <p>Thank you for registering. Please confirm your email address by clicking the link below:</p>
+            <p><a href="{link}">Confirm Email</a></p>
+            <p>If you did not create an account, you can safely ignore this email.</p>
+            """;
+
+        return SendEmailAsync(email, subject, body, cancellationToken);
     }
 }

@@ -1,9 +1,7 @@
 namespace Soundmates.Api.Common.Entities;
 
-internal sealed class UserMatchPreference
+internal sealed class UserMatchPreference : EntityBase
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
-
     public bool ShowArtists { get; set; } = true;
     public bool ShowBands { get; set; } = true;
 

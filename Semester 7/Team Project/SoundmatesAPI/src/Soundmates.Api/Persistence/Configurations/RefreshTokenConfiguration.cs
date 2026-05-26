@@ -8,13 +8,12 @@ internal sealed class RefreshTokenConfiguration : IEntityTypeConfiguration<Refre
 {
     public void Configure(EntityTypeBuilder<RefreshToken> entity)
     {
-        entity
-            .HasOne(rt => rt.User)
-            .WithOne()
-            .HasForeignKey<RefreshToken>(rt => rt.UserId);
+        entity.Property(rt => rt.TokenHash)
+            .IsRequired()
+            .HasMaxLength(32)
+            .IsFixedLength();
 
-        entity
-            .HasIndex(rt => rt.UserId)
-            .IsUnique();
+        entity.HasIndex(rt => rt.TokenHash);
+        entity.HasIndex(rt => rt.UserId);
     }
 }

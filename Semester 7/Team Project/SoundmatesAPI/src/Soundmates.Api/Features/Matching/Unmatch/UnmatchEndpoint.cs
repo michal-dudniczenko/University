@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
+using Soundmates.Api.Common.Filters;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
@@ -15,20 +16,20 @@ internal static class UnmatchEndpoint
             .WithName("Unmatch")
             .WithSummary("Unmatch with a user")
             .WithDescription("Removes the match between the authenticated user and the specified user.")
+            .WithTags("Matching")
             .Produces(StatusCodes.Status200OK)
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound)
-            .WithTags("Matching")
-            .RequireAuthorization();
+            .AddEndpointFilter<ValidateCsrfTokenFilter>();
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromRoute] string userId,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
@@ -36,11 +37,11 @@ internal static class UnmatchEndpoint
         if (errors is not null)
             return TypedResults.UnprocessableEntity(new ValidationProblemDetails(errors));
 
-        var userGuid = Guid.Parse(userId);
-
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
+
+        var userGuid = Guid.Parse(userId);
 
         if (userGuid == user.Id)
             return TypedResults.Problem(detail: "You cannot unmatch yourself.", statusCode: 400);

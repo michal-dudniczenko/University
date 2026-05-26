@@ -1,3 +1,3 @@
 namespace Soundmates.Api.Features.Auth.Refresh;
 
-internal sealed record RefreshResponse(string AccessToken);
+internal sealed record RefreshResponse(string AccessToken, string RefreshToken);

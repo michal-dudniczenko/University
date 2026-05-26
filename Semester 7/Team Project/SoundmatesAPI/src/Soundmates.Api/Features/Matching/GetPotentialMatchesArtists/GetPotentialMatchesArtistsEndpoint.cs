@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
-using Soundmates.Api.Common.Entities;
+using Soundmates.Api.Common.Constants;
 using Soundmates.Api.Common.Helpers;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
 using Soundmates.Api.Features.Users.Common;
-using Soundmates.Api.Features.Users.GetOtherProfile;
+using Soundmates.Api.Features.Users.GetOtherUserProfile;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
 
@@ -23,139 +23,164 @@ internal static class GetPotentialMatchesArtistsEndpoint
             .WithDescription("Returns a paginated list of artist profiles that match the authenticated user's preferences.")
             .Produces<List<OtherUserProfileArtistResponse>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
-            .WithTags("Matching")
-            .RequireAuthorization();
+            .WithTags("Matching");
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromQuery] int limit,
         [FromQuery] int offset,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
         var errors = PaginationValidator.ValidateLimitOffset(limit, offset, MaxLimit);
         if (errors is not null)
-        {
             return TypedResults.UnprocessableEntity(new ValidationProblemDetails(errors));
-        }
 
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 
         var userMatchPreference = await db.UserMatchPreferences
             .AsNoTracking()
-            .Include(ump => ump.User).ThenInclude(u => u.City)
-            .Include(ump => ump.Tags).ThenInclude(t => t.TagCategory)
+            .Include(ump => ump.User)
+                .ThenInclude(u => u.City)
+            .Include(ump => ump.Tags)
+                .ThenInclude(t => t.TagCategory)
             .FirstOrDefaultAsync(ump => ump.UserId == user.Id, cancellationToken)
             ?? throw new InvalidOperationException($"Match preference data for user: {user.Id} not found.");
 
         if (!userMatchPreference.ShowArtists)
             return TypedResults.Ok(new List<OtherUserProfileArtistResponse>());
 
-        var likedUserIds = await db.Likes.AsNoTracking()
-            .Where(l => l.GiverId == user.Id).Select(l => l.ReceiverId).ToListAsync(cancellationToken);
-        var dislikedUserIds = await db.Dislikes.AsNoTracking()
-            .Where(d => d.GiverId == user.Id).Select(d => d.ReceiverId).ToListAsync(cancellationToken);
-
-        IQueryable<Artist> artists = db.Artists
+        var candidates = db.Artists
             .AsNoTracking()
-            .Include(a => a.User).ThenInclude(u => u.Tags)
-            .Include(a => a.User).ThenInclude(u => u.MusicSamples)
-            .Include(a => a.User).ThenInclude(u => u.ProfilePictures)
-            .Include(a => a.User).ThenInclude(u => u.City);
-
-        artists = artists.Where(a =>
-            a.User.IsActive && a.User.IsEmailConfirmed && !a.User.IsFirstLogin && a.User.Id != user.Id &&
-            !likedUserIds.Contains(a.User.Id) && !dislikedUserIds.Contains(a.User.Id));
-
-        var originCity = userMatchPreference.User.City;
-
-        if (userMatchPreference.MaxDistance is not null && originCity is not null)
-        {
-            artists = artists.Where(a => a.User.City != null);
-            artists = artists.Where(a =>
-                HaversineDistance(originCity.Latitude, originCity.Longitude, a.User.City!.Latitude, a.User.City!.Longitude)
-                <= userMatchPreference.MaxDistance.Value);
-        }
+            .Where(a =>
+                a.User.IsActive && a.User.EmailConfirmed && !a.User.IsFirstLogin && a.UserId != user.Id
+                && !db.Likes.Any(l => l.GiverId == user.Id && l.ReceiverId == a.UserId)
+                && !db.Dislikes.Any(d => d.GiverId == user.Id && d.ReceiverId == a.UserId));
 
         if (userMatchPreference.CountryId is not null)
-            artists = artists.Where(a => a.User.CountryId == userMatchPreference.CountryId);
+            candidates = candidates.Where(a => a.User.CountryId == userMatchPreference.CountryId);
 
         if (userMatchPreference.CityId is not null)
-            artists = artists.Where(a => a.User.CityId == userMatchPreference.CityId);
+            candidates = candidates.Where(a => a.User.CityId == userMatchPreference.CityId);
+
+        var today = DateOnly.FromDateTime(DateTime.Today);
 
         if (userMatchPreference.ArtistMinAge is not null)
         {
-            var today = DateOnly.FromDateTime(DateTime.Today);
             var minAgeCutoff = today.AddYears(-userMatchPreference.ArtistMinAge.Value);
-            artists = artists.Where(a => a.BirthDate <= minAgeCutoff);
+            candidates = candidates.Where(a => a.BirthDate <= minAgeCutoff);
         }
 
         if (userMatchPreference.ArtistMaxAge is not null)
         {
-            var today = DateOnly.FromDateTime(DateTime.Today);
             var maxAgeCutoff = today.AddYears(-(userMatchPreference.ArtistMaxAge.Value + 1));
-            artists = artists.Where(a => a.BirthDate > maxAgeCutoff);
+            candidates = candidates.Where(a => a.BirthDate > maxAgeCutoff);
         }
 
         if (userMatchPreference.ArtistGenderId is not null)
-            artists = artists.Where(a => a.GenderId == userMatchPreference.ArtistGenderId);
+            candidates = candidates.Where(a => a.GenderId == userMatchPreference.ArtistGenderId);
 
-        foreach (var tag in userMatchPreference.Tags.Where(t => !t.TagCategory.IsForBand))
-            artists = artists.Where(a => a.User.Tags.Any(t => t.Id == tag.Id));
-
+        // Distance, scoring, ordering and pagination all run on the database engine.
+        // EF Core's SQL Server provider translates these Math/double calls to SIN/COS/ASIN/SQRT/POWER/RADIANS.
+        // The Haversine formula must be inlined here rather than extracted into a (non-translatable) method.
+        var originCity = userMatchPreference.User.City;
         var maxDistance = userMatchPreference.MaxDistance;
-        var preferenceTagIds = userMatchPreference.Tags.Where(t => !t.TagCategory.IsForBand).Select(t => t.Id).ToList();
+        var applyDistanceFilter = originCity is not null && maxDistance is not null;
+        var applyDistanceScore = applyDistanceFilter && maxDistance!.Value != 0;
 
-        var result = await artists
-            .OrderByDescending(a =>
-                (a.User.Tags.Count(t => preferenceTagIds.Contains(t.Id)) * 100.0) +
-                (originCity == null || a.User.City == null || maxDistance == null || maxDistance.Value == 0
-                    ? 0.0
-                    : (1.0 - (HaversineDistance(originCity.Latitude, originCity.Longitude, a.User.City.Latitude, a.User.City.Longitude) / maxDistance.Value)) * 100.0))
+        var originLatRad = double.DegreesToRadians(originCity?.Latitude ?? 0);
+        var originLonRad = double.DegreesToRadians(originCity?.Longitude ?? 0);
+        var cosOriginLat = Math.Cos(originLatRad);
+
+        var preferenceTagIds = userMatchPreference.Tags
+            .Where(t => !t.TagCategory.IsForBand)
+            .Select(t => t.Id)
+            .ToList();
+        var applyTagsFilter = preferenceTagIds.Count > 0;
+
+        var projected = candidates.Select(a => new
+        {
+            a.User.Id,
+            a.User.IsBand,
+            a.User.Name,
+            a.User.ProfileDescription,
+            a.User.CountryId,
+            a.User.CityId,
+            a.BirthDate,
+            TagIds = a.User.Tags
+                .Select(t => t.Id)
+                .ToList(),
+            MusicSamples = a.User.MusicSamples
+                .OrderBy(ms => ms.DisplayOrder)
+                .Select(ms => new { ms.Id, ms.FileName })
+                .ToList(),
+            ProfilePictures = a.User.ProfilePictures
+                .OrderBy(pp => pp.DisplayOrder)
+                .Select(pp => new { pp.Id, pp.FileName })
+                .ToList(),
+            TagMatchCount = applyTagsFilter
+                ? a.User.Tags.Count(t => preferenceTagIds.Contains(t.Id))
+                : 0,
+            Distance = originCity == null || a.User.City == null
+                ? (double?)null
+                : 2.0 * ApplicationConstants.EarthRadiusKm * Math.Asin(Math.Sqrt(
+                    Math.Pow(Math.Sin((double.DegreesToRadians(a.User.City.Latitude) - originLatRad) / 2.0), 2.0)
+                    + cosOriginLat * Math.Cos(double.DegreesToRadians(a.User.City.Latitude))
+                    * Math.Pow(Math.Sin((double.DegreesToRadians(a.User.City.Longitude) - originLonRad) / 2.0), 2.0)))
+        });
+
+        if (applyTagsFilter)
+            projected = projected.Where(x => x.TagMatchCount > 0);
+
+        if (applyDistanceFilter)
+            projected = projected.Where(x => x.Distance <= maxDistance!.Value);
+
+        var ordered = applyDistanceScore
+            ? projected.OrderByDescending(x =>
+                (x.TagMatchCount * 100.0)
+                + (x.Distance == null ? 0.0 : (1.0 - (x.Distance.Value / maxDistance!.Value)) * 100.0))
+            : projected.OrderByDescending(x => x.TagMatchCount);
+
+        // Id tiebreaker keeps ordering deterministic so pagination doesn't skip or repeat rows.
+        // Split query avoids a cartesian explosion across the projected collections.
+        var page = await ordered
+            .ThenBy(x => x.Id)
             .Skip(offset)
             .Take(limit)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
 
-        var dtos = result.Select(a => new OtherUserProfileArtistResponse
-        {
-            Id = a.User.Id,
-            IsBand = a.User.IsBand,
-            Name = a.User.Name!,
-            Description = a.User.Description,
-            CountryId = (Guid)a.User.CountryId!,
-            CityId = (Guid)a.User.CityId!,
-            TagsIds = a.User.Tags.Select(t => t.Id).ToList(),
-            MusicSamples = a.User.MusicSamples.OrderBy(ms => ms.DisplayOrder)
-                .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName))).ToList(),
-            ProfilePictures = a.User.ProfilePictures.OrderBy(pp => pp.DisplayOrder)
-                .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName))).ToList(),
-            BirthDate = a.BirthDate
-        }).ToList();
+        var dtos = page
+            .Select(x => new OtherUserProfileArtistResponse
+            {
+                Id = x.Id,
+                IsBand = x.IsBand,
+                Name = x.Name
+                    ?? throw new InvalidOperationException($"Active user should NOT have Name = NULL. User id: {x.Id}"),
+                ProfileDescription = x.ProfileDescription,
+                CountryId = x.CountryId is not null
+                    ? (Guid)x.CountryId
+                    : throw new InvalidOperationException($"Active user should NOT have CountryId = NULL. User id: {x.Id}"),
+                CityId = x.CityId is not null
+                    ? (Guid)x.CityId
+                    : throw new InvalidOperationException($"Active user should NOT have CityId = NULL. User id: {x.Id}"),
+                TagsIds = x.TagIds,
+                MusicSamples = x.MusicSamples
+                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName)))
+                    .ToList(),
+                ProfilePictures = x.ProfilePictures
+                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName)))
+                    .ToList(),
+                BirthDate = x.BirthDate
+            })
+            .ToList();
 
         return TypedResults.Ok(dtos);
-    }
-
-    public static double HaversineDistance(double originLat, double originLon, double destLat, double destLon)
-    {
-        const double earthRadiusKm = 6371.0;
-        double originLatRad = originLat * (Math.PI / 180.0);
-        double originLonRad = originLon * (Math.PI / 180.0);
-        double destLatRad = destLat * (Math.PI / 180.0);
-        double destLonRad = destLon * (Math.PI / 180.0);
-
-        double dLat = (destLatRad - originLatRad) / 2.0;
-        double dLon = (destLonRad - originLonRad) / 2.0;
-        double a = Math.Pow(Math.Sin(dLat), 2.0) +
-                   Math.Cos(originLatRad) * Math.Cos(destLatRad) *
-                   Math.Pow(Math.Sin(dLon), 2.0);
-
-        double c = 2.0 * Math.Asin(Math.Sqrt(a));
-        return earthRadiusKm * c;
     }
 }

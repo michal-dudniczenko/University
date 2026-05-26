@@ -8,6 +8,8 @@ internal sealed class TagConfiguration : IEntityTypeConfiguration<Tag>
 {
     public void Configure(EntityTypeBuilder<Tag> entity)
     {
+        entity.Property(t => t.Name).HasMaxLength(100);
+
         entity
             .HasOne(t => t.TagCategory)
             .WithMany(tc => tc.Tags)

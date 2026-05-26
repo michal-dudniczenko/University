@@ -1,14 +1,9 @@
 namespace Soundmates.Api.Common.Entities;
 
-internal sealed class Message
+internal sealed class Message : EntityBase
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
-
     public required string Content { get; set; }
-
     public bool IsSeen { get; set; } = false;
-
-    public DateTime Timestamp { get; private set; } = DateTime.UtcNow;
 
     public required Guid SenderId { get; set; }
     public User Sender { get; set; } = null!;

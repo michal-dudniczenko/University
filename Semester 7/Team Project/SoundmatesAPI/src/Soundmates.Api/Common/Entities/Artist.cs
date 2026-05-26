@@ -1,8 +1,7 @@
 namespace Soundmates.Api.Common.Entities;
 
-internal sealed class Artist
+internal sealed class Artist : EntityBase
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
     public required DateOnly BirthDate { get; set; }
 
     public required Guid GenderId { get; set; }

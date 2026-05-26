@@ -1,4 +1,4 @@
-using static Soundmates.Api.Common.AppConstants;
+using static Soundmates.Api.Common.Constants.ApplicationConstants;
 
 namespace Soundmates.Api.Common.Helpers;
 

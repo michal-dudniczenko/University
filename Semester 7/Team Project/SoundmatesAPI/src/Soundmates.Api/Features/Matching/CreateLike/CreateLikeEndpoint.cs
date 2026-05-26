@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
 using Soundmates.Api.Common.Entities;
+using Soundmates.Api.Common.Filters;
 using Soundmates.Api.Common.Hubs;
-using Soundmates.Api.Common.Validation;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
 
@@ -23,21 +23,21 @@ internal static class CreateLikeEndpoint
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound)
-            .RequireAuthorization()
-            .AddEndpointFilter<ValidationFilter<CreateLikeRequest>>();
+            .AddEndpointFilter<ValidationFilter<CreateLikeRequest>>()
+            .AddEndpointFilter<ValidateCsrfTokenFilter>();
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromBody] CreateLikeRequest request,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         [FromServices] IHubContext<EventHub> hubContext,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 
@@ -47,7 +47,7 @@ internal static class CreateLikeEndpoint
             return TypedResults.Problem(detail: "You cannot like your own profile.", statusCode: 400);
 
         var receiverExists = await db.Users.AnyAsync(
-            u => u.Id == receiverId && u.IsActive && u.IsEmailConfirmed && !u.IsFirstLogin,
+            u => u.Id == receiverId && u.IsActive && u.EmailConfirmed && !u.IsFirstLogin,
             cancellationToken);
 
         if (!receiverExists)
@@ -60,18 +60,20 @@ internal static class CreateLikeEndpoint
         if (reactionExists)
             return TypedResults.Problem(detail: $"Cannot give another reaction to the same user. From: {user.Id} To: {receiverId}", statusCode: 400);
 
-        db.Likes.Add(new Like { GiverId = user.Id, ReceiverId = receiverId });
-        await db.SaveChangesAsync(cancellationToken);
-
+        // The reciprocal like (receiver -> user) is independent of the like we are about to add,
+        // so we can check it first and persist the new like (and the match, if any) in a single round trip.
         var reciprocalLikeExists = await db.Likes.AnyAsync(
             l => l.GiverId == receiverId && l.ReceiverId == user.Id,
             cancellationToken);
 
+        db.Likes.Add(new Like { GiverId = user.Id, ReceiverId = receiverId });
+        if (reciprocalLikeExists)
+            db.Matches.Add(new Match { User1Id = user.Id, User2Id = receiverId });
+
+        await db.SaveChangesAsync(cancellationToken);
+
         if (reciprocalLikeExists)
         {
-            db.Matches.Add(new Match { User1Id = user.Id, User2Id = receiverId });
-            await db.SaveChangesAsync(cancellationToken);
-
             await hubContext.Clients.Group(receiverId.ToString()).SendAsync("MatchReceived", new
             {
                 newLikeUserId = user.Id,

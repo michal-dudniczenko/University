@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Soundmates.Api.Authentication;
 using Soundmates.Api.Common.Entities;
-using Soundmates.Api.Common.Validation;
+using Soundmates.Api.Common.Filters;
+using Soundmates.Api.Common.Services;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
 
@@ -20,20 +20,20 @@ internal static class UpdateMatchPreferenceEndpoint
             .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status401Unauthorized)
             .WithTags("Matching")
-            .RequireAuthorization()
-            .AddEndpointFilter<ValidationFilter<UpdateMatchPreferenceRequest>>();
+            .AddEndpointFilter<ValidationFilter<UpdateMatchPreferenceRequest>>()
+            .AddEndpointFilter<ValidateCsrfTokenFilter>();
 
         return app;
     }
 
-    public static async Task<IResult> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromBody] UpdateMatchPreferenceRequest request,
         [FromServices] ApplicationDbContext db,
-        [FromServices] IAuthorizedUserAccessor authorizedUser,
+        [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
-        var user = await authorizedUser.GetAuthorizedUserAsync(principal, checkForFirstLogin: true, cancellationToken);
+        var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 
@@ -44,14 +44,16 @@ internal static class UpdateMatchPreferenceEndpoint
         List<Tag> tags = [];
         if (request.FilterTagsIds is { Count: > 0 })
         {
-            var filterTagGuids = request.FilterTagsIds.Select(Guid.Parse).ToList();
+            var filterTagGuids = request.FilterTagsIds.Select(Guid.Parse).Distinct().ToList();
             tags = await db.Tags
                 .Where(t => filterTagGuids.Contains(t.Id))
                 .ToListAsync(cancellationToken);
 
-            var invalidTagId = filterTagGuids.FirstOrDefault(tagId => !tags.Any(t => t.Id == tagId));
-            if (invalidTagId != Guid.Empty)
+            if (tags.Count != filterTagGuids.Count)
+            {
+                var invalidTagId = filterTagGuids.First(tagId => tags.All(t => t.Id != tagId));
                 throw new InvalidOperationException($"Invalid tag id provided: {invalidTagId}");
+            }
         }
 
         var existing = await db.UserMatchPreferences

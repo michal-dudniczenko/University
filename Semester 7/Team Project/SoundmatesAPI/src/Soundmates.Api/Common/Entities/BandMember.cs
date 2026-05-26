@@ -1,13 +1,9 @@
 namespace Soundmates.Api.Common.Entities;
 
-internal sealed class BandMember
+internal sealed class BandMember : EntityBase
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
-
     public required string Name { get; set; }
-
     public required int Age { get; set; }
-
     public required int DisplayOrder { get; set; }
 
     public required Guid BandId { get; set; }

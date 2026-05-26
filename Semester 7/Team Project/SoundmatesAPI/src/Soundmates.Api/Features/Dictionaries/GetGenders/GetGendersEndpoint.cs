@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Soundmates.Api.Persistence;
@@ -20,7 +19,7 @@ internal static class GetGendersEndpoint
         return app;
     }
 
-    public static async Task<Ok<List<GenderResponse>>> HandleAsync(
+    private static async Task<IResult> HandleAsync(
         [FromServices] ApplicationDbContext db,
         CancellationToken cancellationToken)
     {

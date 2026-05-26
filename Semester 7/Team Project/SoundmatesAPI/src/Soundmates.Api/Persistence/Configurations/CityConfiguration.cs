@@ -8,6 +8,8 @@ internal sealed class CityConfiguration : IEntityTypeConfiguration<City>
 {
     public void Configure(EntityTypeBuilder<City> entity)
     {
+        entity.Property(c => c.Name).HasMaxLength(100);
+
         entity
             .HasOne(c => c.Country)
             .WithMany()

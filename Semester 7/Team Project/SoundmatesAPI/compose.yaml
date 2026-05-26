@@ -1,39 +1,55 @@
 services:
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
-      - "5000:80"
+      - "8443:443"
+      - "8080:80"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: "http://+:80"
-      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=Soundmates;Username=Soundmates;Password=Soundmates"
-      SecretKey: "dev_super_secret_key_that_is_at_least_32_chars_long"
+      ASPNETCORE_HTTP_PORTS: "80"
+      ASPNETCORE_HTTPS_PORTS: "443"
+      ASPNETCORE_HTTPS_PORT: 8443
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+      ASPNETCORE_Kestrel__Certificates__Default__Password: devcertpassword
+      ConnectionStrings__DefaultConnection: "Server=db,1433;Database=Soundmates;User Id=sa;Password=Password123.;TrustServerCertificate=True;"
     depends_on:
+      dev-cert:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
         restart: true
     volumes:
+      - https-certs:/https
       - ./src/Soundmates.Api/wwwroot/images:/app/wwwroot/images
       - ./src/Soundmates.Api/wwwroot/samples:/app/wwwroot/samples
 
   db:
-    image: postgres:17
+    image: mcr.microsoft.com/mssql/server:2025-latest
     environment:
-      POSTGRES_DB: Soundmates
-      POSTGRES_USER: Soundmates
-      POSTGRES_PASSWORD: Soundmates
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Password123."
     ports:
-      - "5432:5432"
+      - "14330:1433"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mssqldata:/var/opt/mssql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U soundmates -d Soundmates"]
-      interval: 3s
-      retries: 5
-      start_period: 1s
+      test:
+        [
+          "CMD-SHELL",
+          '/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$MSSQL_SA_PASSWORD" -Q "SELECT 1" -b -No',
+        ]
+      interval: 5s
       timeout: 3s
+      retries: 10
+      start_period: 30s
+  
+  dev-cert:
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    volumes:
+      - https-certs:/https
+    command: >
+      sh -c "dotnet dev-certs https -ep /https/aspnetapp.pfx -p devcertpassword"
 
 volumes:
-  pgdata:
+  mssqldata:
+  https-certs:
