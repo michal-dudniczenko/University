@@ -21,4 +21,8 @@
     <Folder Include="wwwroot\samples\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Soundmates.IntegrationTests" />
+  </ItemGroup>
+
 </Project>

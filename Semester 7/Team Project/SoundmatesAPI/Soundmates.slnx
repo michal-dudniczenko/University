@@ -15,6 +15,7 @@
   </Folder>
 
   <Folder Name="/tests/">
+    <Project Path="tests/Soundmates.IntegrationTests/Soundmates.IntegrationTests.csproj" />
   </Folder>
 
 </Solution>

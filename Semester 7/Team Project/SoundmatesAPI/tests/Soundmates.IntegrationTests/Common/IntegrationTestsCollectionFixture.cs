@@ -1,0 +1,4 @@
+namespace Soundmates.IntegrationTests.Common;
+
+[CollectionDefinition(TestConstants.IntegrationTestsCollectionName)]
+public sealed class IntegrationTestsCollectionFixture : ICollectionFixture<CustomWebApplicationFactory>;

@@ -8,53 +8,64 @@ dotnet_analyzer_diagnostic.severity = none
 # Custom rules and suppressions
 [*.cs]
 
-# Remove unnecessary using directives
-dotnet_diagnostic.IDE0005.severity = warning
-
 # Name can be simplified
 dotnet_diagnostic.IDE0001.severity = warning
+
+# Remove unnecessary using directives
+dotnet_diagnostic.IDE0005.severity = warning
 
 # Avoid potentially expensive logging
 dotnet_diagnostic.CA1873.severity = none
 
-# Use conditional expression for return
-dotnet_diagnostic.IDE0046.severity = none
-
-# Use collection expression for fluent
-dotnet_diagnostic.IDE0305.severity = none
-
-# Use expression body for lambdas
-dotnet_diagnostic.IDE0053.severity = none
-
 # Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2007.severity = none
-
-# Member is explicitly initialized to its default value
-dotnet_diagnostic.CA1805.severity = none
-
-# For improved performance, use the LoggerMessage delegates
-dotnet_diagnostic.CA1848.severity = none
 
 # Avoid uninstantiated internal classes
 dotnet_diagnostic.CA1812.severity = none
 
-# Do not catch general exception types
-dotnet_diagnostic.CA1031.severity = none
+# For improved performance, use the LoggerMessage delegates
+dotnet_diagnostic.CA1848.severity = none
 
-# Refactor your code not to use hardcoded absolute paths or URIs
-dotnet_diagnostic.S1075.severity = none
-
-# Normalize strings to uppercase
-dotnet_diagnostic.CA1308.severity = none
-
-# Either log this exception and handle it, or rethrow it with some contextual information
-dotnet_diagnostic.S2139.severity = none
-
+[User.cs]
 # Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes)
 dotnet_diagnostic.CS8765.severity = none
 
-# Extract this nested ternary operation into an independent statement.
+[Message.cs]
+# Member is explicitly initialized to its default value
+dotnet_diagnostic.CA1805.severity = none
+
+[{UploadMusicSampleEndpoint,UploadProfilePictureEndpoint}.cs]
+# Normalize strings to uppercase
+dotnet_diagnostic.CA1308.severity = none
+
+[{DeleteMusicSampleEndpoint,DeleteProfilePictureEndpoint}.cs]
+# Do not catch general exception types
+dotnet_diagnostic.CA1031.severity = none
+
+[EmailService.cs]
+# Either log this exception and handle it, or rethrow it with some contextual information
+dotnet_diagnostic.S2139.severity = none
+
+[SecurityConstants.cs]
+# Refactor your code not to use hardcoded absolute paths or URIs
+dotnet_diagnostic.S1075.severity = none
+
+[GetMatchesEndpoint.cs]
+# Extract this nested ternary operation into an independent statement
 dotnet_diagnostic.S3358.severity = none
+
+[tests/**]
+# Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = none
+
+# Consider making public types internal
+dotnet_diagnostic.CA1515.severity = none
+
+# Remove the underscores from member name
+dotnet_diagnostic.CA1707.severity = none
+
+# Use primary constructor
+dotnet_diagnostic.IDE0290.severity = none
 
 # =================================================================================
 
