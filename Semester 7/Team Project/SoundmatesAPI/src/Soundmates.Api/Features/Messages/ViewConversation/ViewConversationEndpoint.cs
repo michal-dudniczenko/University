@@ -70,7 +70,7 @@ internal static class ViewConversationEndpoint
 
         await hubContext.Clients.Group(otherUserGuid.ToString()).SendAsync("ConversationSeen", new
         {
-            userId = otherUserGuid,
+            userId = user.Id,
             timestamp = DateTime.UtcNow
         }, cancellationToken);
 

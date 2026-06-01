@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Soundmates.Api.Common.Helpers;
 using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
+using Soundmates.Api.Features.Common;
 using Soundmates.Api.Features.Users.Common;
-using Soundmates.Api.Features.Users.GetOtherUserProfile;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
 
@@ -20,7 +20,7 @@ internal static class GetMatchesEndpoint
             .WithName("GetMatches")
             .WithSummary("Get all matches")
             .WithDescription("Returns a paginated list of all users the authenticated user has matched with.")
-            .Produces<List<GetOtherUserProfileResponse>>(StatusCodes.Status200OK)
+            .Produces<List<OtherUserProfileResponse>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .WithTags("Matching");
 
@@ -33,6 +33,7 @@ internal static class GetMatchesEndpoint
         [FromServices] ApplicationDbContext db,
         [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
+        HttpRequest httpRequest,
         CancellationToken cancellationToken)
     {
         var errors = PaginationValidator.ValidateLimitOffset(limit, offset, MaxLimit);
@@ -43,7 +44,10 @@ internal static class GetMatchesEndpoint
         if (user is null)
             return TypedResults.Unauthorized();
 
-        var rows = await db.Matches
+        // Page over matches first, projecting only the *other* user's id (a scalar ternary EF can
+        // translate). Selecting the other user as an entity via a ternary and then sub-projecting
+        // its collections does not translate, so the user profiles are loaded in a second query.
+        var orderedOtherUserIds = await db.Matches
             .AsNoTracking()
             .Where(m =>
                 (m.User2Id == user.Id && m.User1.IsActive && !m.User1.IsFirstLogin && m.User1.EmailConfirmed && m.User1.IsBand != null)
@@ -51,7 +55,12 @@ internal static class GetMatchesEndpoint
             .OrderBy(m => m.Id)
             .Skip(offset)
             .Take(limit)
-            .Select(m => m.User1Id == user.Id ? m.User2 : m.User1)
+            .Select(m => m.User1Id == user.Id ? m.User2Id : m.User1Id)
+            .ToListAsync(cancellationToken);
+
+        var unorderedRows = await db.Users
+            .AsNoTracking()
+            .Where(u => orderedOtherUserIds.Contains(u.Id))
             .Select(u => new
             {
                 u.Id,
@@ -88,8 +97,15 @@ internal static class GetMatchesEndpoint
             .AsSplitQuery()
             .ToListAsync(cancellationToken);
 
+        // Preserve the match ordering (OrderBy Match.Id) lost by the id-set lookup above.
+        var rowsById = unorderedRows.ToDictionary(r => r.Id);
+        var rows = orderedOtherUserIds
+            .Where(rowsById.ContainsKey)
+            .Select(id => rowsById[id])
+            .ToList();
+
         var userProfiles = rows.Select(r => r.IsBand == true
-            ? (GetOtherUserProfileResponse)new OtherUserProfileBandResponse
+            ? (OtherUserProfileResponse)new OtherUserProfileBandResponse
             {
                 Id = r.Id,
                 IsBand = r.IsBand,
@@ -104,10 +120,10 @@ internal static class GetMatchesEndpoint
                     : throw new InvalidOperationException($"Active user should NOT have CityId = NULL. User id: {r.Id}"),
                 TagsIds = r.TagsIds,
                 MusicSamples = r.MusicSamples
-                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName)))
+                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName, httpRequest)))
                     .ToList(),
                 ProfilePictures = r.ProfilePictures
-                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName)))
+                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName, httpRequest)))
                     .ToList(),
                 BandMembers = r.BandMembers,
             }
@@ -126,10 +142,10 @@ internal static class GetMatchesEndpoint
                     : throw new InvalidOperationException($"Active user should NOT have CityId = NULL. User id: {r.Id}"),
                 TagsIds = r.TagsIds,
                 MusicSamples = r.MusicSamples
-                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName)))
+                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName, httpRequest)))
                     .ToList(),
                 ProfilePictures = r.ProfilePictures
-                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName)))
+                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName, httpRequest)))
                     .ToList(),
                 BirthDate = r.BirthDate,
             }).ToList();

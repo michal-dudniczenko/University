@@ -26,6 +26,9 @@ dotnet_diagnostic.CA1812.severity = none
 # For improved performance, use the LoggerMessage delegates
 dotnet_diagnostic.CA1848.severity = none
 
+# 'if' statement can be simplified
+dotnet_diagnostic.IDE0046.severity = none
+
 [User.cs]
 # Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes)
 dotnet_diagnostic.CS8765.severity = none
@@ -66,6 +69,11 @@ dotnet_diagnostic.CA1707.severity = none
 
 # Use primary constructor
 dotnet_diagnostic.IDE0290.severity = none
+
+# Dispose objects before losing scope — HttpContent (MultipartFormDataContent, ByteArrayContent,
+# JsonContent) is handed to HttpClient, which disposes the request content after sending; manual
+# disposal in tests is unnecessary noise.
+dotnet_diagnostic.CA2000.severity = none
 
 # =================================================================================
 

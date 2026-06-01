@@ -1,18 +1,18 @@
-using static Soundmates.Api.Common.Constants.ApplicationConstants;
+using Soundmates.Api.Common.Constants;
 
 namespace Soundmates.Api.Common.Helpers;
 
 internal static class UserMediaUrlHelpers
 {
-    public static string GetMusicSampleUrl(string fileName)
+    public static string GetMusicSampleUrl(string fileName, HttpRequest request)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(fileName);
-        return SamplesDirectoryPath + fileName;
+        return $"{request.Scheme}://{request.Host}/{ApplicationConstants.SamplesDirectoryName}/{fileName}";
     }
 
-    public static string GetProfilePictureUrl(string fileName)
+    public static string GetProfilePictureUrl(string fileName, HttpRequest request)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(fileName);
-        return ImagesDirectoryPath + fileName;
+        return $"{request.Scheme}://{request.Host}/{ApplicationConstants.ImagesDirectoryName}/{fileName}";
     }
 }

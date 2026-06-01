@@ -31,19 +31,13 @@ internal static class LoginEndpoint
     }
 
     private static async Task<IResult> HandleAsync(
-        [FromQuery] bool? useCookies,
+        [FromQuery] bool useCookies,
         [FromBody] LoginRequest request,
         [FromServices] UserManager<User> userManager,
         [FromServices] SignInManager<User> signInManager,
         [FromServices] IAuthService authService,
         CancellationToken cancellationToken)
     {
-        if (useCookies is null)
-        {
-            return TypedResults.ValidationProblem(
-                new Dictionary<string, string[]> { { "useCookies", ["The useCookies query parameter is required."] } });
-        }
-
         var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
@@ -56,7 +50,7 @@ internal static class LoginEndpoint
                 statusCode: StatusCodes.Status403Forbidden);
         }
 
-        var result = useCookies.Value ?
+        var result = useCookies ?
             await signInManager.PasswordSignInAsync(
                 user, request.Password, isPersistent: true, lockoutOnFailure: true)
             : await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
@@ -72,7 +66,7 @@ internal static class LoginEndpoint
         if (!result.Succeeded)
             return TypedResults.Unauthorized();
 
-        if (useCookies.Value)
+        if (useCookies)
             return TypedResults.Ok();
 
         var accessToken = await authService.GenerateAccessTokenAsync(user, cancellationToken);

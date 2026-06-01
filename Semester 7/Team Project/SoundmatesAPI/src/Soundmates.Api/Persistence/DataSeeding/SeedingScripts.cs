@@ -45,6 +45,8 @@ internal static class SeedingScripts
 
         foreach (var entry in data)
         {
+            if (string.IsNullOrWhiteSpace(entry.City)) continue;
+
             var country = countries.FirstOrDefault(c => c.Name == entry.Country);
             if (country is null) continue;
 

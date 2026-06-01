@@ -7,6 +7,8 @@ using Soundmates.Api.Middleware;
 using Soundmates.Api.Persistence;
 using System.Diagnostics;
 
+Directory.CreateDirectory("wwwroot");
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddConfigureAuthentication(builder.Configuration);
@@ -33,6 +35,8 @@ builder.Services.AddAntiforgery(options =>
     options.Cookie.SameSite = SameSiteMode.None;
 });
 
+builder.Services.AddExceptionHandler<BadHttpRequestExceptionHandler>();
+
 builder.Services.AddProblemDetails(options =>
 {
     options.CustomizeProblemDetails = ctx =>
@@ -52,6 +56,8 @@ if (app.Environment.IsDevelopment())
     await app.InitializeMigrateDatabaseAsync();
 
 await app.SeedApplicationAdminUserAsync();
+
+app.EnsureStaticFilesDirectoriesExist();
 
 app.UseExceptionHandler();
 

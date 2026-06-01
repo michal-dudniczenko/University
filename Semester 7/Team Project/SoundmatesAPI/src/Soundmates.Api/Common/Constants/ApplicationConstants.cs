@@ -6,18 +6,25 @@ internal static class ApplicationConstants
 
     public const double EarthRadiusKm = 6371.0;
 
-    public const string SamplesDirectoryPath = "samples/";
+    public const string SamplesDirectoryName = "samples";
     public const int MaximumSampleSizeMb = 100;
     public const int MaximumSampleSize = MaximumSampleSizeMb * 1024 * 1024;
-    public static readonly string[] AllowedSampleContentTypes = ["audio/mpeg", "video/mp4"];
-    public static readonly string[] AllowedSampleFileExtensions = [".mp3", ".mp4"];
+    public static readonly IReadOnlyDictionary<string, string[]> AllowedSampleContentTypes =
+        new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["audio/mpeg"] = [".mp3"],
+            ["video/mp4"] = [".mp4"],
+        };
     public const int MaximumMusicSamplesCount = 5;
 
-    public const string ImagesDirectoryPath = "images/";
+    public const string ImagesDirectoryName = "images";
     public const int MaximumImageSizeMb = 5;
     public const int MaximumImageSize = MaximumImageSizeMb * 1024 * 1024;
-    public static readonly string[] AllowedImageContentTypes = ["image/jpeg", "image/jpg"];
-    public static readonly string[] AllowedImageFileExtensions = [".jpeg", ".jpg"];
+    public static readonly IReadOnlyDictionary<string, string[]> AllowedImageContentTypes =
+        new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["image/jpeg"] = [".jpeg", ".jpg"],
+        };
     public const int MaximumProfilePicturesCount = 5;
 
     public const int MaximumUserEmailLength = 100;
@@ -31,4 +38,6 @@ internal static class ApplicationConstants
     public const int MaximumBandMemberAge = 100;
 
     public const int MaximumMessageContentLength = 4000;
+
+    public const string ModerationEmailConfigEntryName = "ModerationEmail";
 }

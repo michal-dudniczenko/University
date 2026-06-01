@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Soundmates.Api.Common.Constants;
 using Soundmates.Api.Common.Filters;
-using Soundmates.Api.Common.Helpers;
 using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
 using Soundmates.Api.Persistence;
@@ -32,6 +32,7 @@ internal static class DeleteMusicSampleEndpoint
         [FromServices] ApplicationDbContext db,
         [FromServices] IAuthService authService,
         [FromServices] ILoggerFactory loggerFactory,
+        IWebHostEnvironment env,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
@@ -55,7 +56,7 @@ internal static class DeleteMusicSampleEndpoint
         if (sample.UserId != user.Id)
             return TypedResults.Problem(detail: "You can only delete your own music samples.", statusCode: 401);
 
-        var filePath = Path.Combine("wwwroot", UserMediaUrlHelpers.GetMusicSampleUrl(sample.FileName));
+        var filePath = Path.Combine(env.WebRootPath, ApplicationConstants.SamplesDirectoryName, sample.FileName);
         if (File.Exists(filePath))
         {
             try

@@ -8,6 +8,7 @@
     <PackageReference Include="coverlet.collector" />
     <PackageReference Include="FluentAssertions" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Respawn" />
     <PackageReference Include="Testcontainers.MsSql" />
@@ -23,6 +24,14 @@
     <Using Include="Xunit" />
     <Using Include="FluentAssertions" />
     <Using Include="Soundmates.IntegrationTests.Common" />
+    <Using Include="Soundmates.IntegrationTests.Common.Auth" />
+    <Using Include="Soundmates.IntegrationTests.Common.Contracts" />
+    <Using Include="Soundmates.IntegrationTests.Common.Email" />
+    <Using Include="Soundmates.IntegrationTests.Common.Infrastructure" />
+    <Using Include="Soundmates.IntegrationTests.Common.Json" />
+    <Using Include="Soundmates.IntegrationTests.Common.Media" />
+    <Using Include="Soundmates.IntegrationTests.Common.Seeding" />
+    <Using Include="Soundmates.IntegrationTests.Common.SignalR" />
   </ItemGroup>
 
 </Project>

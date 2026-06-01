@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using Soundmates.Api.Common.Constants;
 using Soundmates.Api.Common.Filters;
 using Soundmates.Api.Common.Services;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 
 namespace Soundmates.Api.Features.Reports.ReportUser;
 
@@ -27,25 +29,31 @@ internal static class ReportUserEndpoint
         [FromBody] ReportUserRequest request,
         [FromServices] IAuthService authService,
         [FromServices] IEmailService emailService,
+        IConfiguration configuration,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
+        var moderationEmail = configuration[ApplicationConstants.ModerationEmailConfigEntryName]
+            ?? throw new InvalidOperationException($"{ApplicationConstants.ModerationEmailConfigEntryName} is not configured.");
+        
         var user = await authService.GetAuthorizedUserAsync(principal);
         if (user is null)
             return TypedResults.Unauthorized();
 
         var reportedUserId = Guid.Parse(request.ReportedUserId);
 
+        var encoder = HtmlEncoder.Default;
+
         var subject = $"User Report: {user.Id} reported {reportedUserId}";
         var body = $"""
             <h1>User Report</h1>
-            <p><strong>Reporting User ID:</strong> {user.Id}</p>
-            <p><strong>Reported User ID:</strong> {reportedUserId}</p>
-            <p><strong>Reason:</strong> {request.Reason}</p>
-            <p><strong>Description:</strong> {request.Description}</p>
+            <p><strong>Reporting User ID:</strong> {encoder.Encode(user.Id.ToString())}</p>
+            <p><strong>Reported User ID:</strong> {encoder.Encode(reportedUserId.ToString())}</p>
+            <p><strong>Reason:</strong> {encoder.Encode(request.Reason)}</p>
+            <p><strong>Description:</strong> {encoder.Encode(request.Description)}</p>
             """;
 
-        await emailService.SendEmailAsync("soundmatesmoderation@gmail.com", subject, body, cancellationToken);
+        await emailService.SendEmailAsync(moderationEmail, subject, body, cancellationToken);
 
         return TypedResults.Ok();
     }

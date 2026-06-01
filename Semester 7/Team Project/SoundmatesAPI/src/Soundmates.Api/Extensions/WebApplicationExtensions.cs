@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Soundmates.Api.Common.Constants;
 using Soundmates.Api.Common.Entities;
 using Soundmates.Api.Common.Options;
 using Soundmates.Api.Persistence;
@@ -67,5 +68,11 @@ internal static class WebApplicationExtensions
                 throw new InvalidOperationException($"Failed to assign admin role to admin user. Errors: {errors}");
             }
         }
+    }
+
+    public static void EnsureStaticFilesDirectoriesExist(this WebApplication app)
+    {
+        Directory.CreateDirectory(Path.Combine(app.Environment.WebRootPath, ApplicationConstants.SamplesDirectoryName));
+        Directory.CreateDirectory(Path.Combine(app.Environment.WebRootPath, ApplicationConstants.ImagesDirectoryName));
     }
 }

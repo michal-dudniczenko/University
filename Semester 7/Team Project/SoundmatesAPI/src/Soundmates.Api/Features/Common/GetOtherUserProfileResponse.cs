@@ -1,12 +1,12 @@
 using Soundmates.Api.Features.Users.Common;
 using System.Text.Json.Serialization;
 
-namespace Soundmates.Api.Features.Users.GetOtherUserProfile;
+namespace Soundmates.Api.Features.Common;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "userType")]
 [JsonDerivedType(typeof(OtherUserProfileArtistResponse), "artist")]
 [JsonDerivedType(typeof(OtherUserProfileBandResponse), "band")]
-internal abstract class GetOtherUserProfileResponse
+internal abstract class OtherUserProfileResponse
 {
     public required Guid Id { get; set; }
     public required bool? IsBand { get; set; }
@@ -19,12 +19,12 @@ internal abstract class GetOtherUserProfileResponse
     public required IList<ProfilePictureDto> ProfilePictures { get; set; }
 }
 
-internal sealed class OtherUserProfileArtistResponse : GetOtherUserProfileResponse
+internal sealed class OtherUserProfileArtistResponse : OtherUserProfileResponse
 {
     public required DateOnly? BirthDate { get; set; }
 }
 
-internal sealed class OtherUserProfileBandResponse : GetOtherUserProfileResponse
+internal sealed class OtherUserProfileBandResponse : OtherUserProfileResponse
 {
     public required IList<BandMemberDto> BandMembers { get; set; }
 }

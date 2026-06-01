@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Soundmates.Api.Common.Constants;
 using Soundmates.Api.Common.Entities;
 using Soundmates.Api.Common.Filters;
-using Soundmates.Api.Common.Helpers;
 using Soundmates.Api.Common.Services;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
-using static Soundmates.Api.Common.Constants.ApplicationConstants;
 
 namespace Soundmates.Api.Features.MusicSamples.UploadMusicSample;
 
@@ -31,6 +30,7 @@ internal static class UploadMusicSampleEndpoint
         [FromForm] IFormFile file,
         [FromServices] ApplicationDbContext db,
         [FromServices] IAuthService authService,
+        IWebHostEnvironment env,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
@@ -38,27 +38,33 @@ internal static class UploadMusicSampleEndpoint
         if (user is null)
             return TypedResults.Unauthorized();
 
+        if (file is null)
+            return TypedResults.Problem(detail: "A file is required.", statusCode: StatusCodes.Status400BadRequest);
+
         var contentType = file.ContentType ?? string.Empty;
         var extension = Path.GetExtension(file.FileName) ?? string.Empty;
 
-        if (!AllowedSampleContentTypes.Contains(contentType, StringComparer.OrdinalIgnoreCase)
-            || !AllowedSampleFileExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
+        if (!ApplicationConstants.AllowedSampleContentTypes.TryGetValue(contentType, out var allowedExtensions)
+            || !allowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
         {
-            return TypedResults.Problem(detail: $"Allowed file extensions: {string.Join(", ", AllowedSampleFileExtensions)}", statusCode: 400);
+            var allowedContentTypes = string.Join(", ", ApplicationConstants.AllowedSampleContentTypes
+                .Select(kvp => $"{kvp.Key} ({string.Join(", ", kvp.Value)})"));
+
+            return TypedResults.Problem(detail: $"Allowed content types: {allowedContentTypes}.", statusCode: 400);
         }
 
-        if (file.Length > MaximumSampleSize)
-            return TypedResults.Problem(detail: $"File size cannot exceed {MaximumSampleSizeMb} MB.", statusCode: 400);
+        if (file.Length > ApplicationConstants.MaximumSampleSize)
+            return TypedResults.Problem(detail: $"File size cannot exceed {ApplicationConstants.MaximumSampleSizeMb} MB.", statusCode: 400);
 
         var currentCount = await db.MusicSamples
             .AsNoTracking()
             .CountAsync(ms => ms.UserId == user.Id, cancellationToken);
 
-        if (currentCount >= MaximumMusicSamplesCount)
-            return TypedResults.Problem(detail: $"User can upload maximum of {MaximumMusicSamplesCount} music samples.", statusCode: 400);
+        if (currentCount >= ApplicationConstants.MaximumMusicSamplesCount)
+            return TypedResults.Problem(detail: $"User can upload maximum of {ApplicationConstants.MaximumMusicSamplesCount} music samples.", statusCode: 400);
 
         var fileName = $"{Guid.CreateVersion7()}{extension.ToLowerInvariant()}";
-        var filePath = Path.Combine("wwwroot", UserMediaUrlHelpers.GetMusicSampleUrl(fileName));
+        var filePath = Path.Combine(env.WebRootPath, ApplicationConstants.SamplesDirectoryName, fileName);
 
         await using (var stream = new FileStream(filePath, FileMode.Create))
         {

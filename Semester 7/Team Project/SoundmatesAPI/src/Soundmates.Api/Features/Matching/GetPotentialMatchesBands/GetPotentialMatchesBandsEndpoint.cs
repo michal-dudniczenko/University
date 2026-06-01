@@ -4,8 +4,8 @@ using Soundmates.Api.Common.Constants;
 using Soundmates.Api.Common.Helpers;
 using Soundmates.Api.Common.Services;
 using Soundmates.Api.Common.Validation;
+using Soundmates.Api.Features.Common;
 using Soundmates.Api.Features.Users.Common;
-using Soundmates.Api.Features.Users.GetOtherUserProfile;
 using Soundmates.Api.Persistence;
 using System.Security.Claims;
 
@@ -33,6 +33,7 @@ internal static class GetPotentialMatchesBandsEndpoint
         [FromQuery] int offset,
         [FromServices] ApplicationDbContext db,
         [FromServices] IAuthService authService,
+        HttpRequest httpRequest,
         ClaimsPrincipal principal,
         CancellationToken cancellationToken)
     {
@@ -164,10 +165,10 @@ internal static class GetPotentialMatchesBandsEndpoint
                     : throw new InvalidOperationException($"Active user should NOT have CityId = NULL. User id: {x.Id}"),
                 TagsIds = x.TagIds,
                 MusicSamples = x.MusicSamples
-                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName)))
+                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName, httpRequest)))
                     .ToList(),
                 ProfilePictures = x.ProfilePictures
-                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName)))
+                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName, httpRequest)))
                     .ToList(),
                 BandMembers = x.BandMembers
                     .Select(bm => new BandMemberDto(bm.Name, bm.Age, bm.BandRoleId))

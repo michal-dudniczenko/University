@@ -27,6 +27,7 @@ internal static class GetSelfProfileEndpoint
         [FromServices] ApplicationDbContext db,
         [FromServices] IAuthService authService,
         ClaimsPrincipal principal,
+        HttpRequest httpRequest,
         CancellationToken cancellationToken)
     {
         var user = await authService.GetAuthorizedUserAsync(principal, checkForFirstLogin: false);
@@ -79,9 +80,9 @@ internal static class GetSelfProfileEndpoint
                 IsFirstLogin = band.User.IsFirstLogin,
                 TagsIds = band.User.Tags.Select(t => t.Id).ToList(),
                 MusicSamples = band.User.MusicSamples.OrderBy(ms => ms.DisplayOrder)
-                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName))).ToList(),
+                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName, httpRequest))).ToList(),
                 ProfilePictures = band.User.ProfilePictures.OrderBy(pp => pp.DisplayOrder)
-                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName))).ToList(),
+                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName, httpRequest))).ToList(),
                 BandMembers = band.Members.OrderBy(m => m.DisplayOrder)
                     .Select(bm => new BandMemberDto(bm.Name, bm.Age, bm.BandRoleId)).ToList()
             });
@@ -110,9 +111,9 @@ internal static class GetSelfProfileEndpoint
                 IsFirstLogin = artist.User.IsFirstLogin,
                 TagsIds = artist.User.Tags.Select(t => t.Id).ToList(),
                 MusicSamples = artist.User.MusicSamples.OrderBy(ms => ms.DisplayOrder)
-                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName))).ToList(),
+                    .Select(ms => new MusicSampleDto(ms.Id, UserMediaUrlHelpers.GetMusicSampleUrl(ms.FileName, httpRequest))).ToList(),
                 ProfilePictures = artist.User.ProfilePictures.OrderBy(pp => pp.DisplayOrder)
-                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName))).ToList(),
+                    .Select(pp => new ProfilePictureDto(pp.Id, UserMediaUrlHelpers.GetProfilePictureUrl(pp.FileName, httpRequest))).ToList(),
                 BirthDate = artist.BirthDate,
                 GenderId = artist.GenderId
             });

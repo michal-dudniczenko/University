@@ -1,6 +1,6 @@
 using FluentValidation;
+using Soundmates.Api.Common.Constants;
 using Soundmates.Api.Common.Validation.Rules;
-using static Soundmates.Api.Common.Constants.ApplicationConstants;
 
 namespace Soundmates.Api.Features.Messages.SendMessage;
 
@@ -9,6 +9,6 @@ internal sealed class SendMessageValidator : AbstractValidator<SendMessageReques
     public SendMessageValidator()
     {
         RuleFor(x => x.ReceiverId).NotEmpty().ValidGuid();
-        RuleFor(x => x.Content).NotEmpty().MaximumLength(MaximumMessageContentLength);
+        RuleFor(x => x.Content).NotEmpty().MaximumLength(ApplicationConstants.MaximumMessageContentLength);
     }
 }

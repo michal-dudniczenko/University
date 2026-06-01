@@ -1,5 +1,5 @@
 using FluentValidation;
-using static Soundmates.Api.Common.Constants.ApplicationConstants;
+using Soundmates.Api.Common.Constants;
 
 namespace Soundmates.Api.Features.Auth.Login;
 
@@ -9,7 +9,7 @@ internal sealed class LoginValidator : AbstractValidator<LoginRequest>
     {
         RuleFor(x => x.Email)
             .NotEmpty()
-            .MaximumLength(MaximumUserEmailLength)
+            .MaximumLength(ApplicationConstants.MaximumUserEmailLength)
             .EmailAddress();
 
         RuleFor(x => x.Password)
